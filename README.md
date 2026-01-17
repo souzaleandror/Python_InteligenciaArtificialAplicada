@@ -1,0 +1,2 @@
+# Python_InteligenciaArtificialAplicada
+Python: Inteligência Artificial Aplicada
