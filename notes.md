@@ -556,3 +556,608 @@ Regras de nomenclatura de variáveis e uso do tipo de dados booleano.
 Aplicação de métodos de manipulação de strings em Python.
 Uso da função input() e conversão de tipos para interação com o usuário.
 Estruturas condicionais com if, else, elif e operadores lógicos.
+
+#19/01/2026
+
+@02-Manipulação de strings
+
+@@01
+Projeto da aula anterior
+
+Caso queira revisar o código até aqui ou começar a partir desse ponto, disponibilizamos os códigos realizados na aula anterior, para visualizar clique neste link.
+
+https://colab.research.google.com/drive/1WETmeYAowvalnz1go_KIzTYeBjfdWWEG#scrollTo=GdljWTDDLKzF
+
+@@02
+Aprenda a conectar a IA do Google com Python no Colab
+
+Agora é o momento de rodarmos nossa primeira Inteligência Artificial (IA) utilizando uma conexão com a API diretamente do Google Colab, onde estamos programando. Vamos escrever um texto sobre como rodar a IA no Google Colab.
+
+Por exemplo, ao inserir um código, notamos que o uso do símbolo de jogo da velha (#) no início indica um título de nível 1 (H1). Isso permite ajustar o tamanho do texto, entre outras funcionalidades do Colab que não são tão relevantes no momento. O importante é que vamos nos conectar com o Gemini, a IA do Google, que será utilizada neste exemplo. Poderíamos usar qualquer outra IA, mas o Gemini é mais conveniente, pois o Google Colab é um ambiente do Google, facilitando o processo.
+
+Obtendo a chave de API no Google AI Studio
+Antes de rodarmos o Gemini, precisamos de uma chave de API (API Key). A chave de API pode ser comparada a um usuário e senha modernos, sendo um código alfanumérico extenso, semelhante a uma senha de Wi-Fi complexa. Com essa chave, o Google identificará que estamos acessando a API do Gemini.
+
+Para obter a chave de API, devemos acessar o Google AI Studio. No Google, pesquisamos por Google AI Studio e clicamos no link correspondente. Ao abrir a página, no topo, há um botão destacado chamado "Get API Key". Ao clicar nele, seremos direcionados para outra página onde podemos criar uma nova chave de API, localizada no canto superior direito.
+
+Criando e gerenciando a chave de API
+Ao clicar na opção, podem ocorrer algumas situações. Se nunca tivermos criado uma chave de API com o Google, será necessário aceitar a conexão com nossa conta do Google, como a conta do Gmail, por exemplo, e permitir essa conexão. Caso já tenhamos gerado anteriormente, chegaremos à situação em que precisamos escolher um projeto. Pode ser qualquer projeto do Google Cloud. Se apenas quisermos conectar com algo, podemos escolher um projeto aleatório e clicar em criar uma chave de API. Independentemente do modo como fizermos isso, a chave será gerada, e podemos copiá-la. A única recomendação é usar as chaves de API com segurança, não compartilhando nem incorporando em códigos que o público possa ver. Isso é essencial, pois a chave funciona como um usuário e senha, devendo ser guardada em locais seguros.
+
+Armazenando a chave de API no Google Colab
+Vamos copiar o valor da chave e voltar ao nosso Colab. Para não inserirmos diretamente no código, temos no Colab um recurso semelhante a um cofre, onde podemos guardar nossas senhas e fazer a conexão de maneira mais segura. No menu esquerdo, clicamos na opção "Secrets". Se não houver nenhum, aparecerá vazio. Podemos adicionar uma nova chave clicando no botão "Adicionar novo Secret". No lado esquerdo, colocamos o nome da chave, como Gemini_API_Key, e no lado direito, colamos o valor da chave de API que copiamos. Após isso, podemos ativar a chave.
+
+Importando e configurando a chave de API
+O Colab oferece uma dica de como importar essa chave. Precisamos importar do ambiente com:
+
+from google.colab import userdata
+COPIAR CÓDIGO
+Dentro de userdata.get, copiamos o nome da variável, no nosso caso, GEMINI_API_KEY_2. Ao rodar, ele exibirá que conseguiu pegar o valor da chave de API. No entanto, para se conectar, precisamos definir essa variável como uma variável de ambiente no Google Colab. Para isso, importamos o módulo os e utilizamos os.environ para definir a variável de ambiente GOOGLE_API_KEY com o valor da chave de API.
+
+import os
+from google.colab import userdata
+
+os.environ['GOOGLE_API_KEY'] = userdata.get('GEMINI_API_KEY_2')
+COPIAR CÓDIGO
+A variável dentro do cofre pode ter qualquer nome, mas a variável de ambiente precisa ter o nome exato GOOGLE_API_KEY, pois é uma exigência do sistema do Google. Estamos usando importações do sistema para conectar essa variável de ambiente ao valor guardado no cofre, garantindo segurança. Poderíamos inserir o valor diretamente, mas isso não seria seguro. Portanto, ensinamos o método correto desde o início.
+
+Conectando e interagindo com a IA do Google
+No Colab, como é uma ferramenta do Google, não precisamos instalar nada para conectar com o Gemini, a IA do Google. Podemos importar diretamente Gen AI, que é uma abreviação de Generative AI (Inteligência Artificial Generativa). O Google Gen AI SDK oferece módulos prontos para facilitar a interação com o Gemini. Criamos um cliente com Gen AI.client() para se conectar aos servidores do Google.
+
+from google import genai
+
+client = genai.Client()
+COPIAR CÓDIGO
+Para ter nossa primeira interação com a IA, utilizamos client.models.generate_content(), que requer dois argumentos: o modelo do Google a ser usado e o conteúdo da pergunta. Existem várias opções de modelos, como Gemini-2.5-Flash e Gemini-2.5-Pro. Escolhemos Gemini-2.5-Flash por ser rápido e ter menos limites, ideal para testes. Passamos o modelo e a pergunta, como "O que é inteligência artificial?".
+
+resposta = client.models.generate_content(model="gemini-2.5-flash", contents="O que é a Inteligência Artificial?")
+COPIAR CÓDIGO
+Exibindo a resposta da IA
+Ao rodar, a resposta é gerada, mas inicialmente aparece de forma complexa. Para facilitar a leitura, salvamos a resposta em uma variável chamada resposta e imprimimos apenas o texto com resposta.text.
+
+print(resposta.text)
+COPIAR CÓDIGO
+Assim, obtemos uma resposta clara sobre inteligência artificial.
+
+Se estivermos acompanhando, já fizemos nossa primeira conexão com a API do Gemini, recebendo uma resposta da IA do Google. Agora, somos pessoas desenvolvedoras capazes de se comunicar com modelos de IA. Nos próximos vídeos, continuaremos explorando mais sobre Python, IA e dados. Até mais.
+
+@@03
+Conceito de loops
+
+Agora que já vimos como se conectar e obter uma resposta a partir de uma IA usando a API e a chave da API, vamos explorar um conceito muito importante em Python e em todas as linguagens de programação: os loops, ou estruturas de repetição. Esses conceitos também são conhecidos como laços e têm diversos nomes, mas representam a mesma ideia.
+
+Para começar, vamos introduzir o conceito de estruturas de repetição, também conhecidas como loops ou laços:
+
+# Estruturas de Repetição, Loops, Laços
+COPIAR CÓDIGO
+Explicando o uso de loops para repetição de ações
+Existem dois tipos principais de loops. Vamos começar com um deles, que é utilizado quando queremos repetir a mesma ação várias vezes. Por exemplo, se quisermos imprimir um asterisco na tela dez vezes, poderíamos simplesmente usar o comando print seguido do texto, repetindo-o dez vezes. Isso funcionaria bem para dez asteriscos, mas se quisermos imprimir 500 asteriscos, contar até 500 manualmente não seria uma boa ideia. Existem maneiras mais eficientes de fazer isso.
+
+Para ilustrar, podemos usar o comando print para imprimir uma linha de asteriscos:
+
+print("**********")
+COPIAR CÓDIGO
+Demonstrando o uso do loop while
+Um dos métodos, que pode ser usado para essa e muitas outras situações, é o loop while. A palavra while em inglês significa "enquanto". Assim como no if, onde passamos uma condição, no while também passamos uma condição. No caso do if, se a condição for verdadeira, o bloco de código é executado. No while, enquanto a condição for verdadeira, o loop continua executando, repetindo o bloco de código até que uma condição de parada seja atingida. Geralmente, essa condição de parada é definida dentro do próprio loop while.
+
+Vamos demonstrar na prática como isso funciona. Antes de usar o while, definimos que queremos imprimir 500 asteriscos. Para isso, vamos definir uma variável inicial, por exemplo, n, que receberá o valor 1:
+
+n = 1
+COPIAR CÓDIGO
+Implementando a lógica de incremento no loop
+Com essa variável definida, podemos começar a usar o while. Enquanto o valor da variável n for menor ou igual a 500, o loop continuará executando. A estrutura do while é semelhante à do if, com uma condição seguida de dois pontos:
+
+while n <= 500:
+COPIAR CÓDIGO
+O que queremos fazer dentro do loop é imprimir o asterisco, ou seja, a string "*":
+
+print("*")
+COPIAR CÓDIGO
+O texto "asterisco" está entre aspas, mas precisamos colocar um ponto de parada, pois o valor de n está igual a 1. Quando ele muda para 2, 3, 4, não está mudando. Vamos ver algumas vezes como fazer essa mudança. Por exemplo, pegamos um texto, aplicamos algumas alterações e depois salvamos o resultado na própria variável texto, alterando-a ao remover o que havia antes e colocando o novo valor no lugar.
+
+O que faremos aqui é alterar o valor de n para que ele continue crescendo, evitando que fique em 1 infinitamente. Caso contrário, ele diminuirá sem parar, o que pode travar o computador. Isso é conhecido como loop infinito em programação. Vamos imprimir apenas um item, um asterisco. O próximo passo é incrementar n em 1:
+
+n = n + 1
+COPIAR CÓDIGO
+Testando e ajustando o loop para evitar problemas
+Podemos verificar se isso funciona. Ao rodar o código, ele executa várias ações. Um problema é que, quando fazemos um print seguido de outro, ele pula para a linha de baixo, não imprimindo tudo na mesma linha. No entanto, isso já serve para mostrar que o código está funcionando. Vamos mudar o valor de 500 para 10, para que fique mais visível:
+
+n = 1
+
+while n <= 10:
+  print("*")
+  n = n + 1
+COPIAR CÓDIGO
+Analisando o funcionamento do loop while
+Vamos analisar passo a passo: n começa com o valor de 1. Ele faz a primeira comparação no if: 1 é menor ou igual a 10, o que é verdadeiro. Entramos no loop while. Imprimimos um asterisco e, em seguida, incrementamos n em 1, resultando em 2. Após essa operação, gravamos o resultado na variável n. Agora, n é igual a 2, e o loop recomeça.
+
+Agora, 2 é menor ou igual a 10, o que é verdadeiro. Imprimimos novamente, e 2 mais 1 resulta em 3. Salvamos 3 e voltamos ao início do while. 3 é menor ou igual a 10, o que é verdadeiro, e assim por diante, até que n se torne 11. Quando 11 é comparado, 11 é menor ou igual a 10 é falso, e o loop para. Essa é a ideia por trás do laço while, uma estrutura de repetição que usaremos bastante nas últimas aulas. Essa é também outra estrutura que veremos em breve.
+
+@@04
+Entendendo a interação dinâmica com chatbots e o histórico de mensagens
+
+Continuando, vamos revisar o que vimos na última aula. Importamos todos os elementos necessários, incluindo o sistema operacional, e salvamos a chave de API do Gemini, obtida no Google AI Studio, em nosso Secrets. Com essa chave, conseguimos definir a variável de ambiente os.environ.
+
+Para isso, utilizamos o seguinte código:
+
+import os
+from google.colab import import userdata
+os.environ['GOOGLE_API_KEY'] = userdata.get('GEMINI_API_KEY_2')
+COPIAR CÓDIGO
+Estabelecendo conexão com o SDK do Google
+Em seguida, estabelecemos a conexão com o SDK do Google para lidar com IA generativa. Importamos o GeneAI do Google, criamos um cliente e, através do método modules.generateContent, conectamos ao modelo Gemini, especificamente o 2.5 Flash.
+
+from google import import genai
+
+client = genai.Client()
+COPIAR CÓDIGO
+Enviamos a pergunta "O que é inteligência artificial?" e exibimos a resposta, que é o texto retornado pelo modelo.
+
+resposta = client.models.generate_content(model="gemini-2.5-flash", contents="o que é a Inteligência Artificial?")
+print(resposta.text)
+COPIAR CÓDIGO
+Explorando interações dinâmicas com chatbots
+Agora, vamos realizar algo semelhante, mas com um foco diferente. No exemplo anterior, enviamos uma pergunta e recebemos uma única resposta. Agora, exploraremos interações mais dinâmicas, semelhantes aos chatbots atuais, como Gemini, ChatGPT, Llama, Cloud, Maritaca e IA. Esses chatbots mantêm o contexto das perguntas anteriores, funcionando como um chatbot com histórico e memória. Isso também pode ser feito facilmente usando os módulos prontos do Google.
+
+Utilizamos o cliente e chamamos o objeto Models, usando o método GenerateContent para gerar um conteúdo pontual. Agora, faremos algo um pouco diferente, mas ainda semelhante. Vamos abrir uma nova célula de código, usar o Client e, ao invés de escolher Models, selecionaremos Chats. Em seguida, usaremos a opção Create para criar um chatbot. Como é um método, colocamos os parênteses.
+
+client.chats.create()
+COPIAR CÓDIGO
+Criando e interagindo com o chatbot
+Dentro dos parênteses, faremos algo parecido com o que fizemos anteriormente. Passaremos o modelo que queremos usar e o conteúdo, ou seja, o prompt ou pergunta para a IA. No caso do chat, passaremos apenas o modelo, e o restante será definido dentro do chat. Vamos armazenar isso em uma variável, que pode ser chamada de chat ou chatbot.
+
+chat = client.chats.create(model="gemini-2.5-flash")
+COPIAR CÓDIGO
+Após rodar essa célula, usaremos essa variável na próxima etapa. Chamaremos a variável criada, que utilizará a propriedade do objeto chats e o método create, para criar uma interação de chatbot com o Gemini, usando o modelo 2.5 Flash. Ao clicar no ponto, veremos algumas opções, como Get history, para obter um histórico, embora não tenhamos um histórico no momento.
+
+A que vamos usar é a que faz mais sentido aqui, que é o método sendMessage, em inglês, enviar uma mensagem. Como é um método, nós abrimos e fechamos parênteses, e dentro desse sendMessage, podemos enviar, por exemplo, uma pergunta.
+
+resposta = chat.send_message("o que é a Inteligência Artificial?")
+print(resposta.text)
+COPIAR CÓDIGO
+Enviando perguntas e recebendo respostas
+Podemos mandar exatamente a mesma pergunta: "O que é a inteligência artificial?" e obter uma resposta, do mesmo jeito que fizemos anteriormente. No entanto, antes era para uma questão mais pontual, uma pergunta e uma resposta, sem salvar histórico. Aqui, é um chat de fato, então temos a pergunta que fizemos, a resposta do modelo de IA, a próxima pergunta, e assim por diante.
+
+Podemos clicar para rodar, e ele está fazendo novamente a conexão com os modelos Gemini, lá no Google. Em breve, ele responderá e salvará a resposta, armazenando-a na variável resposta. Podemos imprimir a resposta da mesma forma que fizemos antes, com print(resposta.text). Se quisermos mudar, podemos usar uma variável diferente, como resposta2, para não perder a resposta anterior, pois ao usar a mesma variável, ela é sobrescrita, apagando o que havia antes e colocando o novo conteúdo.
+
+Vamos rodar o código, e ele está praticamente igual, mas com diferenças. A IA funciona de maneira simplificada, e a resposta pode variar, pois é uma IA generativa. Cada vez, ela responderá de uma maneira um pouco diferente. Vamos fazer mais uma pergunta para a Gemini, copiar e já colocar o print junto, na mesma célula, para exibir diretamente a resposta. Estamos usando a mesma variável, que será sobrescrita, apagando o conteúdo anterior e fornecendo uma nova resposta.
+
+resposta = chat.send_message("Quando foi lançado o ChatGPT?")
+print(resposta.text)
+COPIAR CÓDIGO
+Explorando o histórico de interações
+Podemos fazer outra pergunta, por exemplo: "Quando foi lançado o ChatGPT?" Ao rodar, obtemos que o ChatGPT foi lançado publicamente pela OpenAI em 30 de novembro de 2022. Essas informações são passadas sem problemas.
+
+Gostaríamos de mostrar algo mais. Vamos criar mais uma célula de código. Até agora, estávamos usando chat.sendMessage para enviar uma mensagem ao modelo Gemini e obter uma resposta, da mesma forma que fizemos antes. Podemos usar a variável chat, que criamos anteriormente com client.chats.create, para criar um chat e interações. Ao usar o ponto, vemos que há outras opções, não apenas o sendMessage, mas também o getHistory.
+
+Vamos rodar o método chat.getHistory. Ele possui um histórico das mensagens enviadas durante este chat.
+
+chat.get_history()
+COPIAR CÓDIGO
+A primeira entrada, userContent, é o conteúdo que veio do usuário, com o texto "O que é a inteligência artificial?" e o papel (role) de quem fez a pergunta, que foi o usuário. A resposta, text, é a primeira resposta que tivemos. Mais abaixo, temos o roleModel, indicando que a resposta foi dada pelo modelo, não pelo usuário. A pergunta "Quando foi lançado o ChatGPT?" também tem o role de usuário, e a resposta correspondente está registrada.
+
+Ou seja, ele guarda esse histórico dentro do chat, permitindo ver todas as interações. Isso pode ser muito útil. No próximo vídeo, vamos integrar essas funcionalidades para criar um chatbot que permita interações, usando operadores e laços de repetição que vimos na última aula. Até mais.
+
+@@05
+Como criar um chatbot com Python e a IA Gemini
+
+Vamos alterar o nome do arquivo de Untitled 31 para algo mais significativo, como "Python e Inteligência Artificial". O objetivo agora é criar um chatbot que permita ao usuário fazer perguntas, conectando-se a uma IA, neste caso, o Gemini, para oferecer respostas.
+
+Primeiramente, precisamos capturar a pergunta do usuário, ou seja, o prompt. Já fizemos algo semelhante anteriormente, utilizando o método input, como em "Digite a sua média" ou "Digite o seu nome". Vamos aplicar o mesmo conceito para capturar o prompt do usuário. Podemos nomear a variável como prompt, que receberá a entrada do usuário com a mensagem "Digite a sua pergunta".
+
+prompt = input("Digite a sua pergunta: ")
+COPIAR CÓDIGO
+Capturando e imprimindo a pergunta do usuário
+Ao executar, o sistema solicitará que o usuário digite a pergunta, mas, inicialmente, apenas armazenará o texto na variável prompt. Podemos verificar isso imprimindo a variável, que mostrará exatamente o que foi digitado.
+
+print(prompt)
+COPIAR CÓDIGO
+No entanto, nosso objetivo é utilizar laços de repetição, como o while, para continuar o processo enquanto uma condição for verdadeira. Podemos definir um texto que encerre a interação, como a palavra "fim". Assim, enquanto o usuário não digitar "fim", o sistema continuará capturando e respondendo novas perguntas.
+
+Implementando o laço de repetição
+Vamos implementar o laço while para que, enquanto o conteúdo da variável prompt for diferente de "fim", o sistema continue a operar. Utilizamos o operador "!=" para indicar diferença.
+
+while prompt != "fim":
+COPIAR CÓDIGO
+A primeira ação dentro do laço será buscar a resposta no Gemini para o prompt recebido. Podemos reutilizar o método chat.sendMessage, mas, desta vez, a mensagem enviada será o prompt digitado pelo usuário. O resultado, ou seja, a resposta da IA Gemini, será armazenado na variável resposta.
+
+resposta = chat.send_message(prompt)
+COPIAR CÓDIGO
+Exibindo a resposta e ajustando o loop
+Próximo passo, vamos exibir na tela, fazer um print, dessa resposta, o texto dela resposta.text.
+
+print(resposta.text)
+COPIAR CÓDIGO
+Tudo certo, isso já começa a funcionar. Podemos rodar, digitar a pergunta: "O que é IA? Responda sucintamente." Ele fará a chamada para o Gemini, o que pode demorar alguns segundos. Após responder, imprime na tela, mas ainda está rodando e imprimindo. Por que continua e não para? Lembramos que, na aula sobre o loop while, ele ficará rodando infinitamente enquanto a condição não for satisfeita. No nosso caso, estamos apenas pegando o prompt, o input do usuário, que inicialmente foi "O que é IA? Responda sucintamente." Esse é o valor da variável prompt. O que ele está fazendo? Ele entra, busca a resposta, imprime, termina e volta para o começo do loop while. Qual é o valor de prompt? Ele não mudou, pois não perguntamos novamente ao usuário. Continua sendo "O que é IA? Responda sucintamente." Ele não é igual à palavra "fim", então continua sendo diferente de "fim". Isso responde à pergunta: o conteúdo dessa variável prompt é diferente de "fim"? Sim, verdadeiro. Então, continua entrando, e por isso ele entrou várias vezes, dando quatro respostas na sequência, pois o prompt ainda não tinha mudado. Esse é um grande cuidado que devemos ter com loops como o while, pois precisamos definir um ponto de término. Caso contrário, ele entrará em um loop infinito e não sairá, podendo até bloquear a conta, por exemplo. Devemos ter muito cuidado com isso.
+
+Atualizando o prompt dentro do loop
+Então, o que precisamos aqui? Depois de buscar a resposta no Gemini e imprimir essa resposta, precisamos fazer uma nova pergunta ao usuário, alterando o valor da variável prompt. Como fazemos isso? Exatamente do mesmo jeito que fizemos antes, podemos copiar e colar dentro do loop while.
+
+prompt = input("Digite a sua pergunta: ")
+while prompt != "fim":
+  resposta = chat.send_message(prompt)
+  print(resposta.text)
+  prompt = input("Digite a sua pergunta: ")
+COPIAR CÓDIGO
+Lembrando que o while está na linha principal, mais à esquerda, e todos os outros itens estão dentro do while, com a identação mais para dentro. Isso significa que estão acontecendo dentro do while. Tudo que estiver mais à direita e logo abaixo dele será executado um após o outro, e depois voltará para ele. Isso é muito importante sobre identação.
+
+Testando o chatbot e finalizando o loop
+Agora que está tudo pronto, vamos rodar novamente? Clicamos aqui, "O que é IA? Responda sucintamente." Vou copiar essa resposta, dar um "Enter". A resposta dessa pergunta: "IA é inteligência artificial." Ele respondeu e fez uma nova pergunta. O bloco continua rodando, mas finalmente fez uma nova pergunta, que antes não tinha feito, pois continuava com o mesmo prompt. Agora, vamos alterar o valor dessa variável prompt, dando uma nova pergunta, por exemplo: "Quando foi lançado o ChatGPT?" Dou um "Enter", e ele responde: "O ChatGPT foi lançado em 30 de novembro de 2022." Ele continua fazendo essas perguntas infinitamente, passando dentro desse loop while, até atingir a condição de parada que definimos como escrever a palavra "fim", tudo em minúsculo. Se escrevermos "fim", o processo termina. Aqui, parou de rodar o círculo da célula, e simplesmente imprimiu "fim" e tudo mais, não foi impresso novamente.
+
+Melhorando a apresentação das respostas
+Conseguimos fazer um chat que pega as perguntas do usuário e gera as respostas, chegando a um ponto de parada que definimos com a palavra "fim". Algo que podemos fazer para deixar mais bonito é usar um recurso que funciona em Python e na maioria das linguagens: dentro de um print, podemos colocar uma string com uma barra invertida e a letra "N". Quando fazemos isso, ele quebra a linha, pulando para a linha de baixo, facilitando a leitura. Assim, a pergunta e a resposta ficam diretas.
+
+print("\n")
+COPIAR CÓDIGO
+Se estiverem se perguntando sobre os asteriscos que aparecem, isso é uma linguagem de exibição de texto chamada Markdown. Quando colocamos dois asteriscos antes e depois, o texto fica em negrito. O texto gerado pelo Gemini já vem estilizado, com negrito, itálico e outros. Podemos configurar o prompt para não fazer isso, mas, por padrão, ele vem assim. Não se assustem, é por isso que há tantos asteriscos. Na próxima aula, continuaremos nossas aventuras com loops e IA.
+
+@@06
+Explorando estruturas de dados em Python
+
+Continuando nossa exploração em Python, Inteligência Artificial e dados, vamos aprofundar nosso conhecimento na linguagem Python, focando em aspectos importantes para o uso diário na programação. Vamos discutir algumas estruturas de dados essenciais, embora não todas, pois existem várias.
+
+Imagine uma sala de aula com cinco alunos, como em um curso de inglês. Se quisermos listar os nomes desses alunos, da forma que conhecemos até agora, precisaríamos criar variáveis como nome1, nome2, e assim por diante, atribuindo a cada uma delas uma string correspondente, como "Bruna" ou "João". Esse método não é prático, especialmente com listas grandes, como uma sala com 40 alunos ou uma lista de funcionários de uma empresa com 100 mil funcionários, ou ainda produtos de uma empresa que vende um milhão de itens. Não é ideal lidar com dados dessa forma.
+
+Introduzindo listas em Python
+Para resolver isso, existem estruturas de dados em todas as linguagens de programação. Em Python, vamos aprender algumas das mais importantes, começando pelas listas. Para definir uma lista em Python, é muito simples: basta criar uma variável, como lista_de_nomes, e atribuir a ela uma lista entre colchetes ([]).
+
+Em Python, não precisamos declarar o tipo da variável antecipadamente. Podemos simplesmente dar um nome à variável e atribuir um valor a ela. Se for um texto, colocamos entre aspas; se for um número inteiro, colocamos diretamente; se for um número decimal, também colocamos diretamente; e se for uma lista, usamos colchetes para indicar.
+
+Criando e acessando listas
+Para exemplificar, vamos pedir ajuda à inteligência artificial para gerar uma lista de cinco nomes brasileiros. Podemos solicitar uma lista em Python com cinco nomes, incluindo nome e sobrenome. A inteligência artificial nos fornecerá rapidamente essa lista, que estará entre colchetes e com os nomes separados por vírgulas. Embora a lista possa ser apresentada com um nome por linha para facilitar a leitura, neste primeiro momento, vamos mantê-los na mesma linha para simplificar o aprendizado.
+
+Temos aqui cinco nomes: o primeiro é Maria Silva, o segundo é João Santos, o terceiro é Ana Oliveira, o quarto é Pedro Costa e o quinto é Juliana Pereira. Vamos ver como isso é feito em Python:
+
+lista_de_nomes = ["Maria Silva", "João Santos", "Ana Oliveira", "Pedro Costa", "Juliana Pereira"]
+COPIAR CÓDIGO
+Já rodamos o código e isso está na memória dentro da variável lista_de_nomes. Se quisermos acessar alguns desses nomes, por exemplo, o nome da segunda pessoa na lista, podemos usar colchetes. Vamos pegar a variável lista_de_nomes e acessar o terceiro elemento, que é Ana Oliveira. Para isso, colocamos entre colchetes o número 3 e podemos imprimir o resultado.
+
+print(lista_de_nomes[3])
+COPIAR CÓDIGO
+Compreendendo a indexação em Python
+No entanto, ao imprimir o elemento número 3, o resultado foi Pedro Costa, que é o quarto elemento. Isso ocorre porque, em linguagens de programação como Python, a contagem começa no número 0. Assim, Maria é o elemento 0, João é o elemento 1, Ana é o elemento 2, Pedro é o elemento 3 e Juliana é o elemento 4. Portanto, quando pedimos para imprimir o elemento número 3, ele imprimiu Pedro Costa, que está na posição 3.
+
+Agora, queremos calcular as médias desses alunos para saber se passaram de ano. Criamos uma lista chamada lista_de_medias, onde Maria tem média 8.9, João 7.5, Ana 4.2, Pedro 1.4 e Juliana 9.5. Para acessar a média de Pedro Costa, usamos a variável lista_de_medias e o índice 3, que corresponde à posição de Pedro na lista. Ao imprimir, vemos que a média de Pedro é 1.4.
+
+lista_de_medias = [8.9, 7.5, 4.2, 1.4, 9.5]
+print(lista_de_medias[3])
+COPIAR CÓDIGO
+Propondo um desafio de manipulação de listas
+Queremos agora fazer um trabalho especial que adicionará um ponto à média de cada aluno. Para Pedro Costa, que tem 1.4, isso não fará muita diferença, pois ele chegaria a 2.4. Já Ana Oliveira, com 4.2, poderia passar para 5.2 e ser aprovada, considerando que a média para aprovação é 5. No entanto, para Juliana Pereira, que tem 9.5, somar 1 resultaria em 10.5, o que não é possível, pois a nota máxima é 10.
+
+Deixamos isso como um desafio: percorrer a lista usando um loop while e adicionar 1 a cada valor, exceto quando a soma ultrapassar 10, caso em que o valor máximo deve ser 10. A resposta para esse desafio será dada no próximo vídeo.
+
+@@07
+Resolvendo desafios de programação com o loop while
+
+Você conseguiu realizar o desafio? Vamos relembrar: o objetivo é criar um código que percorra uma lista de médias e some um a cada valor, exceto quando o valor ultrapassar 10, momento em que deve parar em 10. Esse era o desafio proposto. Se ainda não tentou, pause o vídeo e tente desenvolver o código. Se já tentou, vamos verificar se o raciocínio foi correto.
+
+Existem várias maneiras de resolver esse problema, mas vamos optar por uma abordagem mais simples, utilizando o loop while, que já conhecemos. Quando o desafio foi proposto, mencionamos que seria necessário usar o while.
+
+Definindo a lista de médias e explicando o uso do loop while
+Para começar, vamos definir a lista de médias que iremos manipular:
+
+lista_de_medias = [8.9, 7.5, 4.2, 1.4, 9.5]
+COPIAR CÓDIGO
+Temos uma lista de médias com cinco elementos, numerados de 0 a 4. Lembram-se de como fizemos anteriormente com os asteriscos? Quando aprendemos sobre o while, definimos o valor de N como um número aleatório, começando em 1 e indo até 10, enquanto fosse menor ou igual a 10. Isso foi mais para ensinar o uso do while.
+
+No dia a dia, seguimos o padrão das linguagens de programação, que é começar a contagem pelo 0, e não pelo 1. A única alteração necessária é usar a condição de menor, em vez de menor ou igual. Assim, ao chegar em 10, a comparação será "10 é menor que 10?", o que não é verdade, e o loop não será executado novamente. Antes, a condição era "10 é menor ou igual a 10?", o que era verdadeiro, permitindo mais uma execução do loop.
+
+Iniciando o loop while e somando valores
+Podemos seguir o mesmo padrão, iniciando N em 0, já que queremos praticar a iteração a partir do elemento número 0. Enquanto N for menor que o número de elementos na lista de médias, que são 5, o loop deve continuar. Isso significa que N deve ser menor que 5, pois a lista vai de 0 a 4. Assim, N menor que 5 é o padrão, facilitando o entendimento.
+
+Vamos iniciar o loop while:
+
+n = 0
+while n < 5:
+COPIAR CÓDIGO
+Vamos percorrer a lista de médias, somando 1 a cada valor. Já vimos como acessar cada valor usando colchetes para indicar a posição do elemento: posição 0, 1, 2, 3 ou 4. Queremos acessar o valor na posição N da lista de médias e somar 1 a ele. Pode ser 1.0, pois estamos lidando com float, mas usar 1 não causará problemas. O importante é somar 1.
+
+    lista_de_medias[n] = lista_de_medias[n] + 1.0
+COPIAR CÓDIGO
+Implementando a condição de parada e ajustando valores
+No entanto, se apenas somarmos, essa informação será perdida na memória. Precisamos realizar a soma, obter o resultado e armazená-lo na variável correspondente à posição N da lista de médias.
+
+Vamos pensar: N começa em 0. Ele entra no loop e verifica se 0 é menor que 5, o que é verdadeiro.
+
+A posição 0 é a da Maria Silva, que está com 8.9. Vamos entrar aqui e pegar a lista de médias na posição 0. Inicialmente, definimos N como 0, então a lista de médias na posição 0 será a da Maria Silva, que é 8.9. Vamos somar 1, resultando em 9.9, e salvar o resultado na mesma variável, sobrescrevendo o valor anterior de 8.9.
+
+Funciona, mas há um problema. Precisamos de uma condição de parada para o loop while, caso contrário, ele continuará indefinidamente. A condição de parada que utilizamos é somar mais um ao valor de N. Quando o usuário insere um texto diferente da palavra "fim", o loop para. Aqui, faremos o mesmo, usando o valor de N para percorrer a lista de valores, incrementando N no final.
+
+    n = n + 1
+COPIAR CÓDIGO
+Ajustando valores que ultrapassam 10 e finalizando o código
+Vamos imprimir a lista de médias. Os valores foram atualizados: 8.9 foi para 9.9, 7.5 para 8.5, 4.2 para 5.2, 1.4 para 2.4, e 9.5 para 10.5. Quando o valor ultrapassa 10, ele deve ser ajustado para 10. Para resolver isso, podemos adicionar uma condição if dentro do while.
+
+    if lista_de_medias[n] > 10.0:
+        lista_de_medias[n] = 10.0
+COPIAR CÓDIGO
+Se a lista de médias na posição atual for maior que 10, definimos o valor como 10.0. Vamos analisar: na posição 4, N igual a 4, que é o da Juliana, a lista de médias na posição 4 é 9.5. Somamos 1, resultando em 10.5. Se o valor for maior que 10, substituímos por 10. Continuamos somando mais um a N. Quando N for 5, o loop para, e a lista de médias é impressa.
+
+A indentação é importante. Tudo dentro do while está um pouco mais à direita. O if também tem sua própria indentação. Se colocarmos a operação de incremento dentro do if, ela só ocorrerá quando a nota for maior que 10, o que não é o desejado. Portanto, mantemos a lógica do incremento fora do if.
+
+Ao rodar o código, ele funciona corretamente: 9.9, 8.5, 5.2, 2.4 e 10. Vamos continuar explorando a lógica do Python.
+
+print(lista_de_medias)
+COPIAR CÓDIGO
+Apresentando o código completo
+Aqui está o código completo:
+
+lista_de_medias = [8.9, 7.5, 4.2, 1.4, 9.5]
+
+n = 0
+while n < 5:
+    lista_de_medias[n] = lista_de_medias[n] + 1.0
+    if lista_de_medias[n] > 10.0:
+        lista_de_medias[n] = 10.0
+    n = n + 1
+
+print(lista_de_medias)
+COPIAR CÓDIGO
+Esse código percorre a lista de médias, soma 1 a cada valor e ajusta qualquer valor que ultrapasse 10 para exatamente 10.
+
+@@08
+Explorando o uso da função len
+
+Agora que já começamos a explorar mais as estruturas de dados, como as listas, vamos aprofundar nosso conhecimento sobre elas. Há muito a aprender sobre listas, e uma das coisas importantes é que, por exemplo, na lista de médias que vimos, já sabíamos de antemão quantos elementos havia nela. São cinco elementos no total, do elemento zero até o elemento quatro. No entanto, se fosse uma lista muito grande e não soubéssemos seu tamanho, isso poderia ser um problema. Não é o caso aqui, pois colocamos o número 5 porque sabíamos exatamente quantos elementos havia. Se não soubéssemos, ainda assim não seria um problema, pois existe uma função em Python, não específica para listas, que nos dá essa informação automaticamente. Essa função é o len, que vem da palavra inglesa length (comprimento), mas aqui é abreviada para len, facilitando o uso.
+
+Vamos supor que não soubéssemos quantos elementos há na lista. Poderíamos simplesmente chamar a função len e, como não é um método, passar a variável lista_de_medias dentro dos parênteses. Sabemos que ela é uma lista, e ao rodar o código, ele nos daria o resultado 5. Podemos fazer isso dentro de um print, que mostrará o resultado. Assim, o jeito mais seguro de fazer o mesmo código que fizemos anteriormente, quando não sabemos o tamanho da lista que estamos analisando, seria substituir o valor 5, que está "hard coded" (codificado de forma fixa), pelo resultado do len dessa lista. Ao rodar o código, ele funcionaria da mesma maneira, pois o resultado do len também é 5. Essa é uma maneira mais elegante de fazer isso.
+
+len(lista_de_medias)
+COPIAR CÓDIGO
+Acessando elementos de listas
+Outras coisas que podemos ver sobre listas incluem a possibilidade de percorrê-las ao contrário. Podemos, por exemplo, pegar o último elemento da lista. Se o primeiro elemento é o elemento zero, o último elemento pode ser acessado de duas maneiras. Uma delas é pegar o len da lista e subtrair um. Vamos imprimir a lista_de_medias, pegar o elemento na posição zero, que sabemos ser o primeiro, e o elemento na última posição. Se soubermos que a lista tem cinco elementos, do zero ao quatro, poderíamos simplesmente usar o valor 4. Se não soubéssemos o tamanho da lista, poderíamos usar o len menos um. Isso funcionaria sem problemas, pois len é 5, menos um é igual a quatro, que é o elemento na posição número quatro.
+
+lista_de_medias = [8.9, 7.5, 4.2, 1.4, 9.5]
+print(lista_de_medias)
+lista_de_medias[0]
+lista_de_medias[4]
+lista_de_medias[len(lista_de_medias) - 1]
+COPIAR CÓDIGO
+Há um jeito ainda melhor de pegar o último elemento da lista: usar índices negativos. Se o zero é o primeiro elemento, o último elemento é o menos um. Assim, ao buscar o elemento menos um, ele retornará o último elemento da lista. Para pegar o penúltimo elemento, usamos menos dois, e assim por diante. Essa é uma maneira interessante de lidar com as posições dos elementos dentro de uma lista.
+
+lista_de_medias[-1]
+lista_de_medias[-2]
+COPIAR CÓDIGO
+Particionando listas
+Outra coisa que podemos fazer é particionar a lista, pegando partes dela. Para isso, usamos os dois pontos. Vamos pegar a lista de nomes agora. Já exploramos bastante a lista de médias, então vamos voltar à lista de nomes. Podemos imprimir ou simplesmente rodar o código para mostrar os elementos: Maria, João, Ana, Pedro e Juliana. Se quisermos pegar apenas do elemento 1, que é João, até o elemento 3, que é Pedro, fazemos isso usando colchetes. Começamos no elemento 1, colocamos dois pontos e indicamos até onde queremos ir. Se fizermos de 1 até 3, ele retornará João e Ana, mas não incluirá Pedro. Isso ocorre porque o último valor é excludente. Para incluir Pedro, precisamos ir até 4.
+
+lista_de_nomes = ["Maria Silva", "João Santos", "Ana Oliveira", "Pedro Costa", "Juliana Pereira"]
+lista_de_nomes[1:3]
+lista_de_nomes[1:4]
+COPIAR CÓDIGO
+Podemos também pegar do elemento 1 até o final da lista sem precisar saber o tamanho dela. Basta usar dois pontos após o índice inicial. Isso fará com que ele comece na posição 1 e vá até o final da lista. Da mesma forma, podemos pegar do início da lista até uma posição específica, como antes da posição 3. Para isso, usamos dois pontos seguidos do índice final. Podemos omitir o zero, pois ele é assumido automaticamente.
+
+lista_de_nomes[1:]
+lista_de_nomes[:4]
+COPIAR CÓDIGO
+Adicionando elementos a listas
+Agora que sabemos manipular e percorrer listas, podemos também adicionar ou remover elementos. Se quisermos adicionar um novo valor à lista, podemos usar o método append, que adiciona um elemento ao final da lista. Por exemplo, se um novo aluno entrar na sala, podemos usar lista_de_nomes.append("Novo Aluno") para adicioná-lo à lista.
+
+lista_de_nomes.append("Fábio Carraro")
+print(lista_de_nomes)
+len(lista_de_nomes)
+COPIAR CÓDIGO
+Podemos realizar diversas operações com listas, pois sabemos que a variável lista_de_nomes contém uma lista. Podemos usar o método append() para adicionar um novo nome, como "Fábio Carrara". Ao rodar a célula e imprimir novamente a lista, veremos que o append adicionou mais uma pessoa ao final da lista. Se utilizarmos a função len() nessa nova lista, veremos que agora há seis pessoas.
+
+Usando append e extend para adicionar múltiplos elementos
+Podemos também adicionar mais de uma pessoa. Vamos tentar com o append. Se já temos seis pessoas na lista, vamos adicionar "Joana da Silva" e "Paulo Silveira", nosso fundador. Ao tentar adicionar essas duas pessoas, ocorre um erro, pois o método append recebe exatamente um argumento, e dois foram dados. O append serve para incluir uma pessoa de cada vez. Para incluir duas ou mais pessoas, temos algumas opções. Uma delas é usar um while, adicionando com vários append para cada nome, percorrendo a lista enquanto não terminar. No entanto, há uma maneira mais fácil: o método extend.
+
+# Isso causará um erro
+# lista_de_nomes.append("Joana da Silva", "Paulo Silveira")
+COPIAR CÓDIGO
+O extend permite adicionar uma lista a outra lista. Em vez de append, usamos extend e passamos os nomes "Joana da Silva" e "Paulo Silveira". Ao rodar, ocorre um erro, pois o extend também recebe apenas um argumento. Isso acontece porque o que passamos não é uma lista, mas dois elementos separados. Para transformar em lista, colocamos colchetes antes de "Joana" e depois de "Paulo Silveira". Ao rodar novamente e exibir a lista de nomes, vemos que "Joana da Silva" e "Paulo Silveira" foram adicionados corretamente ao final da lista.
+
+lista_de_nomes.extend(["Joana da Silva", "Paulo Silveira"])
+print(lista_de_nomes)
+COPIAR CÓDIGO
+O extend é semelhante ao append, mas quando temos duas listas diferentes, ele adiciona todos os elementos da nova lista ao final da lista original. Podemos nos perguntar se não conseguiríamos fazer o mesmo com append, transformando em lista. Vamos tentar: copiamos o código, transformamos em lista, e trocamos os nomes para "Márcio Costa" e "Natália Pedreira". Ao rodar, vemos que o append adicionou uma lista de nomes como um único elemento, enquanto o extend adiciona cada nome individualmente.
+
+lista_de_nomes.append(["Márcio Costa", "Natália Pedreira"])
+print(lista_de_nomes)
+COPIAR CÓDIGO
+Removendo elementos de listas
+Se quisermos acessar elementos específicos, podemos usar colchetes. Por exemplo, se o elemento na posição 8 é uma lista, podemos acessar o primeiro nome com lista[8][0], que retornará "Márcio Costa". No entanto, no nosso caso, o mais correto seria usar extend para adicionar "Joana" e "Paulo Silveira" ao final da lista, sem criar uma lista dentro de outra.
+
+lista_de_nomes[8]
+lista_de_nomes[8][0]
+COPIAR CÓDIGO
+Além de adicionar, podemos remover elementos de uma lista. Se "Paulo Silveira" quiser sair, usamos o método remove(), que remove a primeira ocorrência do valor especificado. Se quisermos remover um elemento pela posição, usamos o método pop(). Por padrão, pop() remove o último elemento, mas podemos especificar uma posição, como lista.pop(2), para remover o elemento na posição 2.
+
+lista_de_nomes.remove("Paulo Silveira")
+print(lista_de_nomes)
+lista_de_nomes.pop()
+print(lista_de_nomes)
+lista_de_nomes.pop(2)
+print(lista_de_nomes)
+COPIAR CÓDIGO
+Concluindo a exploração de listas
+Agora sabemos como adicionar, contar, remover e percorrer partes de uma lista. Nas próximas aulas, continuaremos explorando as estruturas do Python.
+
+@@09
+Explorando a necessidade de uma nova estrutura de dados
+
+Continuando, mencionamos que iríamos explorar outra estrutura de dados amplamente utilizada. Primeiramente, vamos discutir por que precisamos de outra estrutura. Será que a lista não seria suficiente para todas as situações? Observamos que tínhamos listas de nomes e também listas de médias. No nosso caso, precisávamos identificar, por exemplo, que a nota da Maria, que está na posição 0, corresponde à nota na posição 0 da lista de médias.
+
+Na posição 1, o nome "João", que está na posição 1 da lista de nomes, também estará na posição 1 da lista de médias. Precisamos ter duas listas separadas e algo que as conecte. Por exemplo, ao manipularmos as listas, adicionamos nomes com append, extend e outras operações. Precisamos lembrar que, ao usar append ou extend na lista de nomes, devemos fazer o mesmo na lista de médias. Caso contrário, uma pessoa pode ficar sem nota, o que gera complicações.
+
+Introduzindo a estrutura de dados dicionário
+Existe uma estrutura de dados que facilita esse processo: o dicionário. Um dicionário é uma estrutura que, assim como um dicionário de palavras, possui uma chave (a palavra que buscamos) e um valor (o significado). Nos dicionários, a chave é sempre um valor textual, uma string, enquanto o valor pode ser qualquer coisa, como um número, texto ou lista. A chave é o que buscamos, e o valor é o significado ou número associado a ela, como a média.
+
+Para converter as listas de nomes e médias em um dicionário, podemos criar um dict de nomes e médias. Vamos começar definindo nossas listas:
+
+lista_de_nomes = ["Maria Silva", "João Santos", "Ana Oliveira", "Pedro Costa", "Juliana Pereira"]
+lista_de_medias = [8.9, 7.5, 4.2, 1.4, 9.5]
+Criando e manipulando dicionários em Python
+Agora, vamos criar o dicionário que associa cada nome à sua respectiva média. Inicialmente, podemos começar com um dicionário vazio e depois preenchê-lo:
+
+dict_de_nomes_e_media = {}
+Em seguida, podemos preencher o dicionário com os pares de chave e valor:
+
+dict_de_nomes_e_media = {
+    "Maria Silva": 8.9,
+    "João Santos": 7.5,
+    "Ana Oliveira": 4.2,
+    "Pedro Costa": 1.4,
+    "Juliana Pereira": 9.5
+}
+Nos dicionários, usamos chaves ao invés de colchetes, que são usados em listas. Assim, o Python identifica que se trata de um dicionário. No nosso caso, a chave será "Maria Silva" e o valor da média dela será 8.9. O segundo elemento será "João Santos", com a média de 7.5. Podemos usar a função de autocompletar para facilitar a criação do dicionário.
+
+Acessando e manipulando dados em dicionários
+Para acessar os valores no dicionário, usamos colchetes. Por exemplo, para acessar a média de "Maria Silva", usamos:
+
+dict_de_nomes_e_media["Maria Silva"]
+Isso retornará 8.9. Diferente das listas, onde usamos posições, nos dicionários usamos a chave, que é sempre uma string.
+
+Além disso, podemos usar métodos como get, que retorna o valor de uma chave se ela estiver no dicionário. Podemos buscar o valor correspondente a uma chave usando colchetes ou o método get:
+
+dict_de_nomes_e_media.get("Maria Silva")
+Outro método é o pop, que remove um elemento do dicionário. Diferente das listas, onde pop remove o último elemento, nos dicionários precisamos especificar a chave a ser removida:
+
+dict_de_nomes_e_media.pop("Juliana Pereira")
+Explorando métodos úteis de dicionários
+Outros métodos úteis são items, que retorna todos os elementos do dicionário, keys, que retorna todas as chaves, e values, que retorna todos os valores:
+
+dict_de_nomes_e_media.items()
+dict_de_nomes_e_media.keys()
+dict_de_nomes_e_media.values()
+Os dicionários são amplamente usados em Python e podemos combiná-los com listas. Por exemplo, podemos ter uma chave "nome" com o valor "Maria Silva" e uma chave "média" com o valor 8.9. Isso fica como desafio para resolvermos na próxima aula.
+
+@@10
+Propondo o desafio de unir dicionários
+
+Conseguimos resolver o desafio de como unir os dicionários, fazendo com que o nome seja a chave e o valor dessa chave seja, por exemplo, "Maria Silva", seguido pela média e demais informações para todos os alunos?
+
+O desafio proposto é utilizar dicionários de forma que as chaves sejam "nome" e "nota" (ou "média", no nosso caso), e os valores sejam os nomes e médias dos alunos. Como faríamos isso?
+
+Iniciando a resolução do desafio
+Se não tentamos no último vídeo, vamos pausar agora e tentar novamente. Vamos começar a resolver isso agora.
+
+Já vimos que não faz muito sentido tentar acessar um valor específico de forma direta, como ocorreu anteriormente quando tentamos usar o índice zero de Maria Silva para pegar a primeira posição. Vamos criar um dicionário chamado dict_desafio. Como é um dicionário, teremos chaves, mas se fizermos isso de forma direta, não funcionaria, pois já mostramos que não funciona. A chave é algo que será buscado. Para resolver esse desafio, precisamos unir duas estruturas de dados que aprendemos até agora: listas e chaves.
+
+Criando a estrutura de dados
+Primeiro, vamos iniciar nosso dicionário vazio:
+
+dict_desafio = {}
+COPIAR CÓDIGO
+Agora, vamos criar uma lista que englobará os nomes e médias dos alunos. Dentro dessa lista, o primeiro elemento será um dicionário com a primeira chave sendo nome e o valor "Maria Silva". O outro elemento desse dicionário será média, com o valor 8.9. Esse é o primeiro elemento da nossa lista, que não é uma string, número ou float, mas sim um dicionário. Podemos manipular essas estruturas como se fossem peças de lego. Agora temos uma lista de dicionários.
+
+dict_desafio = [
+    {"nome": "Maria Silva", "média": 8.9}
+]
+COPIAR CÓDIGO
+Adicionando mais elementos à lista
+Para o segundo elemento, devemos separar com uma vírgula e começar o segundo elemento. Podemos usar a sugestão da inteligência artificial, que já entendeu o que queremos fazer. Agora temos o melhor dos dois mundos: uma lista de dicionários, onde a chave é nome e o valor é "Maria Silva", e a chave é média e o valor é 8.9.
+
+dict_desafio = [
+    {"nome": "Maria Silva", "média": 8.9},
+    {"nome": "João Santos", "média": 7.5},
+    {"nome": "Ana Oliveira", "média": 4.2},
+    {"nome": "Pedro Costa", "média": 1.4}
+]
+COPIAR CÓDIGO
+Acessando elementos da lista de dicionários
+Vamos executar esse código para gravar na memória. Quando quisermos acessar o primeiro elemento dessa lista, como é uma lista, podemos usar índices numéricos. O elemento 0, que é o primeiro elemento, retornará um dicionário com chave nome e valor "Maria Silva", e chave média e valor 8.9.
+
+dict_desafio[0]
+COPIAR CÓDIGO
+Se quisermos pegar apenas a média dessa pessoa, podemos continuar encadeando buscas. Como é um dicionário, só conseguimos buscar por chaves, não por valores. Queremos a chave chamada média. Então, na lista de dicionários, pegamos o primeiro elemento, que é um dicionário, e retornamos o valor correspondente à chave média, que é 8.9.
+
+dict_desafio[0]["média"]
+COPIAR CÓDIGO
+Concluindo o desafio e sugestões de estudo
+Podemos fazer isso de maneira separada para ficar mais claro o passo a passo. O índice 0 retorna o primeiro elemento, e 0 entre colchetes seguido de média entre colchetes retorna o valor correspondente à chave média desse dicionário. Lembrando que dicionários podem ter quantos pares chave-valor quisermos. Neste caso, as chaves são nome e média, e os valores são o nome e a média da pessoa correspondente. Conseguimos criar uma lista de dicionários, o que torna tudo mais organizado, fácil de ler, acessar e integrar no código.
+
+Se você conseguiu resolver o desafio, parabéns! Se não conseguiu, recomendo revisar o conteúdo. Caso tenha dúvidas, use a inteligência artificial para ajudar a entender melhor. Por exemplo, copie e cole o dicionário no Gemini, ChatGPT ou Maritaca AI e peça uma explicação como se tivesse 5 anos de idade. Isso pode ajudar a entender de forma mais simples. A IA pode explicar usando analogias, como uma lista de brinquedos onde cada brinquedo é uma caixinha com um adesivo com o nome de uma pessoa e um papelzinho com a média da nota dela.
+
+Essa interação com inteligências artificiais pode ajudar a esclarecer dúvidas durante este e outros cursos da Alura. Até mais e até a próxima aula.
+
+@@11
+Ajustando preços de produtos na TRATOTECH
+
+A TRATOTECH, uma plataforma de classificados focada em produtos tecnológicos, está implementando um sistema para ajustar automaticamente os preços dos produtos listados. A ideia é que, ao final de cada mês, todos os preços dos produtos sejam aumentados em 5%, exceto aqueles que já atingiram ou ultrapassaram o valor de R$ 10.000,00, que devem ser mantidos nesse valor máximo. A equipe de desenvolvimento que você faz parte precisa garantir que o sistema funcione corretamente, ajustando os preços conforme a regra estabelecida.
+Qual abordagem garantiria que os preços sejam ajustados corretamente?
+
+Selecione uma alternativa
+
+Criar uma função que aplique um aumento de 5% a todos os produtos, independentemente do preço atual, e depois verificar se algum produto ultrapassou R$ 10.000,00, ajustando-os para esse valor. Além disso, implementar um sistema de logs para registrar cada ajuste feito, permitindo auditoria e controle sobre as alterações de preços realizadas.
+ 
+Alternativa incorreta
+Utilizar uma estrutura condicional que apenas aumente os preços dos produtos que já estão acima de R$ 10.000,00 em 5%, mantendo os demais inalterados. Adicionalmente, incluir um relatório mensal que liste todos os produtos que tiveram seus preços ajustados, destacando aqueles que permaneceram inalterados devido ao limite de preço.
+ 
+Alternativa incorreta
+Implementar um loop que percorra a lista de produtos e, para cada produto, verificar o preço atual. Se já for maior ou igual a R$ 10.000,00, mantê-lo nesse valor. Caso contrário, aumentar o preço em 5% e, se após o reajuste ultrapassar R$ 10.000,00, ajustá-lo para exatamente R$ 10.000,00. A condição de parada do loop será quando todos os produtos tiverem seus preços ajustados.
+ 
+Correta, pois essa abordagem garante que cada produto seja avaliado individualmente e ajustado conforme a regra, sem ultrapassar o valor máximo estipulado.
+Alternativa incorreta
+Aplicar um aumento de 5% a todos os produtos e, em seguida, aplicar um desconto de 5% aos produtos que ultrapassaram R$ 10.000,00 para ajustá-los ao valor correto. Além disso, desenvolver um mecanismo de notificação que informe os vendedores sobre as alterações de preços, garantindo transparência no processo de ajuste.
+
+@@12
+Para saber mais: índices negativos em listas
+
+Conceito de Índice Negativo
+Em Python, os índices negativos são uma funcionalidade que permite acessar elementos a partir do final de uma lista. Em vez de calcular manualmente a posição usando o comprimento da lista (por exemplo, len(lista) - 1 para o último elemento), você pode simplesmente usar -1. Essa abordagem torna o código mais legível e reduz a chance de erros de cálculo.
+
+Funcionamento da Indexação Negativa
+Quando você usa um índice negativo, Python começa a contar a partir do final. Assim, o índice -1 corresponde ao último elemento, -2 ao penúltimo, e assim por diante. Essa contagem inversa é útil para acessar elementos sem precisar saber o tamanho exato da lista. Por exemplo:
+
+nomes = ['Maria', 'João', 'Ana', 'Pedro', 'Juliana']
+
+print(nomes[-1])  # Exibe 'Juliana'
+print(nomes[-2])  # Exibe 'Pedro'
+COPIAR CÓDIGO
+Nesse exemplo, o uso de índices negativos simplifica a obtenção dos elementos finais da lista sem precisar usar a função len().
+
+Vantagens e Cuidados
+Utilizar índices negativos melhora a clareza do código, especialmente quando o foco está em acessar elementos do fim da lista. Essa abordagem evita o 'hardcoding' de valores numéricos que dependem do tamanho da lista.
+
+Por outro lado, é importante ter atenção para não ultrapassar a contagem da lista. Por exemplo, em uma lista de 5 elementos, tentar acessar o índice -6 resultará em um IndexError. Além disso, o uso excessivo de índices negativos pode, em alguns casos, dificultar a leitura se não for utilizado de forma consistente com o restante do código.
+
+Aplicações Práticas
+Os índices negativos são especialmente úteis em situações onde a lista pode ter um tamanho variável ou quando se deseja trabalhar com os últimos elementos de coleções de dados. Em operações de slicing, a combinação de índices positivos e negativos permite selecionar sublistas de maneira dinâmica, tornando o código mais flexível e robusto.
+
+# Exemplo de slicing com índice negativo
+ultimos_tres = nomes[-3:]
+print(ultimos_tres)  # Exibe ['Ana', 'Pedro', 'Juliana']
+COPIAR CÓDIGO
+Essa funcionalidade mostra como a indexação negativa é poderosa para manipulações de dados em Python, proporcionando simplicidade sem abrir mão do controle dos elementos em uma lista.
+
+@@13
+Faça como eu fiz: API e Dados em Python
+
+Nesta aula, aprendemos a conectar uma IA no Google Colab, configurar a API Key do Gemini, realizar requisições e manipular dados utilizando estruturas de repetição, listas e dicionários em Python.
+Agora é a sua chance de revisar e aplicar os conteúdos desta aula. Para isso:
+
+Abra um notebook no Google Colab e insira um título em Markdown
+Insira comentários para organizar o código
+Configure a conexão com a API do Gemini
+Obtenha a API Key por meio do Google AI Studio
+Copie a API Key e adicione-a ao cofre de Secrets do Colab
+Configure a variável de ambiente usando o módulo os
+Importe o SDK do Google Gen AI para facilitar a conexão
+Crie uma instância do cliente utilizando Gen AI client
+Utilize o método generateContent com o modelo "Gemini-2.5-Flash"
+Envie uma requisição com um prompt de exemplo, como "o que é a inteligência artificial?"
+Armazene e exiba a resposta obtida da API
+Implemente um loop while para demonstrar a repetição de ações (ex.: imprimir asteriscos)
+Utilize a variável de controle e incremente-a para evitar loops infinitos
+Receba entrada do usuário por meio da função input
+Crie um chat interativo usando client.chats.create e sendMessage
+Armazene e exiba o histórico das interações com chat.getHistory
+Crie listas para armazenar nomes e médias de alunos
+Acesse, modifique e percorra elementos das listas utilizando índices e slices
+Aplique uma operação de incremento nas notas e limite o valor máximo a 10
+Construa dicionários unindo chaves e valores para representar nome e média dos alunos
+Para acessar o guia detalhado, consulte as transcrições da aula.
+
+@@14
+O que aprendemos?
+
+Nesta aula, aprendemos:
+Compreendemos o uso e autenticação de APIs de IA no Google Colab.
+Exploramos loops while e sua aplicação para evitar loops infinitos.
+Implementamos um chatbot interativo utilizando o modelo Gemini.
+Manipulamos listas, aprendendo a acessar, modificar e adicionar elementos.
+Utilizamos dicionários para armazenar e acessar pares de chave-valor.
+Estudamos métodos para manipulação de listas e dicionários, como append(), pop(), .items() e .get().
+Criamos estruturas de dados complexas com listas de dicionários.
+Compreendemos o acesso e manipulação de dados em estruturas aninhadas.
