@@ -1161,3 +1161,448 @@ Utilizamos dicionários para armazenar e acessar pares de chave-valor.
 Estudamos métodos para manipulação de listas e dicionários, como append(), pop(), .items() e .get().
 Criamos estruturas de dados complexas com listas de dicionários.
 Compreendemos o acesso e manipulação de dados em estruturas aninhadas.
+
+#21/01/2026
+
+@03-Entrada e conversão de dados
+
+@@01
+Projeto da aula anterior
+
+Caso queira revisar o código até aqui ou começar a partir desse ponto, disponibilizamos os códigos realizados na aula anterior, para visualizar clique neste link.
+
+https://colab.research.google.com/drive/177ODspQ7QNJjHsRkhaqTyL8g2_sUNSba#scrollTo=J4awocILwTwU
+
+@@02
+Explorando o loop `for` em Python
+
+Agora que já vimos algumas das estruturas, como listas e dicionários, e também como utilizar o loop while, vamos explorar outra estrutura de repetição, que é o loop for. Este é um dos mais utilizados na linguagem Python e em outras linguagens de programação. O for funciona de maneira um pouco diferente do while. No while, definimos um ponto inicial, por exemplo, começando com n = 0, e continuamos enquanto uma condição for verdadeira. No caso, enquanto o número dentro da variável n for menor do que o tamanho da lista de médias. Enquanto essa condição for verdadeira, o loop continua.
+
+Para ilustrar, vamos criar uma lista de dicionários chamada dict_desafio que contém nomes e médias:
+
+dict_desafio = [
+    {"nome": "Maria Silva", "média": 8.9},
+    {"nome": "João Santos", "média": 7.5},
+    {"nome": "Ana Oliveira", "média": 4.2},
+    {"nome": "Pedro Costa", "média": 1.4}
+]
+COPIAR CÓDIGO
+Comparando while e for para percorrer listas
+O for é diferente porque especificamos quantas vezes ele vai repetir ou iterar sobre uma lista. Ele é amplamente utilizado com as estruturas de dados que acabamos de discutir. Vamos tentar imprimir todos os itens de um dicionário de desafio na tela, um por um, usando print. Lembrando que criamos a variável dict_desafio, que é uma lista de dicionários. Podemos percorrê-la um por um. Já sabemos como fazer isso com o while. Vamos relembrar?
+
+Podemos definir uma variável n = 0. Enquanto o valor de n for menor do que, por exemplo, o len da lista, podemos usar diretamente o número 4, mas é mais elegante usar len porque ele pode variar. Enquanto n for menor do que o tamanho de dict_desafio, imprimimos o valor de dict_desafio na posição n. Quando n for igual a 0, ele verifica se 0 é menor do que 4, e imprime o valor na posição 0. Para evitar um loop infinito, incrementamos n em 1. Assim, n passa de 0 para 1, depois 2, 3, e finalmente 4, quando a condição se torna falsa e o loop para.
+
+n = 0
+while n < len(dict_desafio):
+    print(dict_desafio[n])
+    n += 1
+COPIAR CÓDIGO
+Além disso, ao adicionar um valor a ele mesmo, podemos usar a notação n += 1 em vez de n = n + 1. Isso funciona da mesma maneira, somando 1 a n e atribuindo o resultado de volta a n. Essa notação é comum na programação e pode ser usada para outras operações, como subtração ou multiplicação.
+
+Simplificando com o loop for
+Para fazer a mesma interação com o for, é ainda mais simples. Não precisamos definir n = 0 ou usar len. Basta declarar uma variável temporária, que será usada dentro do for. Podemos chamá-la de elemento. Para cada elemento dentro de dict_desafio, imprimimos um por um os elementos.
+
+for elemento in dict_desafio:
+    print(elemento)
+COPIAR CÓDIGO
+Utilizando o for e o range no Python
+Vamos começar discutindo como podemos simplificar o código utilizando o for. Ao invés de escrever quatro linhas, conseguimos fazer o mesmo em apenas duas. A única diferença é a variável elemento, que é criada no momento da execução, apenas para ser utilizada dentro do loop. Poderíamos nomeá-la de qualquer forma. Para cada n dentro de dict_desafio, imprimimos o valor desse elemento n. Isso é uma variável temporária que existe apenas durante o processamento do loop for.
+
+No nosso exemplo, temos uma lista de quatro dicionários com nomes e médias. O loop imprime cada um deles sequencialmente. Se quisermos apenas listar números de 0 a 5, com o while, faríamos algo como declarar n = 0 e, enquanto n for menor que 5, executaríamos uma ação. Com o for, podemos gerar uma sequência de números de forma mais fácil. Utilizamos for n in range, especificando quantos números queremos. A função range cria uma faixa de elementos, similar às partições de listas que vimos anteriormente.
+
+for n in range(5):
+    print(n)
+COPIAR CÓDIGO
+Se não especificarmos um valor inicial, o range começa do 0 até o número especificado, não incluindo o último número. Por exemplo, range(5) gera os números de 0 a 4. Podemos também especificar um valor inicial diferente de 0, como range(2, 7), que gera os números de 2 a 6. Além disso, podemos definir um passo, como range(2, 7, 2), que gera os números 2, 4 e 6, pulando de 2 em 2.
+
+for n in range(2, 7, 2):
+    print(n)
+COPIAR CÓDIGO
+Trabalhando com dicionários
+Vamos criar um dicionário chamado pessoa, que contém dados de uma pessoa. Um dicionário é composto por pares de chave e valor, onde o valor pode ser de qualquer tipo, como um número inteiro, decimal, texto ou lista. No nosso exemplo, pessoa terá um nome, idade e altura. Podemos imprimir esses dados facilmente.
+
+pessoa = {
+    "nome": "Fabricio",
+    "idade": 19,
+    "altura": 1.87
+}
+COPIAR CÓDIGO
+Para percorrer o dicionário e retornar seus dados, podemos usar o for. Podemos iterar sobre as chaves ou sobre os pares de chave e valor. Usando for chave, valor in pessoa.items(), conseguimos acessar tanto as chaves quanto os valores. Utilizando f-strings, podemos formatar a saída de forma clara, imprimindo a chave e o valor correspondente.
+
+for chave, valor in pessoa.items():
+    print(f"A chave é {chave} e o valor é {valor}.")
+COPIAR CÓDIGO
+Explorando a operação de resto
+Por fim, vamos explorar a operação de resto, que é bastante utilizada em programação. Para cada número n em range(0, 11), queremos imprimir apenas os números pares. Um número é par se o resto da divisão por 2 é zero. Utilizamos o operador % para obter o resto da divisão. Se n % 2 == 0, imprimimos n.
+
+for n in range(11):
+    if n % 2 == 0:
+        print(n)
+COPIAR CÓDIGO
+Podemos também modificar o divisor para obter diferentes padrões. Por exemplo, n % 3 == 0 imprime os múltiplos de 3. Essa operação é comum em programação e será útil em diversas situações.
+
+Essa foi a aula sobre o uso do for e loops no Python. Continuaremos avançando em direção ao nosso objetivo e desafio nas próximas aulas. Até mais!
+
+@@03
+Conceito de funções em Python
+
+Vamos continuar explorando a linguagem Python. Hoje teremos uma das aulas mais importantes deste curso, pois aprenderemos sobre funções. Este é um conceito que qualquer pessoa desenvolvedora, cientista de dados ou engenheira de IA utilizará diariamente em suas atividades de programação.
+
+Uma função é, basicamente, uma forma de encapsular um algoritmo ou um procedimento específico dentro de um bloco de código. Posteriormente, podemos passar novos dados para esse bloco, e ele executará a mesma operação de forma consistente.
+
+Revisando operações com strings
+Vamos retomar o exemplo inicial que demos com as strings. Utilizamos um nome fictício e aplicamos várias operações, como os métodos lower para deixar tudo em minúsculo, upper para deixar tudo em maiúsculo, strip para remover os espaços do começo e do final, e replace para substituir algo, como dois espaços por um espaço apenas. Conectamos tudo, começando com strip, depois upper, seguido de replace, e no final conseguimos imprimir o nome da maneira desejada no desafio.
+
+Agora, vamos criar cinco variáveis (texto_2, texto_3, etc.), onde cada uma é uma string com um nome completo de uma pessoa, mas escrito de forma desordenada, misturando maiúsculas e minúsculas, com espaços a mais no começo, no final e no meio. Isso é comum em tabelas de Excel, onde os nomes podem estar em diferentes formatos. Já aprendemos a padronizar isso usando métodos como upper e strip. No entanto, fazer isso manualmente para cada texto não é prático. É para isso que existem as funções, que englobam uma ação ou algoritmo que queremos aplicar a vários elementos.
+
+Criando a função escreve_texto_corretamente
+Para criar uma função em Python, começamos com def, seguido do nome da função, que deve ser em minúsculas e, se necessário, separado por underline. Vamos chamar a função de escreve_texto_corretamente. Dentro dos parênteses, definimos o que a função vai receber. Por exemplo, o método range recebe um número como parâmetro. Da mesma forma, nossa função receberá um texto.
+
+Vamos começar definindo a função:
+
+def escreve_texto_corretamente(texto):
+COPIAR CÓDIGO
+Após definir a função, aplicamos os métodos strip, upper e replace ao texto. Para alterar o valor original da variável, atribuímos o resultado a ela ou imprimimos diretamente. Podemos também criar uma nova variável, como texto_novo, e imprimir o resultado.
+
+    texto_novo = ' '.join(texto.strip().upper().split())
+    print(texto_novo)
+COPIAR CÓDIGO
+Executando a função com exemplos práticos
+Para rodar a função, usamos o nome definido com def, passando um argumento, como texto_1. A função busca na memória, aplica os métodos strip, upper e replace, e imprime o resultado.
+
+texto1 = "  joÃO   sILVA de   Souza  "
+escreve_texto_corretamente(texto1)
+COPIAR CÓDIGO
+Se quisermos que a função substitua qualquer número de espaços, podemos usar o método split, que separa uma string em uma lista de palavras, eliminando espaços extras. Para juntar as palavras novamente, usamos o método join, que requer um separador, como um espaço único.
+
+Por exemplo, aplicamos split ao texto, que cria uma lista de palavras. Em seguida, usamos join para unir as palavras com um espaço entre elas, armazenando o resultado em uma variável como nome_final, e imprimimos o resultado.
+
+Ao rodar a função, obtemos o texto formatado corretamente, sem espaços extras e com todas as letras em maiúsculo. Podemos aplicar o mesmo processo a outros textos, como texto_3, e obter resultados consistentes.
+
+texto2 = "mArIA   aNA   sAntoS   pereIRA"
+texto3 = "  PeDRO   alvaRes   cabrAl "
+texto4 = "  anA   caroLINa   ferreirA"
+texto5 = "rObertO   carlOS   OliVeIRa"
+
+escreve_texto_corretamente(texto2)
+escreve_texto_corretamente(texto3)
+escreve_texto_corretamente(texto4)
+escreve_texto_corretamente(texto5)
+COPIAR CÓDIGO
+Explorando possibilidades futuras com funções
+Existem outros modos de trabalhar com funções, que podem ser mais úteis no dia a dia do que simplesmente imprimir o resultado. Exploraremos isso em breve.
+
+@@04
+Iniciando a simplificação da função
+
+Iniciando esta aula, lembramos que comentamos anteriormente sobre a possibilidade de escrever uma função de maneira mais simples e curta, sem utilizar tantas variáveis. Vamos tentar fazer isso juntos agora no início, para simplificar. Vamos manter a função como está, mas copiar uma nova versão dela abaixo.
+
+O nome final era o resultado do join, utilizando o espaço da nossa lista de palavras. A lista de palavras era obtida através de um texto_novo.split(). O texto_novo era um texto.upper(). Se juntarmos tudo isso em uma única operação, podemos fazer um texto.upper().split() e aplicar diretamente, eliminando a linha intermediária. Podemos colocar tudo isso como argumento do join. Podemos deixar o resultado em uma variável nome_final e retornar essa variável, ou podemos inserir tudo diretamente no print.
+
+Apresentando a versão original e simplificada da função
+Para ilustrar, vamos começar com a versão original da função:
+
+def escreve_texto_corretamente(texto):
+    texto_novo = texto.upper()
+    lista_de_palavras = texto_novo.split()
+    nome_final = " ".join(lista_de_palavras)
+    print(nome_final)
+COPIAR CÓDIGO
+Agora, vamos simplificar essa função, eliminando as variáveis intermediárias:
+
+def escreve_texto_corretamente(texto):
+    nome_final = " ".join(texto.upper().split())
+    print(nome_final)
+COPIAR CÓDIGO
+Se fizermos isso, descrevemos o nome corretamente. A alternativa é substituir o nome da função, e ela funcionará exatamente da mesma forma, mas com uma linha em vez de quatro. Com o tempo e experiência, aprendemos a fazer isso de maneira mais simples, sem precisar de tantas variáveis para alocar na memória, como texto_novo, lista_palavras e assim por diante.
+
+Discutindo a importância do retorno em funções
+O que queremos mostrar neste vídeo é que a primeira função que fizemos é mais simples, pois não retorna nada; ela apenas manipula o texto e imprime no final. No entanto, a maioria das funções que utilizamos no dia a dia precisa retornar algo. Enviamos algo para a função, e ela nos devolve uma resposta.
+
+Vamos pensar na ideia que estávamos desenvolvendo sobre salas de aula e estudantes. Imaginemos que temos uma lista de nomes de alunos escrita incorretamente. Esta é a lista real, e não queremos apenas corrigir o nome do aluno. Nossa escola possui três salas de aula. Podemos definir uma variável para as salas de aula ou classes, como sala 1, sala 2 e sala 3, e temos uma lista com três elementos.
+
+salas_de_aula = ["Sala 1", "Sala 2", "Sala 3"]
+COPIAR CÓDIGO
+Criando a função para alocar alunos em salas
+O que queremos é que, sempre que recebermos um nome de aluno, que pode estar escrito de qualquer forma, padronizemos esse nome. Após isso, através da função que já temos, queremos atribuir aleatoriamente uma dessas salas aos alunos: sala 1, sala 2 ou sala 3. Não queremos seguir uma ordem fixa, mas sim de forma aleatória.
+
+Para isso, podemos criar uma função. Lembrando como definimos uma função, utilizamos a palavra-chave def. A função pode ser chamada de aloca_alunos_em_salas. Ela receberá como parâmetros o nome do aluno e as salas disponíveis, que podem variar. Podemos definir isso posteriormente, mas, no exemplo, estamos utilizando sempre as mesmas salas.
+
+def aloca_alunos_em_salas(nome_do_aluno, lista_de_salas):
+COPIAR CÓDIGO
+Podemos definir a lista de salas para não confundir, utilizando nomes diferentes. Esses nomes, como nome_do_aluno e lista_de_salas, são válidos apenas dentro da função def, não se aplicando ao restante do código.
+
+Utilizando o módulo random para alocação aleatória
+Continuando, o que precisamos fazer primeiro? Vamos supor que já tenhamos corrigido o texto com a função escreve_texto_corretamente, seja a alternativa ou a original, e agora queremos apenas passar o nome do aluno e alocá-lo de forma aleatória em uma das salas: sala 1, sala 2 ou sala 3. Como faríamos isso?
+
+Já existe um módulo, uma biblioteca pronta que trata de assuntos aleatórios. Precisamos importar essa biblioteca com import random, da mesma forma que fizemos anteriormente ao lidar com as IAs, quando importamos o genAI e o userData. Esse módulo já está instalado nos computadores do Google Colab, então não precisamos instalá-lo do zero, basta fazer o import random, que já vem direto do Python.
+
+import random
+COPIAR CÓDIGO
+Criando um dicionário para organizar dados do aluno
+O que faremos é pegar o nome do aluno e escolher aleatoriamente uma das salas para ele. O ideal é que retornemos algo mais estruturado. Uma das estruturas de dados mais organizadas que vimos até agora são os dicionários. Podemos criar um dicionário específico que contenha o nome e a sala do aluno, facilitando nossa organização.
+
+Primeiramente, vamos escolher aleatoriamente a sala do aluno. Criamos uma variável sala_do_aluno, que receberá o resultado do método choice do módulo random. Esse método fará uma escolha entre as salas de aula. Utilizaremos a variável lista_de_salas, que a função recebe, para garantir que estamos pegando a lista correta.
+
+sala_do_aluno = random.choice(lista_de_salas)
+COPIAR CÓDIGO
+Se imprimirmos sala_do_aluno, veremos que ele escolhe aleatoriamente entre sala 1, sala 2 e sala 3. No entanto, não queremos apenas imprimir essa informação; queremos criar um dicionário com o nome corrigido do aluno e a sala para a qual ele foi alocado.
+
+Corrigindo o nome do aluno e retornando o dicionário
+Vamos criar esse dicionário, que podemos chamar de dict_aluno. Um dicionário é sempre representado por chaves e valores. Teremos a chave nome, que receberá o valor nome_do_aluno, e a chave sala, que receberá a sala escolhida aleatoriamente. Podemos imprimir dict_aluno para verificar se está tudo correto.
+
+dict_aluno = {
+    "nome": nome_do_aluno,
+    "sala": sala_do_aluno
+}
+print(dict_aluno)
+COPIAR CÓDIGO
+Ao rodar o código, ele imprime o nome do aluno e a sala correta. No entanto, o nome ainda está incorreto. Queremos corrigir isso utilizando a função escreve_texto_corretamente. Essa função, ao invés de apenas imprimir o nome, deve retornar o nome corrigido para que possamos usá-lo posteriormente. Para isso, utilizamos a palavra-chave return.
+
+def escreve_texto_corretamente(texto):
+    nome_final = " ".join(texto.upper().split())
+    return nome_final
+COPIAR CÓDIGO
+Integrando funções para alocação e correção de nomes
+Vamos rodar a função escreve_texto_corretamente e armazenar o resultado em uma variável, como nome_final. Assim, podemos passar o nome corrigido para a função aloca_alunos_em_salas, garantindo que o nome esteja correto.
+
+nome_processado = escreve_texto_corretamente(texto1)
+aloca_alunos_em_salas(nome_processado, salas_de_aula)
+COPIAR CÓDIGO
+Podemos passar diferentes listas de salas para a função, como "classe 1", "classe 2" e "classe 3", e ela funcionará corretamente, pois a função foi definida para receber dois argumentos. Assim, conseguimos alocar alunos de forma aleatória e retornar o nome corrigido.
+
+Desafio para prática e aplicação de conceitos
+Agora, sabemos como fazer escolhas aleatórias com random.choice e como retornar valores de uma função. Podemos retornar qualquer tipo de dado, como uma String, um número ou uma lista, para utilizá-lo posteriormente.
+
+Deixarei um desafio para vocês. A primeira parte faremos juntos. Vamos criar um bloco de texto com o título "Desafio". O primeiro passo é pedir para uma IA gerar, em Python, uma lista de 20 e-mails. A IA deve gerar uma lista de 20 strings, ou seja, 20 e-mails.
+
+O segundo passo, sem usar inteligência artificial, é criar uma função que receba essa lista de 20 e-mails como argumento. A função deve percorrer a lista e, para cada e-mail, chamar a IA do Gemini via API para resumir o conteúdo do e-mail em uma linha, definindo o que a pessoa queria no e-mail.
+
+Vamos pedir para a IA gerar uma lista de 20 corpos de e-mails de temas variados em Python. Podemos usar o Gemini, o ChatGPT, o Cloud, ou qualquer outra ferramenta. Ao pedir para a IA, devemos ser claros em nossos pedidos, utilizando a engenharia de prompt para garantir que a IA entenda corretamente.
+
+Após gerar a lista, podemos copiá-la e salvá-la em uma variável email_bodies. Na próxima aula, resolveremos esse desafio juntos, mas encorajo vocês a tentarem resolvê-lo por conta própria, pois é o desafio mais interessante até agora do curso. Até mais!
+
+@@05
+Desafio de resumir e-mails
+
+Continuando nossa jornada, nesta aula vamos aprender a rodar LLMs (Modelos de Linguagem de Grande Escala) que são open source (código aberto). Até agora, utilizamos o modelo Gemini 2.5 Flash, do Google, que é um modelo privado. Não conseguimos saber o que há dentro desse modelo, nem baixá-lo para rodar localmente ou em um cluster de computadores. Precisamos aceitar o que o Google nos fornece. No entanto, existem vários modelos de IA chamados open source ou open weights (pesos abertos), que podemos baixar e rodar localmente, seja em nossa máquina ou em um servidor na nuvem. Esses modelos oferecem mais liberdade, especialmente se atingirmos o limite do Gemini ou se quisermos mais privacidade, evitando enviar dados para servidores do Google, OpenAI, Anthropic ou XAI.
+
+Para rodar esses modelos, existem várias formas. Uma delas é utilizando o serviço de uma empresa chamada Grok. Atenção: não é o Grok com K, que é um modelo de IA da XAI, empresa de Elon Musk. Estamos falando do Grok com Q, que oferece "Fast Inference for AI Builders" (Inferência Rápida para Construtores de IA). Inferência é o processo de gerar uma resposta a partir de um modelo de IA. Podemos utilizar o Grok com Q, e ao acessar a página, podemos clicar na opção "Start Building" (Começar a Criar). Caso não tenhamos uma conta, precisamos criar uma, podendo até conectar com uma conta do Google.
+
+Configurando o ambiente para uso do Grok
+Ao entrar, veremos uma tela onde podemos criar uma chave da API. Se já tivermos criado anteriormente, veremos o uso atual e créditos grátis para testar. Descendo a página, visualizamos alguns modelos open source disponíveis, como o GPT OSS de 20 bilhões de parâmetros, o DeepSeek R1, e outros. Esses modelos são indicados para diferentes finalidades, como Reasoning (raciocínio), uso de ferramentas, transcrição de fala para texto, entre outros.
+
+Para este exemplo, utilizaremos o GPT OSS de 20 bilhões de parâmetros. Primeiro, clicamos em "Manage API Key" para criar uma chave da API. Damos um nome, como "aulas Python", e geramos a chave. É importante não compartilhar essa chave com ninguém. No Colab, criamos um novo bloco de código, mas não colamos a chave diretamente no código para evitar problemas de segurança. Em vez disso, adicionamos um novo Secret no Colab, chamando-o de "Grok API Key", e colamos a chave lá.
+
+Instalando e utilizando a biblioteca Grok no Colab
+Dentro do Grok, temos várias opções, como acessar o Playground para testar os modelos. Podemos escolher o modelo desejado, como o GPT OSS de 20 bilhões, e testar com perguntas, observando a rapidez das respostas. O modelo de Reasoning é rápido, processando 1103 tokens por segundo.
+
+Para usar o Grok no Colab, precisamos instalar a biblioteca. Como o Colab é uma ferramenta do Google, já possui bibliotecas do Google instaladas, mas para bibliotecas externas, precisamos instalá-las manualmente. Utilizamos o comando !pip install -q groq para instalar o Grok. O -q é opcional e serve para suprimir mensagens detalhadas durante a instalação.
+
+!pip install -q groq
+COPIAR CÓDIGO
+Depois, conectamos a chave da API da mesma forma que fizemos com a do Gemini. No ambiente do Colab, definimos a variável Grok API Key com o valor do Secret que criamos. Assim, podemos utilizar o Grok de forma segura e eficiente em nossos projetos.
+
+os.environ["GROQ_API_KEY"] = userdata.get('GROQ_API_KEY')
+COPIAR CÓDIGO
+Executando consultas com o modelo GPT-OSS
+Ao salvar o que estávamos fazendo, pegamos aquele número alfanumérico gigantesco, que estava escondido, mas conseguimos ver. Esse método coloca o alfanumérico dentro do nosso ambiente, em uma variável chamada Grok API Key. Com isso, estamos prontos para rodar o que quisermos. O código que copiamos está importando o Grok com from groq import Groq. Em seguida, fazemos client.chat.completions.create. Não é necessário decorar isso, pois é um padrão desse modelo e de vários outros, como os da OpenAI. Podemos copiar isso sempre que precisarmos.
+
+from groq import Groq
+
+client = Groq()
+
+completion = client.chat.completions.create(
+    model="openai/gpt-oss-20b",
+    messages=[
+        {
+            "role": "user",
+            "content": "O que é IA?"
+        }
+    ],
+    temperature=1,
+    max_completion_tokens=8192,
+    top_p=1,
+    reasoning_effort="medium",
+    stream=True,
+    stop=None,
+)
+
+for chunk in completion:
+    print(chunk.choices[0].delta.content or "", end="")
+COPIAR CÓDIGO
+O model que vamos usar é o OpenAI do chat GPT, gpt-oss-20b, que possui 20 bilhões de parâmetros. Dentro dele, temos uma lista de mensagens, indicada pelos colchetes, chamada messages. A primeira mensagem passa o role, o papel do usuário, que pergunta "O que é IA?". O assistente responde que "IA é um ramo da ciência". Podemos limpar a conversa clicando em "clear", e veremos que há apenas um item dentro de messages. Temos a nossa pergunta, a resposta do gpt-oss-20b através do Grok, e uma possível nova pergunta que podemos fazer dentro dessa janela de chat.
+
+Ajustando parâmetros do modelo para diferentes resultados
+Podemos deixar apenas uma mensagem, com o role como user, e a pergunta pode ser qualquer outra, como "De que é feito o sol?". Passamos vários parâmetros para o modelo, um deles é a temperatura. Esse conceito define o quão criativo o modelo será, variando geralmente de 0 a 2, dependendo do modelo. No Gemini, varia de 0 a 1, enquanto no OpenAI, no chat GPT, varia de 0 a 2. O valor 0 significa o menos criativo possível, e o valor 2, o mais criativo.
+
+Para explicar, podemos abrir uma janela do chat GPT e fazer algumas perguntas. Por exemplo, podemos jogar um jogo onde damos uma frase incompleta e pedimos as cinco principais possibilidades de palavras para continuar a frase, com a porcentagem de probabilidade. Ao enviar "Eu gosto de comer", ele pode responder com "pizza 28%", "chocolate 22%", "carne 15%", "frutas 12%" e "bolo 9%". Modelos de linguagem, como o Gemini e o chat GPT, funcionam tentando prever o próximo token, que é uma subpalavra. Por exemplo, a palavra "infeliz" pode ser dividida em dois tokens: "in" e "feliz". O token "in" pode ser usado em outras palavras, como "indivisível" e "incompreensível".
+
+Quando treinamos esses modelos, é mais fácil passar as palavras de forma separada, pois os computadores não entendem palavras, apenas números. Suponhamos que o token "in" corresponda ao número 5 e "feliz" ao número 5734. O mesmo token "in" pode ser reutilizado em outras palavras. Isso é o que o modelo está prevendo: o próximo token.
+
+Explorando a temperatura e outros parâmetros
+Voltando à temperatura, quando colocamos um valor próximo de zero, o modelo será menos criativo e escolherá quase sempre as primeiras opções. Com uma temperatura mais alta, próxima de 1,5, ele variará mais, escolhendo diferentes opções. Isso é útil para escrever textos, onde podemos querer mais variação. Para casos que exigem precisão, como escrever código, usamos temperaturas mais baixas, próximas de zero.
+
+O Max Completion Tokens define o número máximo de tokens. O TopP não é necessário. O Reasoning Effort define o esforço de raciocínio do modelo, podendo ser baixo, médio ou alto. Podemos deixar no médio ou apagar. O Stream faz o processamento em tempo real. Para cada pedaço na variável Completion, que recebemos do Grok, ele imprime a resposta.
+
+Ao rodar o código, vemos que ele é extremamente rápido. Ele se comunica com os servidores do Grok, onde o modelo GPT-OSS de 20B está hospedado, processa a pergunta e retorna a resposta rapidamente. O Grok permite que usemos créditos para experimentar, mas eventualmente será necessário inserir um cartão de crédito para cobranças.
+
+Podemos usar um modelo open source como o Gemini ou o Grok, mudando apenas algumas configurações. Na próxima aula, continuaremos explorando a linguagem Python.
+
+@@06
+LLMs open source
+
+Continuando nossa jornada, nesta aula vamos aprender a rodar LLMs (Modelos de Linguagem de Grande Escala) que são open source (código aberto). Até agora, utilizamos o modelo Gemini 2.5 Flash, do Google, que é um modelo privado. Não conseguimos saber o que há dentro desse modelo, nem baixá-lo para rodar localmente ou em um cluster de computadores. Precisamos aceitar o que o Google nos fornece. No entanto, existem vários modelos de IA chamados open source ou open weights (pesos abertos), que podemos baixar e rodar localmente, seja em nossa máquina ou em um servidor na nuvem. Esses modelos oferecem mais liberdade, especialmente se atingirmos o limite do Gemini ou se quisermos mais privacidade, evitando enviar dados para servidores do Google, OpenAI, Anthropic ou XAI.
+
+Para rodar esses modelos, existem várias formas. Uma delas é utilizando o serviço de uma empresa chamada Grok. Atenção: não é o Grok com K, que é um modelo de IA da XAI, empresa de Elon Musk. Estamos falando do Grok com Q, que oferece "Fast Inference for AI Builders" (Inferência Rápida para Construtores de IA). Inferência é o processo de gerar uma resposta a partir de um modelo de IA. Podemos utilizar o Grok com Q, e ao acessar a página, podemos clicar na opção "Start Building" (Começar a Criar). Caso não tenhamos uma conta, precisamos criar uma, podendo até conectar com uma conta do Google.
+
+Configurando o ambiente para uso do Grok
+Ao entrar, veremos uma tela onde podemos criar uma chave da API. Se já tivermos criado anteriormente, veremos o uso atual e créditos grátis para testar. Descendo a página, visualizamos alguns modelos open source disponíveis, como o GPT OSS de 20 bilhões de parâmetros, o DeepSeek R1, e outros. Esses modelos são indicados para diferentes finalidades, como Reasoning (raciocínio), uso de ferramentas, transcrição de fala para texto, entre outros.
+
+Para este exemplo, utilizaremos o GPT OSS de 20 bilhões de parâmetros. Primeiro, clicamos em "Manage API Key" para criar uma chave da API. Damos um nome, como "aulas Python", e geramos a chave. É importante não compartilhar essa chave com ninguém. No Colab, criamos um novo bloco de código, mas não colamos a chave diretamente no código para evitar problemas de segurança. Em vez disso, adicionamos um novo Secret no Colab, chamando-o de "Grok API Key", e colamos a chave lá.
+
+Instalando e utilizando a biblioteca Grok no Colab
+Dentro do Grok, temos várias opções, como acessar o Playground para testar os modelos. Podemos escolher o modelo desejado, como o GPT OSS de 20 bilhões, e testar com perguntas, observando a rapidez das respostas. O modelo de Reasoning é rápido, processando 1103 tokens por segundo.
+
+Para usar o Grok no Colab, precisamos instalar a biblioteca. Como o Colab é uma ferramenta do Google, já possui bibliotecas do Google instaladas, mas para bibliotecas externas, precisamos instalá-las manualmente. Utilizamos o comando !pip install -q groq para instalar o Grok. O -q é opcional e serve para suprimir mensagens detalhadas durante a instalação.
+
+!pip install -q groq
+COPIAR CÓDIGO
+Depois, conectamos a chave da API da mesma forma que fizemos com a do Gemini. No ambiente do Colab, definimos a variável Grok API Key com o valor do Secret que criamos. Assim, podemos utilizar o Grok de forma segura e eficiente em nossos projetos.
+
+os.environ["GROQ_API_KEY"] = userdata.get('GROQ_API_KEY')
+COPIAR CÓDIGO
+Executando consultas com o modelo GPT-OSS
+Ao salvar o que estávamos fazendo, pegamos aquele número alfanumérico gigantesco, que estava escondido, mas conseguimos ver. Esse método coloca o alfanumérico dentro do nosso ambiente, em uma variável chamada Grok API Key. Com isso, estamos prontos para rodar o que quisermos. O código que copiamos está importando o Grok com from groq import Groq. Em seguida, fazemos client.chat.completions.create. Não é necessário decorar isso, pois é um padrão desse modelo e de vários outros, como os da OpenAI. Podemos copiar isso sempre que precisarmos.
+
+from groq import Groq
+
+client = Groq()
+
+completion = client.chat.completions.create(
+    model="openai/gpt-oss-20b",
+    messages=[
+        {
+            "role": "user",
+            "content": "O que é IA?"
+        }
+    ],
+    temperature=1,
+    max_completion_tokens=8192,
+    top_p=1,
+    reasoning_effort="medium",
+    stream=True,
+    stop=None,
+)
+
+for chunk in completion:
+    print(chunk.choices[0].delta.content or "", end="")
+COPIAR CÓDIGO
+O model que vamos usar é o OpenAI do chat GPT, gpt-oss-20b, que possui 20 bilhões de parâmetros. Dentro dele, temos uma lista de mensagens, indicada pelos colchetes, chamada messages. A primeira mensagem passa o role, o papel do usuário, que pergunta "O que é IA?". O assistente responde que "IA é um ramo da ciência". Podemos limpar a conversa clicando em "clear", e veremos que há apenas um item dentro de messages. Temos a nossa pergunta, a resposta do gpt-oss-20b através do Grok, e uma possível nova pergunta que podemos fazer dentro dessa janela de chat.
+
+Ajustando parâmetros do modelo para diferentes resultados
+Podemos deixar apenas uma mensagem, com o role como user, e a pergunta pode ser qualquer outra, como "De que é feito o sol?". Passamos vários parâmetros para o modelo, um deles é a temperatura. Esse conceito define o quão criativo o modelo será, variando geralmente de 0 a 2, dependendo do modelo. No Gemini, varia de 0 a 1, enquanto no OpenAI, no chat GPT, varia de 0 a 2. O valor 0 significa o menos criativo possível, e o valor 2, o mais criativo.
+
+Para explicar, podemos abrir uma janela do chat GPT e fazer algumas perguntas. Por exemplo, podemos jogar um jogo onde damos uma frase incompleta e pedimos as cinco principais possibilidades de palavras para continuar a frase, com a porcentagem de probabilidade. Ao enviar "Eu gosto de comer", ele pode responder com "pizza 28%", "chocolate 22%", "carne 15%", "frutas 12%" e "bolo 9%". Modelos de linguagem, como o Gemini e o chat GPT, funcionam tentando prever o próximo token, que é uma subpalavra. Por exemplo, a palavra "infeliz" pode ser dividida em dois tokens: "in" e "feliz". O token "in" pode ser usado em outras palavras, como "indivisível" e "incompreensível".
+
+Quando treinamos esses modelos, é mais fácil passar as palavras de forma separada, pois os computadores não entendem palavras, apenas números. Suponhamos que o token "in" corresponda ao número 5 e "feliz" ao número 5734. O mesmo token "in" pode ser reutilizado em outras palavras. Isso é o que o modelo está prevendo: o próximo token.
+
+Explorando a temperatura e outros parâmetros
+Voltando à temperatura, quando colocamos um valor próximo de zero, o modelo será menos criativo e escolherá quase sempre as primeiras opções. Com uma temperatura mais alta, próxima de 1,5, ele variará mais, escolhendo diferentes opções. Isso é útil para escrever textos, onde podemos querer mais variação. Para casos que exigem precisão, como escrever código, usamos temperaturas mais baixas, próximas de zero.
+
+O Max Completion Tokens define o número máximo de tokens. O TopP não é necessário. O Reasoning Effort define o esforço de raciocínio do modelo, podendo ser baixo, médio ou alto. Podemos deixar no médio ou apagar. O Stream faz o processamento em tempo real. Para cada pedaço na variável Completion, que recebemos do Grok, ele imprime a resposta.
+
+Ao rodar o código, vemos que ele é extremamente rápido. Ele se comunica com os servidores do Grok, onde o modelo GPT-OSS de 20B está hospedado, processa a pergunta e retorna a resposta rapidamente. O Grok permite que usemos créditos para experimentar, mas eventualmente será necessário inserir um cartão de crédito para cobranças.
+
+Podemos usar um modelo open source como o Gemini ou o Grok, mudando apenas algumas configurações. Na próxima aula, continuaremos explorando a linguagem Python.
+
+@@07
+Para saber mais: operador de resto em python
+
+Como Funciona o Operador de Resto
+O operador de resto, representado pelo símbolo %, é usado para obter o valor que sobra após a divisão inteira de dois números. Em Python, quando dividimos um número a por outro b, o resultado da operação a % b é o resto dessa divisão. Essa funcionalidade é fundamental para determinar, por exemplo, se um número é par ou ímpar ou para restringir valores dentro de um intervalo específico.
+
+Quando um número é divisível exatamente por outro, o resto será zero. Caso contrário, o resultado será um número menor que o divisor. Essa simples verificação pode ser usada em estruturas condicionais para aplicar comportamentos diferentes dependendo do valor do resto.
+
+Exemplos e Aplicações Práticas
+Considere o seguinte exemplo, onde decidimos imprimir apenas os números pares de uma sequência:
+
+for n in range(11):
+    if n % 2 == 0:
+        print(n)  # Imprime números pares: 0, 2, 4, 6, 8, 10
+COPIAR CÓDIGO
+Nesse caso, para cada valor de n, o operador % calcula o resto da divisão de n por 2. Se o resultado for zero, sabemos que n é par e procedemos com a impressão. Esse padrão de uso pode ser adaptado para outros tipos de verificação, como para identificar múltiplos de um determinado número ou realizar operações cíclicas em algoritmos.
+
+Variações e Cenários de Uso
+O operador de resto possui algumas particularidades que o tornam versátil:
+
+Verificação de Condições: Além de identificar números pares, pode ser usado para detectar condições específicas. Por exemplo, n % 3 == 0 verifica se n é múltiplo de 3. Essa característica é útil em contagens recorrentes ou para modular comportamentos em laços de repetição.
+Cálculos Cíclicos: Em algoritmos que necessitam de ciclos, como rotação de elementos em uma lista ou acesso circular a índices, o operador de resto garante que os valores se mantenham dentro de um certo intervalo. Por exemplo:
+lista = ['a', 'b', 'c', 'd']
+for i in range(10):
+    print(lista[i % len(lista)])  # Acessa sempre um índice válido na lista
+COPIAR CÓDIGO
+Manipulação de Sequências: Em alguns casos, é possível implementar funções que dependem da periodicidade dos números, permitindo comportamentos que se repetem de forma regular a cada iteração.
+Considerações Importantes
+Embora o operador de resto seja simples, é crucial entender seu comportamento com números negativos. Em Python, a operação % garante que o sinal do divisor seja respeitado e que o resultado tenha o mesmo sinal do divisor, o que pode divergir de outras linguagens. Essa particularidade deve ser levada em conta ao desenvolver algoritmos que precisam de consistência em diferentes plataformas ou ambientes.
+
+O entendimento do operador % é essencial para aprimorar o controle de fluxo e a lógica dos seus programas, seja para filtragens, cálculos cíclicos ou outras técnicas que exigem manipulação precisa dos números. Ao dominar esse operador, você amplia o leque de soluções criativas e eficientes na programação.
+
+@@08
+Padronizando descrições de produtos
+
+A TRATOTECH, uma plataforma de classificados focada em produtos tecnológicos, conecta compradores e vendedores de eletrônicos. A equipe de desenvolvimento que você faz parte está enfrentando um problema com a padronização das descrições dos produtos. As descrições são enviadas pelos vendedores em formatos variados, com uso inconsistente de maiúsculas e minúsculas, além de espaços desnecessários. Para melhorar a experiência do usuário e a busca por produtos, a equipe decidiu criar uma função que padronize essas descrições, removendo espaços extras e uniformizando o uso de minúsculas.
+Qual das alternativas abaixo descreve a melhor abordagem para implementar essa função de padronização?
+
+Desenvolver uma função que apenas aplique o método upper() para converter toda a descrição em maiúsculas, sem remover espaços extras, e que também ignore a necessidade de ajustar a formatação dos espaços internos, mantendo o texto como está.
+ 
+Incorreta, pois embora uniformize o uso de maiúsculas, não resolve o problema dos espaços desnecessários, o que pode prejudicar a legibilidade e a busca por produtos, além de não atender ao objetivo de padronização completa.
+Alternativa incorreta
+Criar uma função em Python que receba a descrição do produto, utilize strip() para remover espaços no início e no final, lower() para uniformizar o uso de minúsculas, e replace() para substituir múltiplos espaços por um único espaço.
+ 
+Correta, pois essa abordagem utiliza métodos adequados para remover espaços desnecessários e uniformizar o uso de maiúsculas e minúsculas, garantindo que todas as descrições sigam um padrão consistente.
+Alternativa incorreta
+Implementar uma função que use strip() para remover espaços no início e no final, mas mantenha o uso original de maiúsculas e minúsculas, sem alterações, e que também não se preocupe em ajustar os espaços internos, deixando-os como foram inseridos originalmente.
+ 
+Alternativa incorreta
+Criar uma função que substitua todos os espaços por hífens e converta a descrição para minúsculas usando lower(), além de ignorar a necessidade de manter a legibilidade original das descrições, alterando completamente o formato do texto.
+ 
+Incorreta, pois substituir espaços por hífens altera o formato original das descrições, o que pode confundir as pessoas usuárias e não atende ao objetivo de padronização desejado, além de comprometer a clareza e a busca por produtos.
+
+@@09
+Faça como eu fiz: textos, loops e APIs
+
+Nesta aula, aprendemos a manipular listas, dicionários, laços de repetição e funções para corrigir textos e integrar chamadas de API. Agora é a sua chance de revisar e exercitar os conteúdos vistos nesta aula, se ainda não colocou em prática. Para isso:
+Configure a estrutura de repetição for para iterar sobre listas e dicionários;
+Imprima cada item de uma lista individualmente;
+Utilize o operador += para atualizar índices em loops;
+Percorra dicionários exibindo chaves e pares chave-valor;
+Gere sequências numéricas com a função range;
+Valide números pares usando a operação de resto (%);
+Crie funções para processar strings com strip, upper e replace;
+Aplique o método split para eliminar espaços extras;
+Reúna as palavras com o método join para formatar textos;
+Implemente funções que retornem valores processados;
+Integre a correção de nomes com funções personalizadas;
+Padronize diferentes textos usando a função criada;
+Utilize random.choice para alocar elementos de forma aleatória;
+Monte dicionários contendo nomes corrigidos e dados associados;
+Crie uma função que percorra uma lista de e-mails com for;
+Faça chamadas de API para resumir o conteúdo de e-mails;
+Empregue f-strings para formatar os resumos dinamicamente;
+Utilize enumerate para numerar os e-mails na iteração;
+Teste a função e verifique a saída dos resumos com separadores.
+Para acessar o guia detalhado, consulte as transcrições da aula.
+
+@@10
+O que aprendemos?
+
+Nesta aula, aprendemos:
+A utilizar o loop for e a função range() em Python para iterar sobre elementos de estruturas de dados.
+A criar funções em Python com parâmetros e a importância de encapsular algoritmos para a reutilização.
+A manipular strings utilizando os métodos split(), join(), e upper() para formatação e limpeza de texto.
+A simplificar a definição de funções, retornando valores com return e utilizando o módulo random para operações aleatórias.
+A usar a função enumerate() em loops for para obter índices e elementos de listas.
+A explorar o uso de modelos de linguagem de código aberto e a implementação de Groq no Google Colab.
+A realizar inferências em modelos de linguagem configurando parâmetros como temperature e max_completion_tokens.
+A gerenciar a segurança em chamadas de API usando variáveis de ambiente no Google Colab.
