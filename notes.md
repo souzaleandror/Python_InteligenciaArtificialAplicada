@@ -1606,3 +1606,350 @@ A usar a função enumerate() em loops for para obter índices e elementos de li
 A explorar o uso de modelos de linguagem de código aberto e a implementação de Groq no Google Colab.
 A realizar inferências em modelos de linguagem configurando parâmetros como temperature e max_completion_tokens.
 A gerenciar a segurança em chamadas de API usando variáveis de ambiente no Google Colab.
+
+#24/01/2026
+
+@04-Leitura e escrita
+
+@@01
+Projeto da aula anterior
+
+Caso queira revisar o código até aqui ou começar a partir desse ponto, disponibilizamos os códigos realizados na aula anterior, para visualizar clique neste link.
+
+https://colab.research.google.com/drive/1jcP3Q4OVr-ZCfpXhnuwNrK1PVV_xxN4k#scrollTo=Xa1xNOntzmpb
+
+@@02
+Explorando a leitura e escrita de arquivos
+
+Continuando nosso estudo de Python, hoje vamos explorar uma nova habilidade: ler e escrever em arquivos usando Python. Podemos trabalhar com arquivos de texto, como .txt, ou arquivos de tabelas, como .csv.
+
+Vamos criar um novo bloco de código. No contexto do nosso desafio anterior, o resumidor de e-mails, já desenvolvemos a função e a executamos até o final, mas não salvamos os dados em nenhum lugar, o que resultou na perda dessas informações. Suponhamos que desejamos salvar esses dados em uma variável, como uma lista, e posteriormente em um arquivo .txt. Vamos abordar isso passo a passo.
+
+Salvando resumos de e-mails em uma lista
+Atualmente, nossa função apenas exibe na tela o número do e-mail e a resposta do resumo. Vamos começar com a exibição do resumo do e-mail:
+
+print(f"Resumo do e-mail {numero + 1}: {resposta.text}")
+COPIAR CÓDIGO
+Além de exibir, agora ela também irá salvar essas informações em uma lista que criaremos. Vamos chamá-la de lista_de_resumos e iniciá-la como uma lista vazia, representada por colchetes [].
+
+lista_de_resumos = []
+COPIAR CÓDIGO
+Podemos utilizar métodos que aprendemos para manipular listas. Em vez de apenas imprimir o e-mail e a resposta, vamos adicionar essas informações à lista_de_resumos usando o método append.
+
+lista_de_resumos.append(f"E-mail {numero + 1}: {resposta.text}")
+COPIAR CÓDIGO
+Retornando a lista de resumos
+Não precisamos imprimir o separador, pois ele era apenas para visualização. Cada linha da lista representará um e-mail.
+
+Após salvar as informações na lista, precisamos retornar essa lista ao final da função. Assim, ao sair do laço for, utilizaremos return para retornar a variável lista_de_resumos já populada com todos os e-mails.
+
+return lista_de_resumos
+COPIAR CÓDIGO
+Ao executar o código, podemos encontrar um erro: "models has no attribute, generate content". Isso ocorre porque, em uma aula anterior, chamamos o grok de client, que era o mesmo nome do client do GMI que estávamos usando. Agora, o sistema está confundindo os dois. Precisamos rodar novamente a célula inicial para definir corretamente o client como GMI.client.
+
+Corrigindo o nome do cliente para evitar confusões
+Podemos alterar o nome para client_groq em todos os lugares necessários para evitar confusões.
+
+client_groq = Groq()
+COPIAR CÓDIGO
+Após salvar as alterações, o código rodará rapidamente como antes.
+
+Ao final da execução, verificamos que não salvamos o retorno da função em lugar algum. Precisamos criar uma nova variável, lista_resumos, para armazenar o retorno da função.
+
+lista_resumos = resumidor_de_emails(email_bodies)
+COPIAR CÓDIGO
+Armazenando e imprimindo resumos de e-mails
+Agora, ao executar novamente, a variável lista_resumos conterá os 20 e-mails resumidos.
+
+Com a execução concluída, podemos imprimir o conteúdo de lista_resumos, que conterá uma lista com os e-mails resumidos, do e-mail 1 ao e-mail 20.
+
+Agora, vamos escrever cada um desses itens em um arquivo .txt, que pode ser enviado ou lido posteriormente. Para salvar arquivos em Python, utilizamos a palavra-chave dupla with open(). Essa função recebe alguns parâmetros e argumentos que configuraremos a seguir.
+
+Escrevendo resumos em um arquivo .txt
+with open("lista-de-resumos.txt", "w", encoding="utf-8") as arquivo:
+COPIAR CÓDIGO
+Aqui, o primeiro elemento será o nome do nosso arquivo, especificamente um arquivo .txt. Podemos chamá-lo, por exemplo, de lista-resumos.txt. O segundo elemento será o modo como queremos que ele escreva nesse arquivo .txt. Existem duas opções: o modo w e o modo a. O modo w é uma abreviação de write (escrever). Ao utilizar with open, ele tentará abrir o arquivo lista-resumos.txt. Se o arquivo não existir, ele será criado automaticamente e começará a escrever os dados nele. No entanto, se o arquivo já existir, há uma diferença. No modo w, ele apagará todo o conteúdo existente e começará do zero. Por exemplo, se tivermos um arquivo chamado lista-resumos.txt com 25 resumos e o abrirmos novamente usando o modo w, todo o conteúdo será apagado e sobrescrito.
+
+Se utilizarmos o modo a, que é uma abreviação de append (acrescentar), ele continuará a partir da última linha escrita. A escolha entre os modos depende do caso de uso: se desejamos apagar e reescrever ou continuar escrevendo no final. No nosso caso, tanto faz, mas podemos usar o modo w por enquanto.
+
+Configurando a codificação e escrevendo no arquivo
+O terceiro elemento é o encoding, que já está definido como utf-8. Vamos mantê-lo assim. O utf-8 é um modo de codificação de texto na internet que lida bem com caracteres acentuados, como acento agudo, til, cedilha e circunflexo. Existem outras codificações que não lidam bem com esses caracteres, resultando em símbolos estranhos quando a codificação não está correta.
+
+Agora, vamos dar um apelido ao nosso arquivo. Para isso, usamos a palavra-chave as, que significa "como" em inglês. Podemos chamá-lo de arquivo. Esse nome é uma variável temporária que existirá apenas durante a execução. Dentro desse contexto, decidiremos o que fazer. No nosso caso, queremos escrever no arquivo. Ao digitar um ponto, várias opções são sugeridas. Temos duas opções principais: write, que escreve uma linha de cada vez, ou writelines, que recebe uma lista e escreve tudo de uma vez. Se quisermos ter mais controle, podemos usar write, mas precisaremos de um for.
+
+for resumo in lista_resumos:
+    arquivo.write(resumo + "\n")
+COPIAR CÓDIGO
+O \n é um caractere de quebra de linha, muito usado em programação. Ele permite escrever um resumo, pular uma linha, e assim por diante. Vamos executar novamente. Agora, a lista de resumos está linha a linha, mas há um elemento extra, que não era necessário. Isso é apenas um detalhe do ordenamento interno, não relacionado aos nossos e-mails. No próximo vídeo, veremos como ler os arquivos. Primeiro, escrevemos; depois, aprenderemos a lê-los. Até breve.
+
+@@03
+Leitura de arquivos
+
+Agora que já escrevemos um arquivo, vamos aprender a ler um arquivo. Pode ser até mesmo este exato arquivo, o lista-de-resumos.txt. Vamos criar mais um bloco de código para fazer a leitura. O processo é muito parecido, praticamente a mesma coisa. Por isso, vamos copiar o código do bloco anterior. A principal diferença é que, em vez de utilizarmos o w para escrever ou o a para adicionar ao final, vamos usar a letra r, que é de reads (ler, em inglês). O restante é idêntico.
+
+Para começar, vamos abrir o arquivo lista-de-resumos.txt com os parâmetros r e encoding='utf-8'. Veja como fazemos isso:
+
+with open("lista-de-resumos.txt", "r", encoding="utf-8") as arquivo:
+COPIAR CÓDIGO
+Percorrendo linhas do arquivo
+Na linha with open, vamos abrir o arquivo lista-de-resumos.txt, que já existe no local, com os parâmetros r e encoding='utf-8'. Aqui, faremos um for, mas será um for diferente. Não será for resumo in lista_de_resumos, mas sim algo mais claro: para cada linha nesse arquivo. Antes, estávamos percorrendo os resumos da lista de resumos; agora, vamos percorrer as linhas do arquivo que abrimos.
+
+    for linha in arquivo:
+COPIAR CÓDIGO
+O que faremos em vez de arquivo.write para escrever? Não precisamos, pois já temos um arquivo aberto. Vamos querer fazer algo com essa linha. Podemos, por exemplo, salvá-la em uma variável. Então, criaremos uma nova_lista_de_leitura, que será uma lista (abre e fecha colchetes). Para cada linha que lermos nesse arquivo, vamos adicionar (append) essa linha à nova_lista_de_leitura, tornando-a um novo elemento dessa variável.
+
+nova_lista_de_leitura = []
+with open("lista-de-resumos.txt", "r", encoding="utf-8") as arquivo:
+    for linha in arquivo:
+        nova_lista_de_leitura.append(linha)
+COPIAR CÓDIGO
+Explorando métodos de leitura
+Vamos rodar o código para ver o que acontece. Rodamos e tudo certo. Conseguimos ler o arquivo linha por linha. Este é o primeiro modo de fazer essa leitura. É um dos modos. Lemos até o índice 20, pois o 21 era apenas um índice interno vazio, sem conteúdo. Conseguimos ler linha por linha o que havia no arquivo, que está separado por vírgulas. Está tudo certo. Esta é uma forma de fazer isso, apenas percorrendo o arquivo que acabamos de abrir.
+
+Existem mais duas formas. Uma delas é usar o método read. Vamos pegar apenas a primeira linha, não as outras. Vamos abrir o arquivo e usar arquivo.read. Esta é uma das opções que temos. Se observarmos, temos a opção readline, read e readlines.
+
+conteudo = ""
+with open("lista-de-resumos.txt", "r", encoding="utf-8") as arquivo:
+    conteudo = arquivo.read()
+COPIAR CÓDIGO
+Manipulando o conteúdo lido
+Vamos pegar o ponto read e salvar em algum lugar. O conteúdo será armazenado em uma variável que inicialmente recebe um espaço em branco. Em seguida, salvamos tudo em conteúdo. Ao rodar o código e imprimir conteúdo, ele salva tudo de uma vez, incluindo os espaços e quebras de linha (\n). No exemplo anterior, também salvamos as quebras de linha. Se quisermos removê-las, podemos usar o método strip nas linhas. Os métodos que vimos nas aulas passadas sobre manipulação de strings e texto podem ser aplicados aqui. O método strip remove espaços e quebras de linha, e ao rodar o código, não há mais as quebras de linha, ficando apenas o elemento sem espaçamento. O arquivo é lido e populado dessa forma.
+
+nova_lista_de_leitura = []
+with open("lista-de-resumos.txt", "r", encoding="utf-8") as arquivo:
+    for linha in arquivo:
+        nova_lista_de_leitura.append(linha.strip())
+COPIAR CÓDIGO
+Comparando métodos de leitura
+Neste caso, ele salva tudo de uma vez usando o ponto read. Vamos copiar essa linha e criar uma nova lista, por exemplo, nova_lista_de_leitura_2, que será uma lista. Ela receberá o conteúdo do arquivo usando readlines, que lê as linhas no plural. Ao rodar o código, o que temos dentro de nova_lista_de_leitura_2 é basicamente o mesmo que em nova_lista_de_leitura, com a diferença na escrita. Conseguimos separar em posições, como zero, um, dois, sem problema, mas ainda com todas as quebras de linha (\n). Não conseguimos controlar isso muito bem porque está lendo tudo de uma vez, ou seja, o arquivo inteiro lista_de_resumos.txt, e cada linha se torna uma posição na lista em Python. Não temos tanto controle, mas é possível usar. No entanto, ele vem com todas as quebras de linha e espaços adicionais.
+
+nova_lista_de_leitura_2 = []
+with open("lista-de-resumos.txt", "r", encoding="utf-8") as arquivo:
+    nova_lista_de_leitura_2 = arquivo.readlines()
+COPIAR CÓDIGO
+Concluindo a leitura de arquivos
+Utilizando o primeiro modo, com um for indo linha a linha, conseguimos usar o método strip para remover elementos indesejados. Isso é a leitura e escrita de arquivos em Python. Na próxima aula, começaremos a explorar uma área relacionada à ciência de dados, o famoso data science. Vamos conhecer o framework mais famoso quando falamos sobre lidar com dados e inteligência artificial. Ele é amplamente utilizado e vocês vão adorar conhecê-lo, pois é muito interessante. Nos vemos em breve!
+
+@@04
+Preparando o ambiente
+
+Na próxima aula, faremos um teste com um arquivo CSV. Você pode criar o seu próprio ou, se preferir, usar o modelo que disponibilizaremos como exemplo abaixo:
+Arquivo .csv
+Bons estudos!
+
+https://cdn3.gnarususercontent.com.br/4790-python/meu_csv.csv
+
+@@05
+Pandas e sua importância
+
+Nesta aula, vamos explorar um dos frameworks fundamentais para a ciência de dados moderna: o pandas. Este framework é frequentemente associado a um animal fofo devido ao seu nome. Talvez já tenhamos ouvido falar dele, mas, independentemente disso, é uma ferramenta muito interessante para manipular dados.
+
+Como estamos utilizando o Google Colab, não precisamos instalar o pandas, pois ele já vem pré-instalado. A única ação necessária é importá-lo. Assim como fizemos anteriormente com outros pacotes, como os e GNI, vamos importar o pandas.
+
+Importando e configurando o pandas
+Primeiro, vamos adicionar um texto: "Manipulando dados com pandas". Em seguida, faremos a importação. É um processo simples: basta usar import pandas. No entanto, é comum na comunidade dar um apelido ao pandas. Assim como demos apelidos a outros elementos, usamos a palavra-chave as para isso. O padrão é chamá-lo de pd, então a importação fica:
+
+import pandas as pd
+COPIAR CÓDIGO
+Isso será muito útil para lidar com dados em tabelas, como as do Excel, Google Sheets ou arquivos CSV, que são amplamente utilizados no mundo dos dados e da tecnologia.
+
+Explorando o formato CSV
+Se não estivermos familiarizados com o formato CSV, vamos explorá-lo agora. Vamos abrir o Gemini e solicitar a geração de uma tabela em formato CSV, contendo nomes de 10 pessoas na primeira coluna e suas médias de 0 a 10 na segunda coluna. O CSV, que significa comma separated values (valores separados por vírgula), é um formato de arquivo onde os valores são separados por vírgulas. Por exemplo, temos o título "nome, média", onde "nome" é a primeira coluna e "média" é a segunda. Os dados seguem o mesmo padrão: "Ana, 7.5", "Carlos, 8.2", e assim por diante.
+
+Este formato de arquivo pode ser separado por outros caracteres, como ponto e vírgula, dependendo da escolha do separador. Vamos salvar este arquivo no computador, seja no Windows ou Mac, utilizando um editor de texto. Ao salvar, devemos escolher "Salvar como" e nomear o arquivo como meu_arquivo.csv. É importante selecionar "todos os arquivos" ao invés de "documento de texto" para garantir que o arquivo seja salvo com a extensão .csv e não .txt.
+
+Fazendo upload e lendo arquivos CSV no Colab
+Para ler arquivos CSV, primeiro precisamos fazer o upload do arquivo no Colab. Abrimos a pasta na lateral, clicamos em "fazer upload" e selecionamos o arquivo meu.csv.csv. Após o upload, verificamos se o arquivo foi salvo corretamente. Podemos copiar o caminho do arquivo clicando nos três pontos ao lado do nome e selecionando "copiar caminho".
+
+Criamos um novo bloco de código e utilizamos o caminho copiado, que será algo como:
+
+"/content/meu_csv.csv"
+COPIAR CÓDIGO
+Se o arquivo tiver outro nome, o caminho refletirá isso. Para ler o arquivo, utilizamos a biblioteca pandas, referenciada como pd. Usamos o método pd.read_csv() para ler o arquivo CSV, passando o caminho completo como parâmetro:
+
+df = pd.read_csv("/content/meu_csv.csv")
+COPIAR CÓDIGO
+Visualizando e manipulando dados com pandas
+Salvamos o resultado em uma variável, geralmente chamada de df, que representa um DataFrame. Executamos a linha de código e, para visualizar o conteúdo do CSV, imprimimos o df:
+
+df
+COPIAR CÓDIGO
+O pandas interpreta o CSV, separando-o por vírgulas e identificando as colunas, como nomes e médias. O pandas, especialmente o método read_csv, permite trabalhar com tabelas de forma semelhante ao Excel, mas usando Python, sendo muito útil na ciência de dados.
+
+Além disso, podemos usar o método df.head() para visualizar os primeiros cinco elementos do DataFrame:
+
+df.head()
+COPIAR CÓDIGO
+Se quisermos ver mais elementos, podemos passar um número como argumento, por exemplo, df.head(10) para ver os dez primeiros. O método df.tail() mostra os últimos cinco elementos, ou mais, se especificarmos um número. Isso nos dá uma ideia do conteúdo do arquivo CSV.
+
+Desafio do curso: criando e manipulando arquivos
+Agora, estamos prontos para um desafio do curso. O desafio consiste em cinco etapas. A primeira etapa é criar um arquivo TXT a partir de uma lista de perguntas em Python. Vamos criar uma lista de perguntas, por exemplo, sobre astronomia, com cinco perguntas. A lista pode ser personalizada com perguntas de qualquer tema de interesse:
+
+lista_de_perguntas = [
+    "De que é feito o Sol?",
+    "De que é feito o planeta Saturno?",
+    "Qual é a galáxia mais antiga já encontrada?",
+    "Qual é a maior estrela já encontrada?",
+    "Qual é a estrela mais próxima do Sol?"
+]
+COPIAR CÓDIGO
+Após definir a lista, criamos um arquivo TXT com essas perguntas. Em seguida, lemos o arquivo TXT e salvamos as perguntas em uma lista Python, revertendo o processo inicial. Na terceira etapa, obtemos respostas de um LLM para cada pergunta, sugerindo respostas sucintas. Salvamos as perguntas e respostas em um arquivo CSV, separado por vírgulas.
+
+Para criar o CSV, podemos usar o método with open ou outras abordagens, como manipulação de strings. Após salvar o CSV, lemos o arquivo usando a biblioteca pandas e o método read_csv, exibindo o conteúdo em formato de tabela, com colunas de perguntas e respostas.
+
+Este desafio não é extremamente complexo, mas envolve vários passos. Esperamos que consigam resolvê-lo com o conhecimento adquirido até agora. Retornaremos em breve com a solução.
+
+@@06
+Desafio e a etapa 1
+
+Conseguimos resolver o desafio proposto? Imagino que tenhamos precisado realizar algumas pesquisas online, especialmente na parte de criação de um arquivo CSV, que corresponde ao ponto 4, nossa etapa número 4. Vamos agora seguir o passo a passo juntos.
+
+Na primeira parte da etapa 1, precisávamos gerar uma lista de 10 perguntas sobre um tema de nosso interesse. Ainda na etapa 1, deveríamos criar um arquivo txt a partir dessa lista de perguntas. Isso é algo simples, pois acabamos de aprender a lidar com esses arquivos. Recapitulando, utilizaremos o with open para abrir o arquivo. Passamos três parâmetros para o with open: o nome do arquivo txt que vamos salvar, como perguntas.txt, o modo de salvamento do arquivo, que será "w", e a codificação, que é UTF-8. Podemos dar um nome ao arquivo, como as arquivo, por exemplo.
+
+with open("perguntas.txt", "w", encoding="utf-8") as arquivo:
+COPIAR CÓDIGO
+Em seguida, salvamos os itens da lista, escrevendo-os um a um. Para cada pergunta na lista de perguntas, utilizamos o método write para escrever a pergunta no arquivo, adicionando uma quebra de linha após cada uma.
+
+for pergunta in lista_de_perguntas:
+    arquivo.write(pergunta + "\n")
+COPIAR CÓDIGO
+Assim, conseguimos salvar nosso novo arquivo, concluindo a etapa 1. Podemos verificar nos arquivos à esquerda se o perguntas.txt está salvo corretamente.
+
+Lendo perguntas e preparando respostas
+Na etapa 2, precisamos ler as perguntas do arquivo txt e salvá-las em uma lista Python. Este é o processo inverso do que fizemos anteriormente. Utilizamos novamente o with open para abrir o arquivo perguntas.txt no modo de leitura "r", com a codificação UTF-8. Criamos uma lista vazia chamada lista_desafio.
+
+lista_desafio = []
+with open("perguntas.txt", "r", encoding="utf-8") as arquivo:
+    for linha in arquivo:
+        lista_desafio.append(linha.strip())
+COPIAR CÓDIGO
+Com isso, resolvemos a etapa 2, e podemos imprimir a lista_desafio para verificar seu conteúdo.
+
+print(lista_desafio)
+COPIAR CÓDIGO
+Na etapa 3, obtemos as respostas de um LLM para cada pergunta. Queremos que a resposta obtida corresponda à pergunta na mesma posição. Podemos criar uma nova lista em Python para as respostas, garantindo que as posições correspondam entre as listas de perguntas e respostas. Outra opção é criar um dicionário, onde cada pergunta é uma chave e a resposta correspondente é o valor. Optamos por utilizar uma lista de dicionários em Python, pois já vimos essa abordagem anteriormente.
+
+Criamos a lista_de_dicionarios_de_respostas, que começa vazia.
+
+lista_de_dicionarios_de_respostas = []
+COPIAR CÓDIGO
+Percorremos as perguntas e chamamos o modelo Gemini para obter uma resposta, que será armazenada em um dicionário. Cada elemento da lista será um dicionário com a pergunta e a resposta. Para adicionar um item à lista, utilizamos append.
+
+for pergunta in lista_desafio:
+    resposta = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=f"Gere uma resposta muito sucinta para a pergunta: {pergunta}"
+    )
+    lista_de_dicionarios_de_respostas.append({"pergunta": pergunta, "resposta": resposta.text})
+COPIAR CÓDIGO
+Com isso, concluímos as etapas do desafio.
+
+Gerando e salvando respostas em CSV
+Indo passo a passo novamente, utilizamos o for para iterar sobre nossa lista, que contém cinco elementos, ou dez, dependendo do caso. Pegamos o primeiro desses elementos, geramos a resposta e pedimos para o Gemini gerar uma resposta bastante sucinta para essa pergunta. Ele gera a resposta, que é salva na variável resposta. Em seguida, geramos um dicionário com a pergunta e a resposta, utilizando o texto da resposta em resposta.text. Adicionamos esse dicionário à nossa lista de dicionários de respostas. Quando executamos, não há exibição imediata, pois não incluímos um print. Se desejarmos visualizar, podemos adicionar um print ou simplesmente exibir o conteúdo da variável lista de dicionários de respostas.
+
+Por exemplo, a pergunta zero, "De que é feito o Sol?", tem como resposta "Principalmente hidrogênio e hélio". A pergunta da posição 1, "De que é feito o planeta Saturno?", também tem como resposta "Hidrogênio e hélio". A pergunta da posição 2, "Qual a galáxia mais antiga já encontrada?", tem como resposta "HD1". A pergunta da posição 3, "Qual a maior estrela já encontrada?", tem como resposta "UY Scuti". E a última pergunta, da posição 4, "Qual é a estrela mais próxima do Sol?", tem como resposta "Próxima Centauri". Com isso, nossa etapa 3 está concluída com sucesso.
+
+Na etapa 4, vamos salvar os resultados em um novo arquivo .csv. Existem alguns modos de fazer isso. Podemos fazer manualmente, utilizando o modo de escrita, lembrando que um arquivo .csv é uma lista separada por vírgulas. Por exemplo, um arquivo .csv pode ter um cabeçalho com os títulos dos campos e, em seguida, os dados separados por vírgulas. Podemos fazer isso manualmente, mas também podemos utilizar a biblioteca pandas, que possui um método específico para isso.
+
+No primeiro modo, escrevemos um arquivo utilizando with open, chamando-o de respostas1.csv. No modo de escrita, completamos com o encoding como utf-8.
+
+with open("respostas1.csv", "w", encoding="utf-8") as arquivo:
+    arquivo.write("pergunta,resposta\n")
+    for pergunta_dict in lista_de_dicionarios_de_respostas:
+        arquivo.write(f"{pergunta_dict['pergunta']},{pergunta_dict['resposta']}\n")
+COPIAR CÓDIGO
+Se houver um erro com aspas duplas, podemos usar aspas simples para evitar problemas. Recapitulando, abrimos o arquivo no modo de escrita, escrevemos o cabeçalho manualmente e iteramos sobre a lista de dicionários, escrevendo cada linha no arquivo. Ao rodar, verificamos que o arquivo respostas1.csv está correto.
+
+Utilizando pandas para manipulação de dados
+Agora, vamos para o outro modo, utilizando pandas. Criamos um DataFrame chamado df_perguntas_e_respostas a partir da lista de dicionários de respostas. O pandas já sabe separar dicionários em DataFrames.
+
+df_perguntas_e_respostas = pd.DataFrame(lista_de_dicionarios_de_respostas)
+COPIAR CÓDIGO
+Para salvar em um arquivo .csv, utilizamos o método to_csv, passando o nome do arquivo, se queremos incluir o índice (neste caso, False), e o encoding como utf-8.
+
+df_perguntas_e_respostas.to_csv("resposta2.csv", index=False, encoding="utf-8")
+COPIAR CÓDIGO
+Ao rodar, o arquivo respostas2.csv é salvo corretamente.
+
+Por fim, na etapa 5, vamos ler o arquivo .csv que criamos utilizando pandas. Criamos um novo DataFrame chamado novo_df utilizando pd.read_csv, passando o nome do arquivo.
+
+novo_df = pd.read_csv("resposta2.csv")
+COPIAR CÓDIGO
+Podemos imprimir o novo_df inteiro ou apenas o head.
+
+novo_df.head()
+COPIAR CÓDIGO
+Essas foram as cinco etapas do nosso desafio, utilizando tanto código Python manual quanto o framework de dados pandas. Espero que tenham gostado do desafio. Em breve, continuaremos explorando o mundo do Python.
+
+@@07
+Gerenciamento de arquivos de transações no Bytebank
+
+O Bytebank, um banco digital que oferece serviços bancários online, está desenvolvendo um sistema para gerenciar transações financeiras de seus clientes. A equipe de desenvolvimento, da qual você faz parte, precisa garantir que todas as transações do dia sejam registradas em um arquivo de texto para auditoria e análise futura. No entanto, é crucial que, ao final de cada dia, o arquivo seja sobrescrito com as novas transações para evitar acúmulo de dados desnecessários.
+Qual abordagem a equipe deve adotar para implementar um sistema que grava as transações diárias em um arquivo de texto, garantindo que o arquivo seja sobrescrito a cada dia?
+
+Utilizar a função open em Python com o modo 'a' (append), que adiciona as novas transações ao final do arquivo existente, preservando o histórico de transações anteriores, e assim mantém um registro contínuo de todas as operações realizadas ao longo do tempo, o que pode ser útil para auditorias detalhadas.
+ 
+Incorreta, pois o modo 'a' (append) adiciona dados ao final do arquivo sem apagar o conteúdo anterior, o que resultaria no acúmulo de dados, contrariando o requisito de sobrescrever o arquivo diariamente, embora possa ser vantajoso para manter um histórico completo.
+Alternativa incorreta
+Configurar o sistema para criar um novo arquivo a cada dia com um nome diferente, incluindo a data no nome do arquivo, para manter um registro separado de transações diárias, o que facilita a organização e a busca por transações específicas em datas distintas, além de permitir uma análise temporal detalhada.
+ 
+Incorreta, pois essa abordagem cria novos arquivos diariamente em vez de sobrescrever o mesmo arquivo, o que não atende ao requisito de evitar o acúmulo de dados desnecessários em um único arquivo, embora ofereça uma maneira estruturada de arquivar dados.
+Alternativa incorreta
+Utilizar a função open em Python com o modo 'w' (write), que apaga o conteúdo anterior do arquivo e grava as novas transações do dia, garantindo que o arquivo seja atualizado diariamente sem acúmulo de dados antigos.
+ 
+Correta, pois o modo 'w' na função open em Python abre o arquivo para escrita, apagando qualquer conteúdo existente e permitindo que as novas transações sejam registradas, atendendo ao requisito de sobrescrever o arquivo diariamente.
+Alternativa incorreta
+Utilizar a função open em Python com o modo 'r+' (read and write), que permite ler e escrever no arquivo sem apagar o conteúdo existente, mantendo um registro contínuo de todas as transações, o que pode ser vantajoso para revisões históricas e análises de longo prazo.
+
+@@08
+Para saber mais: salvar arquivos csv
+
+Abordagem manual com open()
+Na criação de um arquivo CSV utilizando apenas funções nativas do Python, como o open(), o processo é realizado linha a linha. Essa técnica consiste em escrever primeiramente o cabeçalho (com os nomes das colunas) e, em seguida, cada registro formatado com vírgulas para separar os campos. Essa abordagem funciona bem para arquivos simples, pois o CSV, em essência, é um arquivo de texto estruturado.
+
+Uma vantagem desse método é a liberdade de definir exatamente como cada linha será formatada, o que pode ser útil em cenários onde se deseja um controle específico sobre a saída. Por outro lado, a responsabilidade pelo tratamento de casos especiais – como campos que contenham vírgulas, quebras de linha ou a necessidade de envolver valores entre aspas – recai inteiramente sobre o desenvolvedor, o que pode levar a erros inesperados ou complicações se o arquivo possuir dados mais complexos.
+
+Utilizando o Pandas para gerar CSV
+A biblioteca Pandas oferece uma abordagem mais prática e robusta para a exportação de data frames para o formato CSV. Ao converter uma lista de dicionários para um data frame, por exemplo, é possível utilizar o método to_csv(), que gerencia automaticamente as questões de formatação e escape de caracteres especiais.
+
+Essa alternativa possui a vantagem de ser altamente confiável em projetos de ciência de dados, já que o Pandas cuida dos detalhes técnicos e permite, com poucos parâmetros, incluir ou excluir o índice, definir o encoding e outros ajustes. Dessa forma, o risco de inconsistências no arquivo gerado é bem menor. Por outro lado, esse método exige a dependência da biblioteca Pandas, o que pode aumentar o tamanho da aplicação ou limitar seu uso em ambientes onde a instalação de pacotes externos não é viável.
+
+Considerações para a escolha de abordagem
+A decisão entre utilizar o método manual ou recorrer ao Pandas depende do contexto do projeto:
+
+Em situações em que o volume de dados é pequeno e os requisitos de formatação são simples, a abordagem manual pode ser suficiente e leve.
+Para projetos que envolvem manipulação consistente de dados complexos e integração com análises posteriores, utilizar o Pandas se torna uma opção mais segura, legível e escalável.
+Por fim, compreender os pontos fortes e limitações de cada estratégia permite que a escolha seja feita de forma adequada ao objetivo final, garantindo tanto a eficiência quanto a manutenibilidade do código.
+
+@@09
+Faça como eu fiz: arquivos e pandas
+
+Nesta aula, foram abordados conceitos de leitura e escrita de arquivos em Python e a manipulação de dados com o Pandas.
+Agora é a sua chance de praticar os conteúdos vistos. Para isso:
+
+Crie uma lista vazia para armazenar os resumos dos e-mails.
+Utilize a função append para inserir cada resumo formatado via fString na lista.
+Configure a função para retornar a lista populada após um loop de iterações.
+Implemente o with open com modo 'W' para criar e sobrescrever um arquivo .txt com os resumos.
+Use write ou write lines com '\n' para separar cada entrada no arquivo.
+Abra o arquivo em modo 'R' e leia suas linhas, salvando em uma nova lista com strip para remover quebras de linha.
+Explore os métodos read, readline e readlines para diferentes formas de leitura em Python.
+Importe o Pandas utilizando o alias pd para manipulação de dados.
+Construa um arquivo .csv manualmente, escrevendo o cabeçalho e as linhas com as chaves de cada dicionário.
+Crie um DataFrame com a lista de dicionários e utilize o método to_csv para salvar o CSV com encoding UTF-8.
+Desenvolva um desafio para gerar um arquivo .txt a partir de uma lista de perguntas e depois lê-lo para criar uma lista.
+Integre uma chamada ao LLM para obter respostas sucintas, associando cada pergunta com sua resposta e salvando o resultado final em um novo arquivo .csv.
+Para acessar o guia detalhado, consulte as transcrições da aula.
+
+@@10
+O que aprendemos?
+
+Nesta aula, aprendemos:
+A manipular arquivos em Python usando with open() para gerenciar contexto automaticamente.
+A diferença entre os modos w (write) e a (append) para escrita de arquivos.
+A utilizar encoding=utf-8 para garantir compatibilidade com caracteres especiais.
+A ler arquivos em modo r e manipular conteúdo com read(), readline(), e readlines().
+A introduzir o Pandas para manipulação de dados tabulares e a importância do DataFrame.
+A ler arquivos CSV com Pandas usando read_csv e visualizar dados com .head() e .tail().
+A criar e manipular arquivos TXT e CSV a partir de listas e dicionários em Python.
+A exportar DataFrames para arquivos CSV com Pandas usando to_csv.
