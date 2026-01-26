@@ -1953,3 +1953,378 @@ A introduzir o Pandas para manipulação de dados tabulares e a importância do 
 A ler arquivos CSV com Pandas usando read_csv e visualizar dados com .head() e .tail().
 A criar e manipular arquivos TXT e CSV a partir de listas e dicionários em Python.
 A exportar DataFrames para arquivos CSV com Pandas usando to_csv.
+
+#25/01/2026
+
+@04-Conhecendo a Pandas
+
+@@01
+Projeto da aula anterior
+
+Caso queira revisar o código até aqui ou começar a partir desse ponto, disponibilizamos os códigos realizados na aula anterior, para visualizar clique neste link.
+
+https://colab.research.google.com/drive/1vO1OK8_lwc0FAN75KAR0PGCY6Ra-ozBj#scrollTo=NgsQVAG3NHtg
+
+@@02
+Manipulação de dados com Pandas
+
+Agora que já compreendemos a base do que é um DataFrame no Pandas e as primeiras operações que podemos realizar, como criar um DataFrame com pd.DataFrame ou ler um arquivo CSV com pd.read_csv, podemos avançar para aprender mais sobre como manipular os dados contidos nesses DataFrames que criamos.
+
+Talvez você tenha notado algo diferente nas perguntas e respostas. Isso ocorre porque, quando a conexão com o Google é encerrada, perdemos as informações anteriores. Ao executar novamente, as respostas podem mudar um pouco, mas o essencial permanece o mesmo, então não se preocupe com isso. Vamos continuar explorando o mundo da manipulação de dados com o Pandas.
+
+Solicitando ajuda de IA para criar um DataFrame
+O que faremos agora é solicitar a ajuda de uma IA para gerar alguns exemplos de tabelas. Vamos criar um DataFrame básico. Podemos utilizar o GRCódigo, o Gemini, o ChatGPT, o Cloud, ou qualquer outra ferramenta de sua preferência. Vamos passar um prompt para que a IA nos auxilie.
+
+Solicitaremos a criação de um DataFrame no Pandas com cinco colunas: a primeira coluna será o tipo de produto, ou simplesmente "produto"; a segunda coluna será a categoria do produto; a terceira será o preço do produto; a quarta será a nota ou avaliação do produto; e a quinta coluna será a quantidade de itens vendidos. Vamos gerar 50 linhas para cada uma dessas colunas.
+
+Definindo dados e criando o DataFrame
+Para começar, precisamos importar as bibliotecas necessárias, que são o Pandas e o NumPy. Vamos definir os dados para as colunas do nosso DataFrame:
+
+import pandas as pd
+import numpy as np
+
+# Definindo os dados para as colunas
+nomes_produtos = [f"Produto {i+1}" for i in range(50)]
+categorias_produtos = np.random.choice(["Eletrônicos", "Livros", "Roupas", "Alimentos", "Brinquedos"], 50)
+precos_produtos = np.random.uniform(10.0, 500.0, 50).round(2)
+itens_vendidos = np.random.randint(1, 1000, 50)
+avaliacoes_produtos = np.random.uniform(1.0, 5.0, 50).round(1)
+COPIAR CÓDIGO
+Ao pressionar "Enter", o sistema começará a processar e gerar os dados. Ele utilizará o Gemini, mas, como mencionado, você pode usar qualquer ferramenta de sua escolha. Após a execução, podemos aceitar os dados gerados, que são aleatórios e utilizam a biblioteca NumPy. Assim como o Pandas, o NumPy é amplamente utilizado para manipulação de dados, especialmente para operações numéricas e geração de números aleatórios.
+
+Criando e exibindo o DataFrame
+Agora, vamos criar o DataFrame utilizando pd.DataFrame, onde adicionamos cada uma das listas que definimos:
+
+# Criando o DataFrame
+df_produtos = pd.DataFrame({
+    "Nome do produto": nomes_produtos,
+    "Categoria do produto": categorias_produtos,
+    "Preço do produto": precos_produtos,
+    "Itens vendidos": itens_vendidos,
+    "Avaliação do produto": avaliacoes_produtos
+})
+COPIAR CÓDIGO
+Podemos exibir o DataFrame utilizando o método head para ver as primeiras linhas:
+
+# Exibindo as primeiras linhas do DataFrame
+display(df_produtos.head())
+COPIAR CÓDIGO
+Assim, criamos um novo DataFrame armazenado na variável df_produtos. Ele contém produtos como eletrônicos, brinquedos e alimentos, com preços variados, quantidades vendidas e avaliações dos produtos. Esses detalhes não são a parte mais importante; o foco está no que faremos com esses dados.
+
+Explorando e filtrando dados no DataFrame
+Aprendemos a exibir o DataFrame inteiro, com todos os produtos. Embora estejamos utilizando o método head, poderíamos exibir o DataFrame completo, que contém 50 itens, permitindo visualizar do índice 0 ao 50. Já discutimos anteriormente como utilizar head e tail para ver o início e o final do DataFrame, mas nosso objetivo agora é diferente. Suponhamos que queremos visualizar apenas a coluna de categorias dos produtos. Como faríamos isso? O DataFrame funciona de maneira semelhante a um dicionário, permitindo nomear a coluna desejada entre colchetes. Assim, ao especificar a coluna "categoria do produto", obtemos os dados ordenados na mesma sequência do DataFrame, como eletrônicos, brinquedos e alimentos, mas apenas dessa coluna específica. Essa é uma primeira filtragem que podemos realizar.
+
+df_produtos["Categoria do produto"]
+COPIAR CÓDIGO
+Agora, imaginemos que queremos identificar os tipos de categorias únicas. Quando analisamos uma base de dados da empresa ou da internet, não sabemos necessariamente quais categorias estão presentes. Podemos querer identificar todos os valores únicos de uma categoria específica. Para isso, podemos criar um novo bloco de código. Existem algumas maneiras de fazer isso. Uma delas é utilizar o método unique(), que retorna um array com os elementos únicos da coluna.
+
+df_produtos["Categoria do produto"].unique()
+COPIAR CÓDIGO
+Outra opção é usar o método set(), que retorna um dicionário, identificado pelas chaves. Ambos os métodos permitem trabalhar com os valores únicos da coluna.
+
+set(df_produtos["Categoria do produto"])
+COPIAR CÓDIGO
+No próximo vídeo, aprenderemos como filtrar esses elementos. Até breve.
+
+@@03
+Filtragem de elementos
+
+Continuando de onde nós paramos nesta aula, vamos aprender como filtrar os elementos.
+
+Podemos colocar um texto com duas hashtags para filtrar elementos de um DataFrame do pandas. Para entendermos o que é exatamente uma filtragem, imagine que estamos visualizando o nome do produto, a categoria e outras informações. A filtragem consiste em selecionar apenas os produtos eletrônicos, ou os produtos que custam mais de 400 reais, ou aqueles com avaliação menor que duas estrelas ou maior ou igual a quatro estrelas. São várias possibilidades de filtragem que podemos aplicar em um DataFrame ou em qualquer outro DataFrame.
+
+Aplicando filtros em colunas específicas
+Para realizar essa filtragem, é bastante simples. Primeiramente, precisamos pensar em qual coluna específica aplicar o filtro. Já aprendemos a separar uma coluna, que é o df_produtos, e entre colchetes colocamos a categoria do produto. Suponhamos que queremos todos os produtos da categoria eletrônicos, por exemplo. No Python, podemos usar os sinais de maior, maior ou igual, menor, menor ou igual, ou quando for exatamente igual, utilizamos o igual duplo (==). Para diferente, usamos a exclamação igual (!=). Esses são os modos de comparação no Python.
+
+Para começar, vamos acessar a coluna "Categoria do produto" do nosso DataFrame:
+
+df_produtos["Categoria do produto"]
+COPIAR CÓDIGO
+Para fazer a comparação, utilizamos o igual duplo (==). É importante lembrar que o igual simples (=) é usado para atribuição, ou seja, para substituir o que estava em uma variável ou coluna por outra coisa. Já o igual duplo (==) faz uma comparação entre os itens. Queremos comparar o DataFrame, df_produtos, na coluna categoria, onde essa categoria deve ser igual a "eletrônicos".
+
+df_produtos["Categoria do produto"] == "Eletrônicos"
+COPIAR CÓDIGO
+Exibindo resultados filtrados
+Ao executar isso, ele retornará um valor booleano, verdadeiro ou falso (true ou false em inglês). Por exemplo, o item no índice zero pode retornar verdadeiro, indicando que é um eletrônico.
+
+No entanto, não queremos apenas ver os valores booleanos; queremos exibir o DataFrame inteiro contendo apenas os produtos eletrônicos. Para isso, combinamos as duas operações: pegamos o nome do DataFrame, df_produtos, e aplicamos o filtro. Assim, obtemos o DataFrame completo apenas com os itens que são eletrônicos.
+
+df_produtos[df_produtos["Categoria do produto"] == "Eletrônicos"]
+COPIAR CÓDIGO
+Ao executar, teremos o retorno esperado: oito produtos eletrônicos de um total de cinquenta, com diferentes avaliações e preços.
+
+Realizando filtragem por avaliação
+Podemos também realizar outra filtragem. Por exemplo, em vez de analisar a categoria do produto, podemos filtrar por avaliação, buscando produtos com avaliação menor que 2.0.
+
+df_produtos[df_produtos["Avaliação do produto"] < 2.0]
+COPIAR CÓDIGO
+Ao executar, veremos produtos com avaliações de 1.8, 1.5, 1.3, todas menores que 2. Isso pode ser útil para analisar por que certos produtos estão com desempenho ruim.
+
+Para saber quantos itens existem, podemos usar o método shape, que nos dá o formato do DataFrame. O df_produtos inteiro tem 50 linhas e 5 colunas.
+
+df_produtos.shape
+COPIAR CÓDIGO
+Armazenando e combinando filtros
+Podemos criar uma nova variável para armazenar os valores filtrados, como df_produtos_filtro_avaliacao_menor_que_2, e exibi-la.
+
+df_produtos_filtro_avaliacao_menor_que_2 = df_produtos[df_produtos["Avaliação do produto"] < 2.0]
+df_produtos_filtro_avaliacao_menor_que_2
+COPIAR CÓDIGO
+Ao aplicar o shape nesse novo DataFrame, veremos que ele contém 10 itens e 5 colunas.
+
+df_produtos_filtro_avaliacao_menor_que_2.shape
+COPIAR CÓDIGO
+Também podemos combinar mais de um filtro. Por exemplo, podemos querer todos os produtos da categoria eletrônicos que custem mais de 350 reais. Para isso, usamos o símbolo de e comercial (&) para combinar os filtros. O primeiro filtro verifica se a categoria é eletrônicos, e o segundo verifica se o preço é maior ou igual a 350.0. É importante agrupar os filtros entre parênteses para evitar erros.
+
+df_produtos[(df_produtos["Categoria do produto"] == "Eletrônicos") & (df_produtos["Preço do produto"] >= 350.0)]
+COPIAR CÓDIGO
+Ao executar, teremos três itens que são eletrônicos e custam mais de 350 reais.
+
+Na próxima aula, continuaremos explorando mais dados com o pandas.
+
+@@04
+Métodos LOC e ILOC
+
+Neste vídeo, vamos explorar dois métodos essenciais para seleção e filtragem de dados em Python com Pandas: os métodos LOC e ILOC. Eles são utilizados quando queremos selecionar, por exemplo, dados de um índice específico até outro, ou de um nome até outro, considerando que o índice seja numérico ou algo similar.
+
+Começaremos com o ILOC. Suponhamos que queremos acessar o produto 34, que está no índice 33. Estamos utilizando índices que foram gerados automaticamente quando criamos nosso DataFrame com a ajuda de uma inteligência artificial. Esses índices são numéricos e representam a localização de cada item. Para encontrar um item específico, como o que está na posição 15, utilizamos o nome do DataFrame seguido de .ILOC e o número do índice entre colchetes.
+
+df_produtos.iloc[15]
+COPIAR CÓDIGO
+Demonstrando o uso do método ILOC
+Ao executar, obtemos todas as informações do produto no índice 15, como nome, categoria, preço, itens vendidos e avaliação.
+
+Podemos também selecionar um intervalo de linhas, como da primeira linha até a linha 16, o que retornará do índice 0 até 15.
+
+df_produtos.iloc[0:16]
+COPIAR CÓDIGO
+Ou ainda, selecionar de uma linha intermediária, como da linha 34 até 42.
+
+df_produtos.iloc[34:42]
+COPIAR CÓDIGO
+Podemos passar esses intervalos de números ou, se preferirmos, indicar apenas o início ou o fim, como da linha 43 até o final.
+
+df_produtos.iloc[43:]
+COPIAR CÓDIGO
+Isso é similar ao que vimos em Python ao trabalhar com listas.
+
+Explicando o método LOC
+O método LOC funciona de maneira semelhante, mas é utilizado quando o índice não é numérico, mas sim um nome ou texto. Para isso, precisamos converter nosso DataFrame para que o índice seja, por exemplo, o nome do produto. Podemos usar a inteligência artificial do Gemini para criar um novo DataFrame baseado no DFProducts, onde o índice será a coluna de nome do produto.
+
+df_produtos_com_indice = df_produtos.set_index("Nome do produto")
+display(df_produtos_com_indice)
+COPIAR CÓDIGO
+Com o novo DataFrame, onde o nome do produto é o índice, podemos usar o LOC. Em vez de procurar por dfprodutos.iloc[15], procuramos por dfprodutos_com_índice.LOC['produto 15'].
+
+df_produtos_com_indice.loc["Produto 15"]
+COPIAR CÓDIGO
+Selecionando intervalos e colunas específicas
+Isso nos permite acessar dados específicos do produto 15, como categoria, preço, itens vendidos e avaliação. Podemos também selecionar intervalos, como do produto 15 até o produto 35.
+
+df_produtos_com_indice.loc["Produto 15":"Produto 35"]
+COPIAR CÓDIGO
+Ou do produto 45 até o final da lista.
+
+df_produtos_com_indice.loc["Produto 45":]
+COPIAR CÓDIGO
+Esses métodos são extremamente úteis para manipulação de dados em DataFrames, permitindo acesso preciso e eficiente a informações específicas.
+
+Para isso servem o LOC e o ILOC. Com eles, conseguimos realizar filtragens interessantes, como selecionar apenas o produto 45 e obter apenas o preço dele.
+
+df_produtos_com_indice.loc["Produto 45", "Preço do produto"]
+COPIAR CÓDIGO
+Realizando filtragens avançadas
+Podemos passar a coluna "preço do produto", que é o indicador da linha. Aqui, temos o índice, que é um indicador textual, e a coluna desejada. Estamos fazendo uma correspondência literal: produto 45 na coluna "preço do produto" deve retornar apenas esse valor, como se fosse uma célula de uma tabela do Excel, como B1, B2, D5, etc. Quando executamos isso, ele retorna o valor 236.39, mostrando que é do tipo float64, um tipo de ponto flutuante. Se fosse um inteiro, como "itens vendidos", ele retornaria int64, indicando o número 42 como um inteiro. Isso faz parte dos tipos do NumPy, uma biblioteca de matemática.
+
+Podemos especificar mais coisas. Por exemplo, podemos passar uma lista de produtos, como 45, 47 e 16, e selecionar as colunas "preço do produto" e "itens vendidos".
+
+df_produtos_com_indice.loc[["Produto 45", "Produto 47", "Produto 16"], ["Preço do produto", "Itens vendidos"]]
+COPIAR CÓDIGO
+Filtrando por categoria de produto
+Ao executar, ele retorna exatamente isso. Podemos passar uma lista de produtos no primeiro argumento e uma lista de colunas, tanto para o LOC quanto para o ILOC. Aqui, usamos o LOC com índices de texto, mas poderíamos usar o ILOC com índices numéricos, seguindo a mesma ideia.
+
+Vamos pegar o nosso DataFrame com índice textual e selecionar todos os itens da categoria "produto", como fizemos antes. Queremos onde a categoria seja "eletrônicos", mas não queremos apenas o valor booleano. Chamamos o método para retornar todo o DataFrame.
+
+eletronicos = df_produtos_com_indice[df_produtos_com_indice["Categoria do produto"] == "Eletrônicos"]
+COPIAR CÓDIGO
+Nem sempre queremos tudo; às vezes, queremos apenas algumas colunas específicas. Podemos fazer isso com o LOC ou ILOC. Podemos salvar o resultado em uma variável chamada eletrônicos e usar o LOC para ver apenas algumas colunas dos produtos eletrônicos.
+
+df_produtos_com_indice.loc[eletronicos.index, ["Preço do produto", "Itens vendidos"]]
+COPIAR CÓDIGO
+Alterando valores no DataFrame
+Usamos dfprodutos com índice .loc para pegar todos os eletrônicos, indicando que é o índice, pois o LOC lê índices numéricos. Queremos, por exemplo, o "preço do produto" e o "número de itens vendidos". Lembrando que deve ser uma lista, ele aceita uma coluna sozinha ou uma lista de colunas, e um índice sozinho ou uma lista de índices, sempre com colchetes. Ao executar, ele retorna apenas os produtos eletrônicos e as colunas específicas desejadas. É uma filtragem combinada e avançada, útil em muitos casos.
+
+Por fim, vamos ver como alterar valores. Imagine que precisamos alterar todos os itens de uma categoria, como mudar "brinquedos" para "produtos infantis". Não é prático alterar manualmente cada um. Podemos fazer isso com código, alterando todos de uma vez. Primeiro, fazemos um filtro no DataFrame na coluna "categoria do produto", onde seja igual a "brinquedos".
+
+brinquedos = df_produtos_com_indice[df_produtos_com_indice["Categoria do produto"] == "Brinquedos"]
+COPIAR CÓDIGO
+Queremos o DataFrame inteiro para esses itens. Temos todos os itens da categoria "brinquedos". Podemos colocá-los em uma nova variável chamada brinquedos e usar produtos com índice .loc para passar os índices textuais dos brinquedos e selecionar apenas a coluna "categoria do produto".
+
+df_produtos_com_indice.loc[brinquedos.index, "Categoria do produto"] = "Infanto-juvenil"
+COPIAR CÓDIGO
+Concluindo a manipulação de dados
+Alteramos para "infantis" ou "infanto juvenil". Ao executar, quando exibimos os itens da categoria "brinquedos", eles aparecem como "infanto juvenil". Quando usamos .unique para ver os itens únicos da coluna "categoria do produto", ele mostra "eletrônicos", "infanto juvenil", "alimentos", "livros" e "roupas".
+
+df_produtos_com_indice['Categoria do produto'].unique()
+COPIAR CÓDIGO
+Não existem mais "brinquedos". A variável salva mantém o estado anterior, mas o DataFrame foi alterado para "infanto juvenil".
+
+Essas são algumas das funcionalidades do LOC e ILOC. Na próxima aula, explicaremos o próximo desafio do curso. Até mais!
+
+@@05
+Desafio com Python e Pandas
+
+Estão preparados para o próximo desafio que vamos realizar com Python e Pandas? Vamos apresentar o desafio no texto, e este será relativamente tranquilo, considerando tudo o que já sabemos. No entanto, haverá um aspecto que talvez não saibamos fazer, e será necessário pesquisar para realizá-lo.
+
+O primeiro passo do desafio será carregar um arquivo CSV específico que contém feedbacks de clientes. O arquivo se chama Reviews.csv. Devemos carregá-lo usando o Pandas. Ele estará disponível ao lado, em algum lugar, e já deve ter sido baixado no item anterior, antes deste vídeo. Podemos mostrar o arquivo, que é um dataset (conjunto de dados) público, ou pelo menos uma parte dele. Ele contém 41 linhas, sendo que a primeira é o cabeçalho, totalizando 40 itens. O arquivo possui reviews (avaliações) de usuários aleatórios sobre produtos que compraram.
+
+Focando na coluna relevante para o desafio
+O arquivo contém diversas informações, como Reviewer ID e Reviewer Name, que podem não ser relevantes para nós no momento. Em um cenário real, ao lidar com dados em uma empresa, podemos nos deparar com situações semelhantes. No entanto, o que realmente precisamos aqui é apenas a coluna Review Text, que contém o texto das avaliações ou resenhas sobre os produtos.
+
+O primeiro passo será carregar e ler esse arquivo utilizando o Pandas. Em seguida, usaremos um LLM para classificar o sentimento de cada feedback como positivo, negativo ou neutro. Vamos padronizar a formatação, deixando a primeira letra maiúscula, para manter a consistência visual.
+
+Adicionando uma nova coluna ao DataFrame
+O terceiro e último passo será adicionar uma nova coluna ao nosso DataFrame, contendo essa classificação de sentimento (positivo, negativo ou neutro) que obtivemos a partir do arquivo CSV. Este é um desafio simples, considerando o que já aprendemos, mas a adição de uma nova coluna pode ser algo que ainda não sabemos fazer. Por isso, como parte do desafio, devemos pesquisar na documentação do Pandas ou utilizar Inteligência Artificial para descobrir como adicionar uma nova coluna a um DataFrame existente.
+
+Essa será a tarefa proposta, e no próximo vídeo, retornaremos com a solução do desafio. Até mais.
+
+@@06
+Preparando o ambiente: reviews.csv
+
+Tudo pronto para começar o desafio? O material principal que você precisará está no arquivo reviews.csv.
+Faça o download, explore os dados e coloque seus conhecimentos em prática. Bom trabalho!
+
+@@07
+Análise de sentimento de reviews com o Gemini
+
+A primeira etapa da nossa resolução do desafio, como sempre fazemos, é carregar o arquivo csv, que vocês devem ter baixado.
+
+Vamos carregar o arquivo reviews.csv como um dataframe utilizando o pandas, que apelidamos de pd. Para isso, utilizamos a função pd.read_csv() para ler o arquivo CSV. Para obter o caminho completo do arquivo, copiamos o caminho da pasta e colamos entre aspas, pois é um texto. O caminho será //content//reviews.csv. Armazenamos isso em uma variável que podemos chamar de df_reviews, df_resenhas, ou df_avaliacoes, conforme preferirmos.
+
+df_reviews = pd.read_csv("/content/reviews.csv")
+Verificando o conteúdo do dataframe
+Vamos verificar o conteúdo do dataframe, que deve ser o mesmo da planilha ao lado. Para não exibir tudo na tela, faremos uma leitura apenas dos cinco primeiros registros para analisar o que precisamos classificar como positivo, negativo ou neutro. O campo a ser analisado é review-text.
+
+df_reviews.head()
+Podemos ler cada texto, mesmo que não falemos inglês, pois a IA entende o idioma e retornará uma classificação como positivo, negativo ou neutro. O próximo passo é passar cada texto da coluna review-text para um laço for, que percorrerá essa coluna. Existem várias maneiras de fazer isso. Podemos isolar a coluna review-text em uma variável chamada coluna_reviews e, em seguida, utilizar um laço for para enviar cada texto ao Gemini para análise.
+
+coluna_de_reviews = df_reviews["reviewText"]
+Analisando sentimentos com o Gemini
+Para chamar o Gemini, utilizamos o client.models.generateContent, passando dois parâmetros: o modelo, que será Gemini-2.5-flash, e o conteúdo, que é o nosso prompt. Vamos criar um prompt que instrui o Gemini a analisar a resenha e retornar uma análise de sentimento, respondendo apenas com "positivo", "negativo" ou "neutro". Podemos utilizar a técnica de Few Shot Prompting, fornecendo exemplos como "Eu adorei esse produto" (positivo), "Gostei, mas não é nada especial" (neutro), e "Odiei esse produto" (negativo).
+
+for review_numero, resenha in enumerate(coluna_de_reviews):
+    resposta = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=f"""Você irá analisar a resenha que eu te mandarei abaixo, e retorna com uma análise de sentimento.
+        Você deve responder APENAS com uma das seguintes palavras: 'Positiva', 'Negativa' ou 'Neutra',
+        indicando o sentimento relativo aquela resenha específica.
+        Exemplos:
+        "Eu adorei esse produto" -> Positiva
+        "Gostei, mas não é nada de especial" -> Neutra
+        "Odiei esse produto" -> Negativa
+
+        Segue a resenha a ser analisada: {resenha}
+        """
+    )
+Armazenando e exibindo resultados
+Armazenamos a resposta em uma variável e precisamos salvá-la em uma lista, pois o laço for irá sobrescrever a variável a cada iteração. Criamos uma lista chamada lista_analises_sentimentos, inicialmente vazia. Após obter a resposta, extraímos o texto com resposta.text e adicionamos à lista usando append.
+
+lista_de_analises_de_sentimentos = []
+lista_de_analises_de_sentimentos.append(resposta.text)
+Podemos exibir o progresso durante o laço com um print, mostrando o número da resenha, o texto em inglês e a análise de sentimento.
+
+print(f"Resenha {review_numero}: '{resenha}' -> Sentimento: {resposta.text}")
+Atualizando o dataframe com análises de sentimento
+Ao final do laço for, teremos uma lista completa com as análises de sentimento para cada uma das 40 resenhas. Após o término do processo, verificamos a lista lista_analises_de_sentimentos para garantir que contém apenas as palavras desejadas: "negativa", "positiva" ou "neutra". Em seguida, adicionamos uma nova coluna ao dataframe com essa classificação. Para isso, criamos uma coluna chamada "análises de sentimentos" e atribuímos a lista a ela. É importante garantir que o tamanho da lista corresponda ao número de linhas do dataframe.
+
+df_reviews["Análises de Sentimentos"] = lista_de_analises_de_sentimentos
+Ao exibir o dataframe atualizado, veremos a nova coluna "análises de sentimentos" com as classificações correspondentes a cada texto.
+
+df_reviews
+Considerações finais e próximos passos
+Podemos expandir essa análise, por exemplo, criando uma coluna adicional com as resenhas traduzidas para o português usando o Gemini. Esse foi o nosso desafio, e na próxima aula continuaremos explorando Python, Pandas, dados e inteligência artificial.
+
+@@08
+Filtrando recompensas personalizadas na Clickbonus
+
+A Clickbonus, uma plataforma digital que oferece um clube de vantagens e recompensas personalizadas por meio de parcerias com diversas empresas, está buscando melhorar a experiência de seus usuários. A equipe de desenvolvimento que você faz parte foi encarregada de analisar o banco de dados de recompensas para identificar quais recompensas são mais populares entre os usuários que gastaram mais de R$ 500,00 em compras no último mês. Para isso, é necessário filtrar as recompensas que pertencem à categoria "eletrônicos" e que foram resgatadas por esses usuários.
+Qual abordagem de filtragem de dados você utilizaria para resolver essa situação?
+
+Selecionar todas as recompensas da categoria "eletrônicos" e, em seguida, aplicar um filtro para usuários que gastaram qualquer valor no último mês, além de realizar uma segmentação demográfica para entender melhor o perfil dos usuários.
+ 
+Alternativa incorreta
+Aplicar um filtro no DataFrame para selecionar recompensas da categoria "eletrônicos" e, em seguida, filtrar usuários que gastaram mais de R$ 500,00 no último mês, utilizando o operador lógico "E" para combinar os critérios.
+ 
+Correta, pois essa abordagem garante que apenas as recompensas que atendem a ambos os critérios sejam exibidas, permitindo identificar as recompensas eletrônicas mais populares entre os usuários que gastaram acima do valor estipulado.
+Alternativa incorreta
+Filtrar o DataFrame para selecionar recompensas resgatadas por usuários que gastaram mais de R$ 500,00 no último mês, sem considerar a categoria das recompensas, mas incluindo uma análise temporal para verificar a frequência de resgates ao longo do mês.
+ 
+Incorreta, pois essa abordagem não considera a categoria "eletrônicos", o que é essencial para identificar as recompensas específicas que a equipe deseja analisar, mesmo que a análise temporal possa oferecer insights adicionais.
+Alternativa incorreta
+Utilizar um filtro para recompensas resgatadas no último mês, sem especificar a categoria ou o valor gasto pelos usuários, mas incluindo uma análise de tendências para prever futuras preferências de recompensas.
+
+@@09
+Para saber mais: set_index em pandas
+
+Como o set_index transforma um DataFrame
+O método set_index do pandas é uma ferramenta poderosa para tornar uma coluna específica do DataFrame os rótulos das linhas, substituindo os índices numéricos padrão. Ao utilizar esse recurso, você pode tornar os dados mais intuitivos, principalmente quando os elementos dessa coluna possuem significado único, como nomes, datas ou códigos. Essa transformação melhora a legibilidade da estrutura dos dados e pode facilitar filtragens e consultas subsequentes.
+
+Por exemplo, ao converter a coluna que contém os nomes dos produtos em índices, você passa a acessar os dados como se estivesse consultando um dicionário. Assim, ao pedir os dados de um produto específico, em vez de usar um índice numérico, você pode utilizar diretamente a chave textual associada ao produto.
+
+# Exemplo simples: convertendo uma coluna para índice
+import pandas as pd
+
+dados = {'Produto': ['Produto A', 'Produto B', 'Produto C'],
+         'Preço': [100, 150, 200],
+         'Estoque': [30, 20, 50]}
+df = pd.DataFrame(dados)
+
+# Transformando a coluna 'Produto' em índice
+df_indexado = df.set_index('Produto')
+print(df_indexado)
+COPIAR CÓDIGO
+Abordagens alternativas e considerações
+Embora o set_index seja muito útil, é interessante conhecer as variações dessa abordagem para que você possa escolher a melhor para o seu fluxo de trabalho. Algumas considerações:
+
+Quando utilizar índices textuais, a consulta de dados pode se assemelhar à consulta em dicionários, mas deve-se estar atento ao fato de que operações envolvendo ordenação podem ter um comportamento diferente dos índices numéricos.
+Caso seja necessário manter o índice original, é comum realizar o reset_index posteriormente, utilizando o método reset_index, que reverte a operação e recria um índice numérico padrão.
+Em cenários com grandes volumes de dados, índices textuais podem influenciar a performance de determinadas operações, então é importante avaliar se a legibilidade e a semântica dos dados compensam essa escolha.
+Ao considerar essas alternativas, é possível equilibrar a clareza na representação dos dados com a eficiência das operações. Dessa forma, o uso do set_index pode ser adaptado para atender necessidades específicas, tornando as análises mais intuitivas e alinhadas ao contexto dos seus dados.
+
+Explore essas variações e experimente diferentes abordagens para encontrar a melhor estratégia para o seu projeto.
+
+@@10
+Faça como eu fiz: DataFrames e Filtros
+
+Nesta aula, exploramos a criação, manipulação e filtragem de dados com o Pandas, além de integrar análises de sentimentos via LLM. Agora é a sua chance de revisar e exercitar os conteúdos vistos, colocando a mão na massa. Para isso:
+Crie um DataFrame com 5 colunas: nome do produto, categoria, preço, avaliação e itens vendidos;
+Utilize pd.read_csv para importar dados de um arquivo CSV;
+Exiba o DataFrame completo e com .head para visualizar os registros iniciais;
+Selecione uma coluna específica utilizando a notação de colchetes;
+Extraia valores únicos de uma coluna com os métodos unique ou set;
+Realize um filtro simples para selecionar registros com categoria igual a 'eletrônicos';
+Aplique um filtro condicional para obter produtos com avaliação menor que 2.0;
+Combine filtros usando o operador & para condições simultâneas, como categoria e preço;
+Utilize o método iloc para selecionar linhas por índices numéricos;
+Acesse registros com índices textuais utilizando o método loc após definir um novo índice;
+Implemente o desafio: carregue o CSV de reviews, utilize um LLM para classificar o sentimento de cada feedback e adicione essa classificação como nova coluna no DataFrame.
+Para acessar o guia detalhado, consulte as transcrições da aula.
+
+@@11
+O que aprendemos?
+
+Nesta aula, aprendemos:
+Como criar e manipular DataFrames do Pandas, utilizando colunas e dados específicos.
+Como usar o NumPy para gerar números aleatórios e popular DataFrames.
+Métodos para acessar e filtrar dados em DataFrames, usando colchetes e condições.
+Técnicas de filtragem utilizando operadores de comparação e lógicos no Pandas.
+Uso dos métodos loc e iloc para seleção de dados.
+A carregar e processar arquivos CSV com o Pandas.
+Análise de sentimentos com integração de modelos de linguagem e manipulação de resultados.
+A adicionar novas colunas a DataFrames para incorporar resultados de análises.
+
+#26/01/2026
+
+@06-Desafio Final
+
+@@
