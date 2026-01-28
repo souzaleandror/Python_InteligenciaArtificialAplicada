@@ -2327,4 +2327,671 @@ A adicionar novas colunas a DataFrames para incorporar resultados de análises.
 
 @06-Desafio Final
 
-@@
+@@01
+Código completo da aula anterior
+
+Caso queira revisar o código até aqui ou começar a partir desse ponto, disponibilizamos os códigos realizados na aula anterior, para visualizar clique neste link.
+
+https://colab.research.google.com/drive/1BuF1wYXLM8zWusEDhH8EN81vOFHmWQbn#scrollTo=5i0bhuooMVla
+
+@@02
+Preparando o ambiente
+
+Nas próximas aulas utilizaremos o arquivo abaixo:
+Módulo 6.
+Bons estudos!
+
+https://cdn3.gnarususercontent.com.br/4790-python/modulo-6.zip
+
+@@03
+Tratamento de erros com Try, Except e Finally
+
+Nesta aula, continuaremos nosso mergulho em Python, pandas e inteligência artificial. O tema abordado será mais relacionado à programação em Python, sem ligação direta com pandas, dados ou inteligência artificial. No entanto, é uma base importante para o desenvolvimento de sistemas que envolvam inteligência artificial e pandas.
+
+Vamos explorar um conceito da programação em si, que é imaginar situações em que algo pode dar errado, como algumas experiências que já tivemos durante nosso aprendizado.
+
+Discutindo conversões e erros comuns
+Imaginemos que vamos tentar realizar conversões, como fizemos anteriormente no curso. Por exemplo, ao pegarmos tipos de dados e tentarmos converter uma idade de 18 anos para um valor inteiro, podemos fazer isso utilizando a função int().
+
+int()
+COPIAR CÓDIGO
+No entanto, se tentarmos converter uma string como "abc" para um inteiro, ocorrerá um erro.
+
+int("abc")
+COPIAR CÓDIGO
+Um exemplo prático seria um input onde solicitamos que a pessoa usuária digite sua idade. Normalmente, isso funciona, mas se a pessoa digitar letras em vez de números, ocorrerá um erro de valor, pois tentamos converter algo não numérico para um valor inteiro. Vamos começar capturando a entrada do usuário.
+
+pegando_algo = input("Digite a sua idade:")
+COPIAR CÓDIGO
+Agora, tentamos converter essa entrada para um inteiro.
+
+pegando_algo = int(input("Digite a sua idade:"))
+COPIAR CÓDIGO
+Explorando tipos de erros e suas soluções
+Existem diversos tipos de erros, como quando tentamos somar uma variável que contém um número com outra que contém um nome, resultando em um erro de tipo. Por exemplo:
+
+pessoas = 6
+pessoas_2 = "Mário, João, Silvia, Maria"
+pessoas + pessoas_2
+COPIAR CÓDIGO
+Para lidar com esses casos, a linguagem Python, assim como a maioria das linguagens de programação, oferece comandos para tentar executar algo e capturar erros, permitindo que o programa continue. Em vez de exibir um erro para a pessoa usuária, podemos mostrar uma mensagem como "Você digitou um valor inválido, por favor, insira um valor numérico" ou continuar o programa com um valor padrão.
+
+Utilizando blocos try e except
+Esses são os chamados blocos de tentativa e exceção, conhecidos como exceptions. O bloco geralmente envolve os comandos try, except e, opcionalmente, finally. Vamos demonstrar como alterar um código para evitar erros e exibir mensagens adequadas para a pessoa usuária.
+
+Primeiro, utilizamos o try para tentar executar um bloco de código. Se ocorrer um erro, o except captura o tipo específico de erro. Vamos ver um exemplo de como capturar um ValueError.
+
+try:
+    pegando_algo = int(input("Digite a sua idade:"))
+except ValueError:
+    print("Você não digitou um número inteiro válido")
+COPIAR CÓDIGO
+Existem muitos tipos de erros pré-definidos no Python, como TypeError, ValueError, KeyError, entre outros. Podemos consultar a documentação do Python para ver a lista completa de exceções.
+
+Criando exceções personalizadas e múltiplos excepts
+É recomendável criar exceções personalizadas para casos específicos. Ao capturar um erro, podemos exibir uma mensagem para a pessoa usuária e outra para a equipe de desenvolvimento, detalhando o erro. Por exemplo, ao capturar um ValueError, podemos exibir "Você não digitou um número inteiro válido" para a pessoa usuária e "Detalhes do erro: valor literal inválido para conversão" para a equipe de desenvolvimento.
+
+except ValueError as ve:
+    print("Você não digitou um número inteiro válido")
+    print("Detalhes do erro:", ve)
+COPIAR CÓDIGO
+Além disso, podemos combinar vários blocos except para capturar diferentes tipos de erros. Por exemplo, podemos ter um except ValueError e outro except TypeError.
+
+try:
+    pessoas = 6
+    pessoas_2 = "Mário, João, Silvia, Maria"
+    pessoas + pessoas_2
+except ValueError:
+    print("Você não digitou um número inteiro válido")
+except TypeError:
+    print("Você não pode somar um número inteiro com uma string")
+COPIAR CÓDIGO
+Utilizando except Exception e finally
+Se ocorrer um erro que não foi capturado por nenhum dos except específicos, podemos usar um except Exception para capturar qualquer erro restante.
+
+except Exception as e:
+    print("Detalhes do erro:", e)
+COPIAR CÓDIGO
+O comando finally é utilizado para executar um bloco de código independentemente de ter ocorrido um erro ou não. Isso é útil, por exemplo, ao trabalhar com arquivos, garantindo que eles sejam fechados corretamente, mesmo que ocorra um erro durante a execução do código.
+
+finally:
+    print("Finalizei o processo")
+COPIAR CÓDIGO
+Concluindo o uso de blocos try, except e finally
+Em resumo, o uso de blocos try, except e finally nos permite tratar erros de forma eficaz, garantindo que o programa continue funcionando e fornecendo mensagens claras para a pessoa usuária e a equipe de desenvolvimento. Na próxima aula, continuaremos explorando a linguagem Python e a inteligência artificial.
+
+@@04
+Selecionando análises negativas para categorização
+
+Continuando, vamos imaginar que desejamos, naquela tabela que analisamos em aulas anteriores, selecionar apenas as análises negativas e passá-las para um modelo de linguagem. Queremos que a inteligência artificial identifique as categorias de reclamações presentes nessas análises negativas e as divida em cinco categorias gerais, por exemplo.
+
+Se passássemos as análises uma por uma, o modelo poderia perder o contexto. Ao perguntar a categoria de uma análise, ele poderia dar uma resposta específica, e ao passar outra análise, poderia dar uma categoria diferente, mesmo que ambas pudessem ser englobadas na mesma categoria. Por exemplo, uma reclamação sobre atraso na entrega ou produto quebrado poderia ser categorizada de formas diferentes em chamadas separadas. Portanto, o ideal seria passar todas as análises juntas, ao mesmo tempo.
+
+Preparando o DataFrame para filtragem
+Para isso, precisamos ter o DataFrame DFReviews carregado com as análises de sentimento processadas. Caso a aula anterior tenha sido feita há algum tempo, pode ser necessário rodar novamente o upload do arquivo reviews.csv e fazer a leitura com o pandas. Assim, o modelo poderá classificar as análises como negativas, neutras ou positivas, criando o novo DataFrame DFReviews.
+
+O primeiro passo é filtrar apenas as análises de sentimentos que tenham a categoria negativa. Aprendemos a fazer isso anteriormente, então vamos relembrar criando um bloco de código. No DFReviews, a coluna que precisamos filtrar é a de análise de sentimentos. Podemos usar o atalho ctrl + espaço para visualizar as opções disponíveis. O filtro será para análises iguais a "negativa". Lembrando que o operador de igualdade é usado para comparação, então precisamos usar == para isso.
+
+Filtrando e visualizando análises negativas
+Primeiro, vamos visualizar o DataFrame e a coluna de análises de sentimentos:
+
+df_reviews
+df_reviews["Análises de Sentimentos"]
+COPIAR CÓDIGO
+Agora, aplicamos o filtro para selecionar apenas as análises negativas:
+
+df_reviews["Análises de Sentimentos"] == "Negativa"
+COPIAR CÓDIGO
+Queremos visualizar o DataFrame inteiro para as análises negativas, então colocamos tudo entre colchetes. Ao exibir, veremos apenas os itens com análise negativa. Podemos salvar esse resultado em um novo DataFrame, como dfReviewsNegativas, e exibi-lo se desejarmos:
+
+df_reviews_negativas = df_reviews[df_reviews["Análises de Sentimentos"] == "Negativa"]
+df_reviews_negativas
+COPIAR CÓDIGO
+Também podemos verificar o tamanho desse DataFrame usando .shape, que nos mostrará, por exemplo, 25 linhas e 10 colunas, dando uma noção maior do conjunto de dados:
+
+df_reviews_negativas.shape
+COPIAR CÓDIGO
+Extraindo e unindo resenhas negativas
+A próxima etapa é extrair apenas a coluna ReviewText. Não podemos criar uma lista diretamente a partir disso, pois se pegássemos apenas essa coluna, seria criada uma lista. Vamos tentar pegar uma lista do novo DataFrame, dfReviews_negativas, e extrair apenas a coluna ReviewText, onde estão as resenhas. Isso resultará em uma lista completa, que podemos chamar de lista de resenhas negativas. Podemos imprimir essa lista para mantê-la visível:
+
+resenhas_negativas = df_reviews_negativas["reviewText"]
+resenhas_negativas
+COPIAR CÓDIGO
+No entanto, não podemos processar uma por uma; precisamos passar todas juntas. Existem várias opções para isso. Poderíamos, por exemplo, criar um novo texto concatenando as resenhas nas posições 0, 5, 6, 8, etc., mas isso seria trabalhoso e sem sentido. Uma alternativa seria usar um for para percorrer a lista e adicionar cada item a um texto, começando com um texto vazio e adicionando um por um até completar. Isso funcionaria, mas há uma maneira mais eficiente: o método join.
+
+Utilizando o método join para unir textos
+O método join é usado para unir textos e é mais fácil do que usar um for, pois permite fazer tudo em uma única linha de código. Para usar o join, precisamos escolher um separador. Como é um texto, deve estar entre aspas. Podemos escolher, por exemplo, cinco hashtags como separador, pois é improvável que elas apareçam no texto.
+
+Após escolher o separador, usamos o método join para unir a lista de resenhas negativas:
+
+resenhas_negativas_unidas = "#####".join(resenhas_negativas)
+COPIAR CÓDIGO
+Quando executamos, ele une tudo, separando por cinco hashtags. O texto resultante mostra claramente onde cada resenha termina e a próxima começa.
+
+Chamando a IA para categorização
+Agora, vamos salvar esse texto unido em uma variável chamada resenhas_negativas_unidas. Com isso, podemos chamar a IA do Gemini. Vamos copiar o código para fazer essa chamada, ajustando a identação conforme necessário. No código, vamos pedir à IA para analisar as resenhas negativas e encontrar cinco categorias diferentes de reclamações. Passamos o texto unido como argumento:
+
+resposta_de_categorias = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents=f"Você é um analista de dados. Vou te passar muitas resenhas negativas de análises de um produto, separadas por '#####', e eu quero que você encontre 5 categorias diferentes para os tipos de reclamações. Quero que você me retorne as 5 categorias. Cada categoria deve ser definida por APENAS uma palavra. Não escreva nada mais além das 5 categorias. Quero que elas sejam retornadas separadas por vírgula e em letra minúscula, e sem acentos gráficos.
+
+    Exemplo:
+    'eletronicos, roupas, alimentos, viagens, brinquedos'
+
+    Aqui estão as resenhas negativas: {resenhas_negativas_unidas}'''"
+)
+print(resposta_de_categorias.text)
+COPIAR CÓDIGO
+Se quisermos que a IA retorne apenas uma palavra para cada categoria, podemos ajustar o prompt para especificar isso. Podemos também pedir que as categorias sejam retornadas separadas por vírgulas e em letras minúsculas, sem acentos gráficos.
+
+Finalizando com a criação de lista de categorias
+Após rodar o código, a IA retorna as categorias desejadas. Se quisermos, podemos incrementar o prompt usando o conceito de few-shot, fornecendo exemplos de categorias. Isso pode resultar em respostas ligeiramente diferentes, mas ainda assim úteis.
+
+Finalmente, podemos salvar as categorias em uma variável e usar o método split para criar uma lista em Python. O split divide a string em substrings usando um separador, que neste caso será uma vírgula seguida de um espaço. Após rodar o código, obtemos uma lista de categorias em Python:
+
+categorias = resposta_de_categorias.text
+lista_de_categorias = categorias.split(sep=", ")
+COPIAR CÓDIGO
+Na próxima aula, continuaremos explorando a integração do Python com a inteligência artificial. Até mais.
+
+@@05
+Revisando a categorização de resenhas
+
+Voltando às nossas aulas de Python, na última aula, separamos e categorizamos as resenhas, criando uma taxonomia dessas categorias. Essa abordagem é interessante e muito útil. Retornamos apenas as categorias das resenhas negativas, mas poderíamos ter explorado mais a fundo.
+
+Imaginemos que já tivéssemos as categorias definidas, como fizemos anteriormente, quando solicitamos à IA que dividisse em positivo, negativo e neutro, as três categorias que passamos naquele momento.
+
+Classificando resenhas com inteligência artificial
+Imaginemos que já temos cinco categorias e um texto extenso de resenhas negativas unidas. Poderíamos classificar uma por uma, como antes, utilizando um for para ir de um a um, mas agora temos uma string gigantesca que não está bem separada. Existe um separador, mas poderia não haver, ou poderia ser apenas uma quebra de linha, o que dificultaria encontrar esse separador. Queremos que a inteligência artificial analise essas resenhas, as separe, atribua uma categoria a cada uma e retorne em um formato específico, como um dicionário do Python, que é mais organizado.
+
+No mercado, existe um formato de retorno de arquivos muito utilizado na internet, chamado JSON (JavaScript Object Notation). Ele é similar a um dicionário do Python, podendo ser também um array, vetor ou lista. É comum que, ao fazer uma chamada para um serviço online ou uma IA, recebamos um arquivo nesse formato JSON. Vamos ver um exemplo de como ele funciona. É parecido com um dicionário Python, começando com chaves. À esquerda, temos uma chave e, à direita, um valor. Por exemplo:
+
+{
+    "name": "Chris",
+    "age": 23,
+    "address": {
+        "city": "New York",
+        "country": "America"
+    },
+    "friends": [
+        {
+            "name": "Emily",
+            "hobbies": [
+                "biking",
+                "music",
+                "gaming"
+            ]
+        },
+        {
+            "name": "John",
+            "hobbies": [
+                "soccer",
+                "gaming"
+            ]
+        }
+    ]
+}
+COPIAR CÓDIGO
+Gerando categorias com código Python
+Queremos que nossa IA, ou Gemini, faça algo similar. Vamos copiar a maior parte do texto que temos, mas mudar algumas coisas. Em vez de respostas de categorias, queremos um dicionário de resenhas classificadas. O começo pode ser parecido: "Você é o analista de dados. Vou te passar muitas resenhas negativas de análise de um produto, separadas por cinco hashtags, e quero que encontre cinco categorias diferentes para os tipos de reclamações. Retorne as cinco categorias."
+
+Para isso, podemos usar o seguinte código para gerar as categorias:
+
+resposta_de_categorias = client.models.generate_content(
+    model="gemini-1.5-flash",
+    contents=f"""Você é um analista de dados. Vou te passar muitas resenhas negativas de
+    análises de um produto, separadas por '#####'', e eu quero que você encontre 5 categorias diferentes
+    para os tipos de reclamações. Quero que você me retorne as 5 categorias.
+    Cada categoria deve ser definida por APENAS uma palavra.
+    Não escreva nada mais além das 5 categorias. Quero que elas sejam retornadas
+    separadas por vírgula e em letra minúscula, e sem acentos gráficos.
+    
+    Exemplo:
+    'eletronicos, roupas, alimentos, viagens, brinquedos'
+    
+    Aqui estão as resenhas negativas: {resenhas_negativas_unidas}"""
+)
+categorias = resposta_de_categorias.text
+print(categorias)
+COPIAR CÓDIGO
+Criando um arquivo JSON de resenhas classificadas
+Agora, queremos que ele continue trabalhando. Cada categoria deve ser definida por uma palavra, e queremos que ele retorne um arquivo no formato JSON. Especificamos que a separação será por cinco categorias, em letra minúscula e sem acentos gráficos. Depois, queremos que retorne um texto no formato JSON contendo três chaves: resenha original, resenha em PT (português) e categoria. Podemos dar um exemplo de arquivo JSON, como:
+
+{
+    'resenha_original': 'I didn`t like the color of the product',
+    'resenha_pt': 'Eu não gostei da cor do produto',
+    'categoria': 'design'
+}
+COPIAR CÓDIGO
+Vamos passar a lista de resenhas negativas unidas e, em vez de categorias, ele nos dará o dicionário de resenhas classificadas, que esperamos ser um arquivo JSON. Chamaremos de JSON de resenhas classificadas, que receberá o dicionário de resenhas classificadas. Vamos imprimir e rodar, torcendo para dar certo. Ele identificou cinco categorias: durabilidade, desempenho, compatibilidade, funcionalidade e propaganda. Abaixo, encontramos as resenhas formatadas em JSON.
+
+Convertendo JSON para dicionário Python
+Para garantir que o retorno seja apenas o texto JSON, podemos reforçar o prompt:
+
+Retorne APENAS o texto JSON. Não escreva nada mais além do texto JSON.
+COPIAR CÓDIGO
+Podemos transformar isso em um dicionário do Python usando a biblioteca JSON, que já está embutida no Python e no Google Colab. Importamos a biblioteca com:
+
+import json
+COPIAR CÓDIGO
+E então, carregamos o JSON para um dicionário Python:
+
+dicionario_de_resenhas_negativas_classificadas = json.loads(json_de_resenhas_classificadas)
+COPIAR CÓDIGO
+Se ocorrer um erro devido aos indicadores de código JSON, podemos substituí-los por nada, apagando-os do texto:
+
+json_de_resenhas_classificadas_limpo = json_de_resenhas_classificadas.replace("```json", "").replace("```", "")
+COPIAR CÓDIGO
+Passamos essa variável para o loads, que converterá para um dicionário do Python:
+
+dicionario_de_resenhas_negativas_classificadas = json.loads(json_de_resenhas_classificadas_limpo)
+COPIAR CÓDIGO
+Verificando o resultado final
+Vamos imprimir o dicionário final e verificar se funcionou. Agora temos uma lista de dicionários com resenha original, resenha em português e categoria. Podemos usar métodos de lista, como len, para verificar o tamanho da lista, que tem 25 elementos:
+
+len(dicionario_de_resenhas_negativas_classificadas)
+COPIAR CÓDIGO
+Podemos continuar trabalhando com esse formato JSON, utilizando loads para converter para um dicionário Python.
+
+Na próxima aula, vamos explorar mais a inteligência artificial de uma forma diferente.
+
+@@06
+Explorando a execução local de IAs
+
+Nesta aula, vamos explorar uma abordagem diferente para lidar com Inteligências Artificiais (IAs) em Python, executando-as localmente. Pode-se questionar: por que fazer isso? Existem diversos motivos. Muitas vezes, lidamos com dados privados e sensíveis, e mesmo confiando em empresas que oferecem esses serviços, como Google, OpenAI e Anthropic, pode haver razões pessoais ou empresariais, ou até mesmo leis de proteção de dados, que nos levam a preferir rodar esses modelos localmente.
+
+Outro motivo seria o desenvolvimento de um modelo próprio, do zero, ou a utilização de modelos disponíveis online, como o GPT OSS de 20 bilhões de parâmetros, que é um modelo de código aberto. Podemos realizar um fine tuning (ajuste fino) nesses modelos para especializá-los em áreas específicas, como jurídico, financeiro ou recursos humanos, por exemplo. Se o modelo for menor, podemos executá-lo localmente em nossa máquina ou em um cluster de GPUs.
+
+Utilizando ferramentas para execução local
+Existem várias maneiras de fazer isso, mas duas são bastante populares atualmente: o Ollama, que funciona por linha de comando, e o LM Studio, que possui uma interface mais visual e amigável. Para este exemplo, utilizaremos o LM Studio. Primeiramente, é necessário baixá-lo e instalá-lo em sua máquina, disponível para Windows, Linux e Mac. Após a instalação, ao abrir o LM Studio, podemos pular as perguntas iniciais e acessar uma interface semelhante a um chatbot, como o ChatGPT ou Gemini, mas sem nenhum modelo carregado inicialmente.
+
+Para carregar um modelo, podemos acessar a aba "Discover" no lado esquerdo, onde é possível baixar modelos de IA disponíveis na comunidade, como no Hugging Face. Esses modelos são abertos e podem ser baixados e utilizados. É importante notar que o número ao lado do modelo, como 4B, indica a quantidade de parâmetros do modelo, representando as conexões da rede neural. Modelos maiores, como o GPT OSS de 20 bilhões de parâmetros, são mais complexos do que modelos menores, como os de 4 bilhões.
+
+Escolhendo e configurando o modelo
+Para este curso, sugerimos baixar o modelo Gemma 3 de 1 bilhão de parâmetros, que é um modelo aberto do Google, baseado no Gemini. Acreditamos que esse modelo pode ser executado na maioria das máquinas, até mesmo em celulares. Se possuir uma máquina com GPU melhor, pode-se optar por modelos maiores, como o Gemma 3 de 4 bilhões de parâmetros.
+
+Após escolher o modelo, na aba de opções de download, podemos ver as opções de quantização, que influenciam no tamanho e na qualidade do modelo. A quantização reduz o tamanho do modelo, convertendo números decimais em inteiros, sem perder muita qualidade. Para o Gemma 3 de 1 bilhão, temos a opção Q4, que representa a quantização com quatro números inteiros.
+
+Integrando o modelo com Python
+Depois de baixar o modelo, ele pode ser carregado e utilizado localmente, permitindo interações como em um chatbot. Podemos fazer perguntas e obter respostas rapidamente, dependendo da capacidade da máquina.
+
+Agora, vamos explorar como integrar isso com código. Para isso, precisamos do Python instalado em nossa máquina e de uma IDE (Ambiente de Desenvolvimento Integrado), como o VS Code, JetBrains ou Cursor. Vamos utilizar o Cursor para este exemplo. Após instalar o Python e a IDE, criamos uma nova pasta e um arquivo chamado chamada-llm.py para começar a codificar.
+
+Configurando o ambiente virtual
+Dentro do Cursor, abrimos o terminal e criamos um ambiente virtual com o comando:
+
+python -m venv .venv
+COPIAR CÓDIGO
+Após a criação, ativamos o ambiente virtual, o que varia conforme o sistema operacional. No Windows, utilizamos o comando:
+
+.venv\Scripts\Activate
+COPIAR CÓDIGO
+No MacOS ou Linux, o comando é:
+
+source .venv/bin/activate
+COPIAR CÓDIGO
+Ambos ativam o ambiente virtual, mas é necessário usar o comando específico para cada sistema operacional. Para desativar, basta digitar:
+
+deactivate
+COPIAR CÓDIGO
+Instalando e configurando a biblioteca OpenAI
+O motivo de ativarmos o ambiente virtual é para instalar a biblioteca da OpenAI, que será necessária. Embora o modelo que utilizaremos, o Gemma, seja do Google, a OpenAI estabeleceu um padrão com seu SDK, que é amplamente aceito. Assim, podemos usar a biblioteca da OpenAI para trabalhar com modelos como o Gemma, DeepSeek, Maritaca AI, entre outros.
+
+Para instalar a biblioteca da OpenAI, usamos o comando:
+
+pip install -q openai
+COPIAR CÓDIGO
+O -q é para que a instalação não seja muito verbosa. Após a instalação, importamos a biblioteca com:
+
+from openai import OpenAI
+COPIAR CÓDIGO
+Criando o cliente OpenAI e configurando o modelo
+Em seguida, criamos um cliente para a OpenAI, semelhante ao que fizemos com o Grok. O cliente OpenAI será configurado para se conectar ao nosso servidor local de modelos de IA, que será configurado no LMStudio. No LMStudio, ativamos o modelo e ele estará disponível em um endereço local, geralmente na porta 1234. Copiamos esse endereço e configuramos a URL base no nosso código:
+
+client_openai = OpenAI(
+    base_url="http://127.0.0.1:1234/v1",
+    api_key="lm-studio"
+)
+COPIAR CÓDIGO
+Realizando interações com o modelo
+No código, configuramos o cliente para realizar uma completion (completude) com o método client.OpenAI.chat.completions.create. Passamos o modelo que estamos rodando localmente e as mensagens que queremos enviar. As mensagens são configuradas em uma lista de dicionários, onde podemos definir o papel (role) e o conteúdo (content). O papel pode ser, por exemplo, de sistema ou usuário, e o conteúdo é a mensagem que queremos enviar.
+
+Podemos ajustar a personalidade do modelo através do system prompt, definindo como ele deve responder. Além disso, configuramos parâmetros como temperatura e número máximo de tokens:
+
+resposta_do_llm = client_openai.chat.completions.create(
+    model="google/gemma-3-1b",
+    messages=[
+        {"role":"system", "content":"Você é um assistente de IA que sempre responde de forma muito sarcástica."},
+        {"role":"user", "content":"O que é a IA Generativa?"}
+    ],
+    temperature=1.0,
+)
+COPIAR CÓDIGO
+Executando o código e obtendo respostas
+Após configurar tudo, rodamos o código localmente com:
+
+python chamada-ao-llm.py
+COPIAR CÓDIGO
+O modelo responde de acordo com as configurações que fizemos, e podemos ver a resposta no terminal. A resposta é extraída do objeto retornado pelo modelo, acessando o conteúdo dentro de choices[0].message.content:
+
+print(resposta_do_llm.choices[0].message.content)
+COPIAR CÓDIGO
+Com isso, conseguimos rodar modelos de IA localmente, sem depender de serviços externos, o que pode ser importante para muitos casos de uso. No próximo vídeo, teremos o enunciado do nosso último desafio e, em seguida, a resolução.
+
+@@07
+Introduzindo o desafio final
+
+Está preparado para o desafio final deste curso de Python? Ele pode parecer, a princípio, um pouco complexo, mas com tudo que aprendemos nos vídeos anteriores, temos certeza de que, com isso e mais uma iniciativa de nossa parte para buscar informações que talvez não saibamos, conseguiremos resolvê-lo. Vamos entender exatamente o que faremos neste desafio.
+
+Este é o desafio final. A primeira coisa é que precisaremos realizá-lo usando uma IDE, ou seja, um desses ambientes de programação. Podemos utilizar o Cursor, como mencionado anteriormente, o VS Code, o JetBrains, ou qualquer outro com o qual nos sintamos mais confortáveis.
+
+Descrevendo as etapas do desafio
+O desafio final terá quatro etapas. A primeira etapa será carregar um arquivo .txt, um arquivo de texto básico, onde cada linha representará um elemento em uma lista do Python. Precisaremos carregar o arquivo e armazenar cada linha em uma lista. Assim, o elemento na posição zero da lista será o primeiro elemento da primeira linha do arquivo .txt, e a posição um da lista do Python será a segunda linha desse arquivo.
+
+O arquivo em questão está relacionado ao tema de inteligência artificial e contém resenhas do aplicativo JetGPT na Play Store do Android ou na Apple Store dos iPhones. Cada resenha possui um ID de usuário, um identificador padrão, o nome do usuário que deixou a resenha, a reclamação ou o elogio, e a resenha em si, que estará em vários idiomas diferentes. Podemos observar que a primeira resenha está em francês, a segunda, terceira e quarta estão em inglês, há uma em espanhol, outra em turco, mais uma em francês, uma em polonês, outra em romeno, italiano, sueco, ou seja, este dataset está bem variado.
+
+Carregando e processando o arquivo
+O arquivo possui aproximadamente 25 entradas no formato .txt. Vamos carregá-lo e popular uma lista em Python. Esse é o primeiro passo.
+
+O segundo passo consiste em enviar os itens dessa lista para o modelo que estamos executando localmente no laptop. Isso foi abordado na última aula, quando rodamos localmente com o LM Studio. Caso tenha pesquisado mais e esteja utilizando o Ollama, qualquer um dos dois é válido. O objetivo é enviar essa lista para o modelo e tentar extrair, em um formato JSON, um dicionário ou uma lista de dicionários. Nessa estrutura, teremos os itens: o usuário, que será o nome do usuário presente no arquivo; a resenha original; a tradução dessa resenha para o português; e uma avaliação da resenha, categorizada como positiva, negativa ou neutra. Existem várias maneiras de realizar essa tarefa, e deixaremos a escolha do método para você. Posteriormente, apresentaremos nossa solução no próximo vídeo.
+
+Transformando e analisando os dados
+O terceiro passo é transformar as respostas do modelo em uma lista de dicionários em Python. Por último, criaremos uma função que receberá essa lista de dicionários, como se fosse um arquivo JSON. A função percorrerá a lista e realizará duas ações: contará a quantidade de avaliações positivas, negativas e neutras presentes no arquivo .txt original, agora transformado em uma lista de dicionários; e unirá cada item dessa lista em uma variável do tipo string, utilizando um separador à sua escolha. Ao final, a função retornará tanto a quantidade de avaliações positivas, negativas e neutras quanto uma única variável do tipo string, contendo todos os itens separados pelo separador escolhido.
+
+Concluindo o desafio
+Esse é o desafio. O arquivo estará disponível para download, permitindo que você trabalhe com ele. Desejamos boa sorte, e a resolução será apresentada no próximo vídeo. Até já!
+
+@@08
+Preparando o ambiente: resenhas-app-gpt.txt
+
+Tudo pronto para começar o desafio? O material principal que você precisará está no arquivo Resenhas_App_ChatGPT.txt.
+Faça o download e coloque seus conhecimentos em prática. Bons estudos!
+
+https://cdn3.gnarususercontent.com.br/4790-python/Resenhas_App_ChatGPT.txt
+
+@@09
+Resolução do desafio
+
+Vamos resolver o desafio juntos, passo a passo, utilizando snippets de código para complementar as explicações.
+
+Primeiro, vamos criar um novo arquivo chamado desafio-final.py dentro da mesma pasta onde estamos trabalhando. Este arquivo será em Python e será utilizado para resolver o desafio.
+
+Lendo o arquivo de resenhas
+Etapa 1: Ler o arquivo de resenhas
+A primeira tarefa é carregar um arquivo .txt, onde cada linha será um elemento de uma lista em Python. Para isso, utilizaremos o comando with open, seguido do nome do arquivo. Vamos começar declarando uma lista chamada lista_de_resenhas, que inicialmente estará vazia.
+
+# Etapa 1: Ler o arquivo de resenhas
+lista_de_resenhas = []
+with open("resenhas-app-gpt.txt", "r", encoding="utf-8") as arquivo:
+    for linha in arquivo:
+        lista_de_resenhas.append(linha.strip())
+
+print(lista_de_resenhas)
+Neste trecho de código, abrimos o arquivo resenhas-app-gpt.txt no modo de leitura ("r") e com codificação utf-8. Utilizamos um loop for para percorrer cada linha do arquivo, removendo espaços em branco com strip() e adicionando cada linha à lista lista_de_resenhas. Por fim, imprimimos a lista para verificar se a etapa foi concluída corretamente.
+
+Processando as resenhas com o modelo LLM
+Etapa 2: Processar as resenhas com o modelo LLM
+Agora, passamos para a etapa 2 do desafio: enviar as resenhas para o modelo que estamos rodando localmente, para extrair informações em formato JSON. Para isso, vamos modularizar a função que interage com o LLM em outro arquivo, contato_com_LLM.py.
+
+No arquivo contato_com_LLM.py, criaremos uma função que recebe uma linha e retorna um JSON. A função abrirá um cliente OpenAI, se necessário, e fará a chamada ao LLM.
+
+# contato_com_llm.py
+from openai import OpenAI
+
+client_openai = OpenAI(
+    base_url="http://127.0.0.1:1234/v1",
+    api_key="lm-studio"
+)
+
+def recebe_linha_e_retorna_json(linha):
+    resposta_do_llm = client_openai.chat.completions.create(
+        model="google/gemma-3-1b",
+        messages=[
+            {"role": "system", "content": """
+            Você é um especialista em análise de dados e conversão de dados para JSON.
+            Você receberá uma linha de texto que é uma resenha de um aplicativo em um marketplace online.
+            Eu quero que você analise essa resenha, e me retorne um JSON com as seguintes chaves:
+            - 'usuario': o nome do usuário que fez a resenha
+            - 'resenha_original': a resenha no idioma original que você recebeu
+            - 'resenha_pt': a resenha traduzida para o português
+            - 'avaliacao': uma avaliação se essa resenha foi 'Positiva', 'Negativa' ou 'Neutra' (apenas uma dessas opções)
+            """},
+            {"role": "user", "content": f"Resenha: {linha}"}
+        ],
+        temperature=0.0
+    )
+    return resposta_do_llm.choices[0].message.content
+Neste código, configuramos o modelo com temperatura zero para obter resultados específicos. No messages, definimos o system e o user, passando a linha de resenha. O system é configurado para que o modelo saiba que é um especialista em análise de dados e conversão para JSON.
+
+Voltamos ao arquivo principal e chamamos a função para cada resenha, convertendo a resposta em um dicionário Python com json.loads.
+
+from contato_com_llm import recebe_linha_e_retorna_json
+import json
+
+lista_de_resenhas_json = []
+
+for resenha in lista_de_resenhas:
+    resenha_json = recebe_linha_e_retorna_json(resenha)
+    resenha_dict = json.loads(resenha_json)
+    lista_de_resenhas_json.append(resenha_dict)
+
+print(lista_de_resenhas_json)
+Aqui, percorremos a lista_de_resenhas, chamamos a função recebe_linha_e_retorna_json para cada resenha, e armazenamos o resultado em lista_de_resenhas_json.
+
+Contando e unindo as avaliações
+Etapa Final: Contar e unir as avaliações
+Na etapa final, criamos uma função para contar as avaliações positivas, negativas e neutras, e unir todas as resenhas em uma única string com um separador.
+
+def contador_e_juntador(lista_de_dicionarios):
+    contador_positivas = 0
+    contador_negativas = 0
+    contador_neutras = 0
+
+    for dicionario in lista_de_dicionarios:
+        if dicionario['avaliacao'] == 'Positiva':
+            contador_positivas += 1
+        elif dicionario['avaliacao'] == 'Negativa':
+            contador_negativas += 1
+        else:
+            contador_neutras += 1
+
+    lista_de_dicionarios_str = [str(dicionario) for dicionario in lista_de_dicionarios]
+    textos_unidos = "#####".join(lista_de_dicionarios_str)
+
+    return contador_positivas, contador_negativas, contador_neutras, textos_unidos
+
+pos, neg, neut, textos = contador_e_juntador(lista_de_resenhas_json)
+
+print(f"Positivas: {pos}")
+print(f"Negativas: {neg}")
+print(f"Neutras: {neut}")
+print(textos)
+Executamos o código novamente, corrigindo eventuais erros, como a necessidade de converter dicionários para strings antes de usar join. Após ajustes, o código roda com sucesso, processando todas as resenhas e exibindo as contagens e o texto unido.
+
+@@10
+Tratamento de exceções em buscas de livros
+
+A Buscante, um buscador e e-commerce de livros variados, está aprimorando seu sistema de busca para oferecer uma experiência mais fluida às pessoas usuárias. Durante o desenvolvimento, a equipe identificou que, ao buscar por títulos de livros, algumas pessoas usuárias digitam caracteres especiais ou números em vez de letras, resultando em erros que interrompem a busca. A equipe de desenvolvimento que você faz parte precisa implementar um sistema que trate esses erros de forma a não interromper a experiência da pessoa usuária, mas sim fornecer uma mensagem amigável ou uma sugestão de correção.
+Como você aplicaria o conceito de tratamento de exceções para resolver esse problema e melhorar a experiência da pessoa usuária?
+
+Criar um sistema de validação prévia que rejeita qualquer entrada que não seja composta exclusivamente por letras, sem fornecer feedback adicional à pessoa usuária, e sem considerar a possibilidade de erros de digitação comuns que poderiam ser corrigidos automaticamente. Essa abordagem ignora a importância de uma comunicação clara e eficaz com a pessoa usuária, que poderia ser orientada sobre como ajustar sua busca para obter melhores resultados.
+ 
+Incorreta, pois rejeitar a entrada sem feedback não melhora a experiência da pessoa usuária e não utiliza o tratamento de exceções para lidar com o problema, além de não oferecer qualquer orientação sobre como corrigir a entrada.
+Alternativa incorreta
+Implementar blocos de try e except no código de busca, onde o sistema tenta processar a entrada dentro de um bloco try e captura erros como ValueError em um bloco except, retornando uma mensagem amigável ou sugestão de correção.
+ 
+Correta, pois essa abordagem permite capturar erros específicos causados por entradas inválidas e fornecer feedback útil à pessoa usuária, sem interromper a busca.
+Alternativa incorreta
+Utilizar apenas um bloco try para processar a entrada e, em caso de erro, deixar que o sistema retorne uma mensagem de erro padrão do servidor, sem qualquer personalização ou tentativa de correção. Além disso, não se preocupa em identificar o tipo de erro ocorrido, o que pode levar a uma experiência menos satisfatória para a pessoa usuária, que não recebe orientações claras sobre como corrigir a entrada.
+ 
+Incorreta, pois essa abordagem não fornece uma mensagem amigável ou sugestão de correção, o que pode resultar em uma experiência negativa para a pessoa usuária, já que a falta de personalização na mensagem de erro não ajuda a resolver o problema.
+Alternativa incorreta
+Implementar um sistema que substitui automaticamente caracteres especiais por letras aleatórias antes de processar a busca, sem considerar o contexto ou a intenção original da pessoa usuária. Essa abordagem pode levar a resultados de busca que não correspondem ao que a pessoa usuária estava realmente procurando, além de não fornecer qualquer tipo de feedback ou sugestão de correção que poderia melhorar a experiência de busca.
+
+@@11
+Para saber mais: modularização de funções em python
+
+A importância de dividir o código em módulos
+Ao desenvolver projetos mais complexos em Python, separar funcionalidades em arquivos diferentes é essencial para manter a clareza e facilitar a manutenção. Essa abordagem, chamada de modularização, permite que cada parte do programa tenha uma responsabilidade bem definida, o que torna o código mais organizado e reutilizável. Ademais, trabalhar com módulos favorece o trabalho em equipe, pois diferentes integrantes podem desenvolver e testar partes distintas do projeto independentemente.
+
+Estrutura e benefícios da modularização
+Ao modularizar o código, você isola funções e classes que realizam tarefas específicas em arquivos separados. Essa separação traz diversas vantagens:
+
+Legibilidade: O código fica mais limpo, facilitando a compreensão do fluxo e da lógica implementada.
+Manutenção: Atualizações ou correções podem ser feitas em um módulo específico sem afetar outras partes do sistema.
+Reutilização: Funções que cumprem tarefas comuns podem ser importadas e utilizadas em diferentes projetos, evitando a duplicação de código.
+Veja o exemplo prático a seguir que demonstra como dividir uma funcionalidade em um arquivo e importá-la em outro:
+
+# No arquivo utilidades.py
+
+def saudar(nome):
+    return f"Olá, {nome}! Seja bem-vindx."
+
+# No arquivo principal.py
+
+from utilidades import saudar
+
+nome_usuario = "Alex"
+print(saudar(nome_usuario))
+COPIAR CÓDIGO
+Nesse exemplo, a função de saudação foi isolada em um módulo separado, o que torna a utilização da função por outros arquivos um processo simples e intuitivo.
+
+Considerações sobre vantagens e desafios
+Embora a modularização traga muitos benefícios, é importante estar atento a alguns pontos:
+
+Planejamento: Decidir como dividir o projeto em módulos requer uma análise cuidadosa da arquitetura da aplicação. Módulos mal organizados podem criar dependências circulares indesejadas.
+Overhead de importação: Em projetos muito grandes, o gerenciamento de importações pode se tornar complexo, demandando o uso de pacotes e subpacotes para manter a hierarquia organizada.
+No geral, investir tempo na estruturação modular do código é uma prática que melhora a escalabilidade e a qualidade do software, permitindo que o programador se concentre em resolver problemas de forma mais eficaz.
+
+Aprofundar-se nesses conceitos e aplicar boas práticas de organização pode ser um grande diferencial na hora de trabalhar em projetos colaborativos e de larga escala.
+
+@@12
+Faça como eu fiz: lidar com exceções e IA
+
+Nesta aula, aprendemos a tratar exceções usando blocos try/except/finally, filtrar dados com pandas, manipular strings com join e integrar chamadas de LLM para análise e classificação. Agora é a sua chance de colocar em prática os conteúdos explorados. Para isso:
+Identifique diferentes erros: value, type e divisão por zero;
+Crie um bloco try para isolar operações arriscadas;
+Configure except para capturar value error e alertar o usuário;
+Configure except para capturar type error com mensagem de apoio;
+Utilize except geral para erros não previstos;
+Aplique finally para executar ações de finalização (ex.: fechar arquivos);
+Replique exemplos de tratamento de exceções conforme demonstrado;
+Filtre DataFrame por análises negativas usando pandas;
+Extraia a coluna de resenhas negativas do DataFrame;
+Una as resenhas com o método join e delimitador definido;
+Armazene o texto unificado em variável para processamento;
+Prepare um prompt para enviar as resenhas ao LLM;
+Configure o cliente de LLM com parâmetros específicos;
+Realize chamadas à IA e capture as respostas;
+Extraia categorias das respostas conforme solicitado;
+Refine o prompt para limitar a resposta a uma palavra por categoria;
+Converta a resposta em lista utilizando o método split;
+Implemente exemplo de extração de JSON para cada resenha;
+Converta textos JSON para dicionários Python;
+Utilize try/except ao conectar com serviços de LLM;
+Demonstre execução de modelos de IA localmente (LM Studio/Ollama);
+Selecione e baixe um modelo adequado (ex.: Gema 3 1B);
+Configure ambiente virtual Python e IDE de desenvolvimento;
+Crie script integrando chamadas LLM com código Python;
+Desenvolva função para processar em lote resenhas e contagem de avaliações;
+Implemente função que una os resultados num único texto.
+Para mais conteúdos, consulte as transcrições da aula.
+
+@@13
+Arquivos do curso
+
+Aqui você pode baixar o zip da aula 06:
+chamada-ao-llm.py;
+contato_com_llm.py;
+desafio_final.py.
+E o download completo.
+
+https://cdn3.gnarususercontent.com.br/4790-python/chamada-ao-llm.py
+
+https://cdn3.gnarususercontent.com.br/4790-python/contato_com_llm.py
+
+https://cdn3.gnarususercontent.com.br/4790-python/desafio_final.py
+
+http://cdn3.gnarususercontent.com.br/4790-python/modulo-6_final.zip
+
+@@14
+O que aprendemos?
+
+Nesta aula, aprendemos:
+A tratar erros e exceções em Python com blocos try, except, e finally.
+A filtrar um DataFrame Pandas e manipular strings com métodos como join() e split().
+As vantagens de rodar modelos de IA localmente e usar o LM Studio.
+A importância de ambientes de programação e o uso de IDEs como VSCode.
+A integrar modelos de linguagem locais para processar dados e converter resenhas em JSON.
+A manipular arquivos .txt em Python para processar dados textuais.
+O uso do formato JSON e a transformação em dicionários Python com a biblioteca json.
+A aplicar prompts em IA para produzir JSONs bem formatados.
+
+@@15
+Conclusão
+
+Agora que concluímos este curso e realizamos os desafios, esperamos que todos tenham aproveitado ao máximo o conhecimento adquirido. Desde o início, aprendemos a criar variáveis em Python, imprimir valores, criar variáveis que armazenam valores numéricos e textos em string, e realizar operações matemáticas.
+
+Para começar, vamos ver como imprimir valores em Python. Podemos usar a função print() para exibir números e textos. Veja alguns exemplos básicos:
+
+print(5)
+print("Olá mundo")
+print("Olá mundo" + "5")
+print(5 + 2)
+COPIAR CÓDIGO
+Armazenando e manipulando variáveis
+Além disso, exploramos como armazenar valores em variáveis e manipulá-los. Por exemplo, podemos criar variáveis para armazenar números e depois usá-las em operações:
+
+produto1 = 5
+print(produto1)
+
+produto2 = 2000
+print(produto2)
+
+produto3 = 1
+print(produto1 + produto2 + produto3)
+COPIAR CÓDIGO
+Também trabalhamos com variáveis de texto, ou strings, e vimos como concatená-las:
+
+nome_do_produto1 = "Macarrão"
+nome_do_produto2 = "Celular"
+nome_do_produto3 = "Bala"
+
+print(nome_do_produto1 + " " + nome_do_produto2 + " " + nome_do_produto3)
+COPIAR CÓDIGO
+Explorando estruturas condicionais e de repetição
+Além disso, exploramos operações com texto, recebemos valores do usuário por meio de prompts e lidamos com eles. Estudamos valores condicionais e estruturas condicionais, como if, else e elif. Por exemplo, podemos pedir ao usuário para digitar seu nome e idade, e então usar uma estrutura condicional para verificar se ele pode entrar em uma festa:
+
+nome = input("Digite o seu nome: ")
+idade = int(input("Digite a sua idade: "))
+
+if idade >= 18:
+  print(f"{nome} pode entrar na festa porque ele é maior de idade.")
+  print(f"Ele tem {idade} anos de idade.")
+else:
+  print(f"{nome} NÃO pode entrar na festa porque ele é menor de idade.")
+  print(f"Ele tem {idade} anos de idade.")
+COPIAR CÓDIGO
+As estruturas de repetição, como while e for, foram amplamente utilizadas durante o curso para criar chats e respostas. Exploramos estruturas de dados, como listas, e manipulamos dicionários. Criamos funções próprias para realizar ações específicas.
+
+Por exemplo, podemos usar um loop while para imprimir um padrão de asteriscos:
+
+n = 1
+while n <= 10:
+  print("*")
+  n = n + 1
+COPIAR CÓDIGO
+Enfrentando desafios e aplicando conhecimentos
+Enfrentamos diversos desafios, utilizando IAs privadas e conectando com a API do Gemini e a IA do Grok, que é uma IA de pesos abertos, mas ainda na nuvem do Grok. Aprendemos também os fundamentos da ciência de dados, utilizando o framework Pandas para ler e escrever arquivos CSV e de texto.
+
+Todo esse aprendizado culminou no desafio final, que é uma oportunidade de aplicar todas as habilidades adquiridas durante o curso no VS Code.
+
+Incentivando o aprendizado contínuo
+Sempre enfatizamos que este é apenas o primeiro passo. O aprendizado de uma linguagem de programação, inteligência artificial ou qualquer outra área requer evolução contínua, com novos projetos e aprendizados diários. Muitas coisas que não tivemos tempo de ensinar neste curso podem ser exploradas no Tech Guide, um guia gratuito promovido pela Alura.
+
+Na carreira de Python, por exemplo, é importante aprender lógica de programação, algo que já abordamos. Testes são fundamentais para o mercado, mas não foram cobertos neste curso inicial. Já vimos os fundamentos e utilizamos orientação a objetos sem nos aprofundarmos no conceito. Na Alura, há cursos específicos sobre Python, incluindo orientação a objetos, essencial para qualquer pessoa que deseja se tornar programadora Python.
+
+Explorando tópicos avançados e próximos passos
+Também abordamos superficialmente a comunicação com APIs, conectando-nos com a API do Gemini e do Grok. No entanto, há mais a aprender sobre comunicação com APIs sem usar uma SDK própria, como as do Google, Gemini, OpenAI e Grok. Já vimos várias estruturas de dados e coleções, mas não abordamos Flask e Django, que são interessantes. Além disso, há orientação a objetos avançada, Lambdas e muito mais no universo do Python, sem mencionar o mundo da inteligência artificial, que também requer estudo contínuo.
+
+Esperamos que agora tenhamos uma base sólida em Python para continuar aprendendo e adquirindo novas habilidades e conhecimentos ao longo do tempo. Desejamos boa sorte em seu percurso e incentivamos a continuar na Alura, onde estamos sempre disponíveis para ajudar. Até mais!
